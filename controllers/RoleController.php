@@ -144,7 +144,6 @@ if (isset($_SESSION['log_in']) && $_SESSION['log_in'] && isset($_SESSION["user_d
   } else {
         // No action, fetch roles
     if (in_array('Read Role', $_SESSION['user_permissions'])) {
-            
       $stmt = $pdo->prepare('SELECT * FROM roles WHERE id != 1 ORDER BY id ASC ');
       $stmt->execute();
       $roles = $stmt->fetchAll(PDO::FETCH_ASSOC);

@@ -5,7 +5,6 @@
     <div class="x_title">
       <h2>Archived<small>Form</small></h2>
       <ul class="nav navbar-right panel_toolbox">
-
       </ul>
       <div class="clearfix"></div>
     </div>
@@ -30,22 +29,18 @@
                       <td style="vertical-align: middle;"><?php echo htmlspecialchars($archived['title']); ?></td>
                       <td style="vertical-align: middle;"><?php echo htmlspecialchars($archived['file_name']); ?></td>
                       <td style="vertical-align: middle;"><?php echo date('F d, Y | h:i A', strtotime($archived['date_uploaded'])); ?></td>
-            
- 
-                  </tr>
-                <?php endforeach; ?>
-              <?php endif; ?>
-            </tbody>
-          </table>
+                    </tr>
+                  <?php endforeach; ?>
+                <?php endif; ?>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-</div>
-
 <script type="text/javascript">
-
   $(function () {
     $('#uploaded').DataTable({
       "paging": true,
@@ -58,11 +53,3 @@
     });
   });
 </script>
-
-
-
-
-
-
-
-

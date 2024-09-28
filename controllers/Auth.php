@@ -1,14 +1,11 @@
 <?php 
 require_once 'connect.php';
 if (session_status() == PHP_SESSION_NONE) {
-    session_start();
+	session_start();
 }
-
 $data = json_decode(file_get_contents('php://input'), true);
 if ($data !== null && isset($data['action'])) {
 	$action = $data['action'];
-
-
 	if ($action == 'login') {
 		$email = $data['username'];
 		$password = $data['password'];
@@ -21,28 +18,23 @@ if ($data !== null && isset($data['action'])) {
 				$_SESSION['log_in'] = true;
 				$_SESSION["user_data"] = $user;
             // Send JSON response for success
-
-
-
-
-
+				$stmt = $pdo->prepare("SELECT name FROM roles WHERE id = :id");
+				$stmt->bindParam(':id', $user['role_id']);
+				$stmt->execute();
+				$role = $stmt->fetch(PDO::FETCH_ASSOC);
+				$_SESSION["role"] = $role;
 				echo json_encode([
 					'success' => true,
 					'message' => "Login successful. Welcome!"
 				]);
-
-
 // Assuming the user session is already set
-if (isset($_SESSION['user_data']['role_id'])) {
-    $roleId = $_SESSION['user_data']['role_id'];
-    $permissions = getUserPermissions($roleId, $pdo);
-    $_SESSION['user_permissions'] = $permissions;
-} else {
-    echo "User role not found in session.";
-}
-
-
-				
+				if (isset($_SESSION['user_data']['role_id'])) {
+					$roleId = $_SESSION['user_data']['role_id'];
+					$permissions = getUserPermissions($roleId, $pdo);
+					$_SESSION['user_permissions'] = $permissions;
+				} else {
+					echo "User role not found in session.";
+				}
 			} else {
             // Send JSON response for failure
 				echo json_encode([
@@ -58,8 +50,6 @@ if (isset($_SESSION['user_data']['role_id'])) {
 			]);
 		}
 	}
-
-
 	if ($action == 'logout') {
     // Clear all session variables
 		$_SESSION = array();
@@ -74,9 +64,6 @@ if (isset($_SESSION['user_data']['role_id'])) {
 		]);
 		exit();
 	}
-
-
-
 	if ($action=='register') {
 		$email = $data['username'];
 		$password = $data['password'];
@@ -95,8 +82,5 @@ if (isset($_SESSION['user_data']['role_id'])) {
         }
     }
 }
-
-
-
 } 
 ?>

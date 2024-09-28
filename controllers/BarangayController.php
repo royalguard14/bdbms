@@ -1,31 +1,23 @@
 <?php
 require_once 'connect.php';
-
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-
 if (isset($_SESSION['log_in']) && $_SESSION['log_in']) {
     $data = json_decode(file_get_contents('php://input'), true);
     if ($data !== null && isset($data['action'])) {
         $action = $data['action'];
-
         // Handle store (create) action
         if ($action == 'store') {
             if (in_array('Create Barangay', $_SESSION['user_permissions'])) {
                 if (isset($data['barangayname']) && !empty($data['barangayname'])) {
                     $name = $data['barangayname'];
                     $cityId = $data['cityId'];
-
-                         if ($_SESSION["user_data"]['city_id']==0) {
-                $cityId = $data['cityId'];
-            }else{
-                $cityId = $_SESSION["user_data"]['city_id'];
-            }
-
-
-
-                    
+                    if ($_SESSION["user_data"]['city_id']==0) {
+                        $cityId = $data['cityId'];
+                    }else{
+                        $cityId = $_SESSION["user_data"]['city_id'];
+                    }
                     try {
                         $stmt = $pdo->prepare("INSERT INTO barangay (name, city_id) VALUES (:name, :cityId)");
                         $stmt->bindParam(':name', $name);
@@ -50,7 +42,6 @@ if (isset($_SESSION['log_in']) && $_SESSION['log_in']) {
                 exit();
             }
         }
-
         // Handle update action
         if ($action == 'update') {
             if (in_array('Update Barangay', $_SESSION['user_permissions'])) {
@@ -81,7 +72,6 @@ if (isset($_SESSION['log_in']) && $_SESSION['log_in']) {
                 exit();
             }
         }
-
         // Handle delete action
         if ($action == 'delete') {
             if (in_array('Delete Barangay', $_SESSION['user_permissions'])) {
@@ -105,69 +95,62 @@ if (isset($_SESSION['log_in']) && $_SESSION['log_in']) {
                 exit();
             }
         }
-
         // Handle fetch barangays action
         if ($action == 'fetch') {
             if (in_array('Read Barangay', $_SESSION['user_permissions'])) {
                 try {
-                         if ($_SESSION["user_data"]['city_id']==0) {
-                $stmt = $pdo->prepare('SELECT * FROM barangay ORDER BY id ASC');
-            }else{
-                $stmt = $pdo->prepare('SELECT * FROM barangay Where city_id = :cityid ORDER BY id ASC');
-            }
-                    $stmt->bindParam(':cityid', $_SESSION["user_data"]['city_id']);
-                    $stmt->execute();
-                    $barangays = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                    echo json_encode([
-                        'success' => true,
-                        'barangays' => $barangays
-                    ]);
-                } catch (PDOException $e) {
-                    echo json_encode(['success' => false, 'message' => 'Failed to fetch barangays.']);
+                   if ($_SESSION["user_data"]['city_id']==0) {
+                    $stmt = $pdo->prepare('SELECT * FROM barangay ORDER BY id ASC');
+                }else{
+                    $stmt = $pdo->prepare('SELECT * FROM barangay Where city_id = :cityid ORDER BY id ASC');
                 }
-            } else {
-                header("Location: views/errors/500.html");
-                exit();
+                $stmt->bindParam(':cityid', $_SESSION["user_data"]['city_id']);
+                $stmt->execute();
+                $barangays = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                echo json_encode([
+                    'success' => true,
+                    'barangays' => $barangays
+                ]);
+            } catch (PDOException $e) {
+                echo json_encode(['success' => false, 'message' => 'Failed to fetch barangays.']);
             }
+        } else {
+            header("Location: views/errors/500.html");
+            exit();
         }
-
-
+    }
         // Handle fetch cities action
-        if ($action == 'fetchCities') {
-            if (in_array('Read City', $_SESSION['user_permissions'])) {
-                try {
-                    $stmt = $pdo->prepare('SELECT id, name FROM city ORDER BY name ASC');
-                    $stmt->execute();
-                    $cities = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                    echo json_encode([
-                        'success' => true,
-                        'cities' => $cities
-                    ]);
-                } catch (PDOException $e) {
-                    echo json_encode(['success' => false, 'message' => 'Failed to fetch cities.']);
-                }
-            } else {
-                header("Location: views/errors/500.html");
-                exit();
-            }
-        }
-
-
-    } else {
-        // Default action: Fetch all barangays if no specific action is passed
-        if (in_array('Read Barangay', $_SESSION['user_permissions'])) {
+    if ($action == 'fetchCities') {
+        if (in_array('Read City', $_SESSION['user_permissions'])) {
             try {
+                $stmt = $pdo->prepare('SELECT id, name FROM city ORDER BY name ASC');
+                $stmt->execute();
+                $cities = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                echo json_encode([
+                    'success' => true,
+                    'cities' => $cities
+                ]);
+            } catch (PDOException $e) {
+                echo json_encode(['success' => false, 'message' => 'Failed to fetch cities.']);
+            }
+        } else {
+            header("Location: views/errors/500.html");
+            exit();
+        }
+    }
+} else {
+        // Default action: Fetch all barangays if no specific action is passed
+    if (in_array('Read Barangay', $_SESSION['user_permissions'])) {
+        try {
             if ($_SESSION["user_data"]['city_id']==0) {
                 $stmt = $pdo->prepare('SELECT * FROM barangay ORDER BY id ASC');
             }else{
                 $stmt = $pdo->prepare('SELECT * FROM barangay Where city_id = :cityid ORDER BY id ASC');
             }
-             
-             $stmt->bindParam(':cityid', $_SESSION["user_data"]['city_id']);
-             $stmt->execute();
-             $barangays = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-         } catch (PDOException $e) {
+            $stmt->bindParam(':cityid', $_SESSION["user_data"]['city_id']);
+            $stmt->execute();
+            $barangays = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
             echo json_encode(['success' => false, 'message' => 'Failed to fetch barangays.']);
         }
     } else {

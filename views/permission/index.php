@@ -1,6 +1,4 @@
 <?php require_once 'controllers/PermissionController.php'; ?>
-
-
 <!-- content dito -->
 <div class="row">
 	<div class="col-md-4 ">
@@ -77,12 +75,8 @@
 									<td style="align-content: center;"><?php echo $d['name']; ?>
 								</td>
 								<td>
-									
-
 									<button type="button" class="btn btn-primary btn-sm" onclick="openModal('<?php echo $d['id']; ?>','<?php echo $d['name']; ?>')">Update</button>
 									<button type="button" class="btn btn-danger btn-sm" onclick="toDelete('<?php echo $d['id']; ?>')">Drop</button>
-		
-
 								</td>
 							</tr>
 						<?php endforeach; ?>
@@ -93,21 +87,15 @@
 	</div>
 </div>
 </div><!-- end ng row -->
-
-
 <script type="text/javascript">
 	$(document).on("submit", "#Permissionform", function(e) {
 		e.preventDefault();
-		
 		var permissionname = $('#permissionsname').val();
 		var action = 'store';
-		
 		if (permissionname === '') {
 			alert('Please enter Role Name');
 			return;
 		}
-
-
 		$.ajax({
 			url: 'controllers/PermissionController.php',
 			method: 'POST',
@@ -125,7 +113,5 @@
 				window.location.href = 'index.php?page=permission';
 			}
 		});
-
-		
 	});
 </script>

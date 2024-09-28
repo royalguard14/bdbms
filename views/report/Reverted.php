@@ -1,8 +1,5 @@
 <?php require_once 'controllers/StatusController.php'; ?>
 <!-- City Management Content -->
-
-
-
 <div class="col-md-12 col-sm-12 ">
 	<div class="x_panel">
 		<div class="x_title">
@@ -37,8 +34,6 @@
 								</tr>
 							</thead>
 							<tbody>
-
-
 								<?php if (!empty($myreverted)): ?>
 									<?php foreach ($myreverted as $reverted): ?>
 										<tr>
@@ -47,45 +42,29 @@
 											<td style="vertical-align: middle;"><?php echo date('F d, Y | h:i A', strtotime($reverted['period_covered'])); ?></td>
 											<td style="vertical-align: middle;"><?php echo date('F d, Y | h:i A', strtotime($reverted['changed_at'])); ?></td>
 											<td style="vertical-align: middle; text-align: center;">
-
 												<button type="button" class="btn btn-round btn-sm btn-outline viewreverted_btn" 
-
-
-			data-title="<?php echo htmlspecialchars($reverted['file_name']); ?>" 
+												data-title="<?php echo htmlspecialchars($reverted['file_name']); ?>" 
 												data-period_covered="<?php echo htmlspecialchars($reverted['period_covered']); ?>" 
 												data-change_by="<?php echo htmlspecialchars($reverted['first_name']. " " .$reverted['last_name'] ); ?>" 
 												data-created_at="<?php echo htmlspecialchars($reverted['date_uploaded']); ?>" 
 												data-changed_at="<?php echo htmlspecialchars($reverted['changed_at']); ?>" 
 												data-remark="<?php echo htmlspecialchars($reverted['remark']); ?>" 
-								
-
-
-
-
-
 												>
-													<i class="fa fa-eye"></i>
-												</button>
-
-
-											</td>
-										</tr>
-
-									<?php endforeach; ?>
-								<?php endif; ?>
-							</tbody>
-						</table>
-					</div>
+												<i class="fa fa-eye"></i>
+											</button>
+										</td>
+									</tr>
+								<?php endforeach; ?>
+							<?php endif; ?>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
+</div>
 <!-- modal -->
-
-
-
-
 <!-- modal -->
 <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="viewreverted_modal">
 	<div class="modal-dialog modal-lg">
@@ -123,7 +102,7 @@
 						<label>Reverted On</label>
 						<input type="text" id="reverted_on" class="form-control" disabled>
 					</div>
-									<div class="col-md-12 col-sm-12 form-group">
+					<div class="col-md-12 col-sm-12 form-group">
 						<label class="">Remarks</label>
 						<textarea class="form-control" id="remark" disabled>The Period Covered must be the date in the "Actual Date of Annual Meeting".
 						</textarea>
@@ -133,11 +112,6 @@
 		</div>
 	</div>
 </div>
-
-
-
-
-
 <script type="text/javascript">
 	$(function () {
 		$('#uploaded').DataTable({
@@ -151,9 +125,8 @@
 		});
 	});
 </script>
-
 <script type="text/javascript">
-		$('.viewreverted_btn').on('click', function () {
+	$('.viewreverted_btn').on('click', function () {
 		$('#viewreverted_modal').modal('show'); 
 		let title = $(this).data('title');
 		let periodCovered = $(this).data('period_covered');
@@ -161,12 +134,8 @@
 		let changeBy = $(this).data('change_by');
 		let changedAt = $(this).data('changed_at');
 		let remark = $(this).data('remark');
-
-
 		let fchangedAt = formatDateTime(changedAt);
 		let fperiodCovered = formatDateTime(periodCovered);
-
-
     // Assign values to the modal fields
     $('#submitted_on').val(getFormattedDateTime(createdAt));
     $('#file_name').val(title);

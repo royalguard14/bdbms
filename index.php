@@ -30,9 +30,9 @@ if (isset($_SESSION['log_in'])) {
   if (in_array($page, ['role', 'permission', 'account', 'city', 'brgy'])) {
     include 'views/' . $page . '/index.php';
   } elseif ($page == 'report') {
-    $required_permissions_brgyLevel = ['Upload Report', 'View Submitted', 'View Accepted', 'View Reverted', 'View Archived'];
+    $required_permissions_brgyLevel = ['Upload Report', 'View Submitted', 'View Accepted', 'View Reverted', 'View Archived','toVerified','ToConfirm','Read Confirm'];
     if (array_intersect($required_permissions_brgyLevel, $_SESSION['user_permissions'])) {
-      include 'views/report/BrgyLevel/'.$_GET['section'].'.php';
+      include 'views/report/'.$_GET['section'].'.php';
     }
   } else {
     include 'views/dashboard/index.php';

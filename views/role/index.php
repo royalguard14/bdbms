@@ -79,7 +79,6 @@
 									<?php if (in_array('Grant Permission', $_SESSION['user_permissions'])): ?>
 										<button type="button" class="btn btn-warning btn-sm" onclick="openPermissions('<?php echo $d['id']; ?>')">Permissions</button>
 									<?php endif; ?>
-
 								</td>
 							</tr>
 						<?php endforeach; ?>

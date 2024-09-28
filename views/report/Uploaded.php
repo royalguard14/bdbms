@@ -44,21 +44,21 @@
                       </button>
                       <button type="button" class="btn btn-round btn-sm btn-outline delete-btn" 
                       data-id="<?php echo $upload['id']; ?>" >
-                        <i class="fa fa-trash"></i>
-                      </button>
-                      <button type="button" class="btn btn-round btn-sm btn-outline submited-btn" data-id="<?php echo $upload['id']; ?>">
-                        <i class="fa fa-send-o"></i>
-                      </button>
-                    </td>
-                  </tr>
-                <?php endforeach; ?>
-              <?php endif; ?>
-            </tbody>
-          </table>
-        </div>
+                      <i class="fa fa-trash"></i>
+                    </button>
+                    <button type="button" class="btn btn-round btn-sm btn-outline submited-btn" data-id="<?php echo $upload['id']; ?>">
+                      <i class="fa fa-send-o"></i>
+                    </button>
+                  </td>
+                </tr>
+              <?php endforeach; ?>
+            <?php endif; ?>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
+</div>
 </div>
 </div>
 <!-- Modal for Uploading New Form -->
@@ -121,7 +121,6 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
-     
       </div>
       <div class="modal-body">
         <div class="row">
@@ -167,7 +166,6 @@
   </div>
 </div>
 <script type="text/javascript">
-  
   $(function () {
     $('#uploaded').DataTable({
       "paging": true,
@@ -186,11 +184,9 @@
     $('#uploadform').modal('show');
     $('#uploadForm')[0].reset(); 
   });
-
   $(document).on('submit', '#uploadForm', function(e) {
     e.preventDefault();
     let formData = new FormData(this); 
-    
     $.ajax({
       url: 'controllers/UploadController.php?action=upload', 
       type: 'POST',
@@ -211,31 +207,22 @@
     });
   });
 </script>
-
-
-
 <script type="text/javascript">
   $('.editUploaddetail').on('click', function () {
-    
-
-      let id = $(this).data('id');
-      let formtype = $(this).data('formtype');
-      let title = $(this).data('title');
-      let period = $(this).data('period');
-
-      $('input[name="id"]').val(id); 
-      $('#form_type_non_upload').val(formtype); 
-      $('#title_non_upload').val(title); 
-      $('#period_covered_non_upload').val(period); 
-      $('#currentDateTimeNonUpload').val(getFormattedDateTime());
-      $('#nonUploadForm').modal('show'); 
-
+    let id = $(this).data('id');
+    let formtype = $(this).data('formtype');
+    let title = $(this).data('title');
+    let period = $(this).data('period');
+    $('input[name="id"]').val(id); 
+    $('#form_type_non_upload').val(formtype); 
+    $('#title_non_upload').val(title); 
+    $('#period_covered_non_upload').val(period); 
+    $('#currentDateTimeNonUpload').val(getFormattedDateTime());
+    $('#nonUploadForm').modal('show'); 
   });
-
   $(document).on('submit', '#nonUploadForm', function(e) {
     e.preventDefault();
     let formData = new FormData(this); 
-
     $.ajax({
       url: 'controllers/UploadController.php?action=updateUpload', 
       type: 'POST',
@@ -250,13 +237,9 @@
           alert(result.message);
         }
       },
-
     });
   });
 </script>
-
-
-
 <script type="text/javascript">
         // Handle delete action
         $(document).on('click', '.delete-btn', function () {
@@ -279,10 +262,8 @@
             });
           }
         });
-</script>
-
-
-<script type="text/javascript">
+      </script>
+      <script type="text/javascript">
         // Handle delete action
         $(document).on('click', '.submited-btn', function () {
           let id = $(this).data('id');
@@ -304,16 +285,4 @@
             });
           }
         });
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
+      </script>

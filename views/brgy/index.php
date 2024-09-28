@@ -29,10 +29,10 @@
                         </div>
                     </div>
                     <?php if ($_SESSION["user_data"]['city_id']==0): ?>
-                     <div class="form-group row">
+                       <div class="form-group row">
                         <label class="col-form-label col-md-3 col-sm-3">City</label>
                         <div class="col-md-9 col-sm-9">
-                           <select id="cityId" class="form-control">
+                         <select id="cityId" class="form-control">
                             <!-- Options will be dynamically populated -->
                         </select>
                     </div>
@@ -73,7 +73,6 @@
                 <thead>
                     <tr>
                         <th>Barangay Name</th>
-                 
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -82,21 +81,20 @@
                         <?php foreach ($barangays as $barangay): ?>
                             <tr>
                                 <td><?php echo htmlspecialchars($barangay['name']); ?></td>
-                               
                                 <td>
                                     <!-- Inside the table for each barangay -->
                                     <button type="button" class="btn btn-primary btn-sm" onclick="openBarangayModal('<?php echo htmlspecialchars($barangay['id']); ?>', '<?php echo htmlspecialchars($barangay['name']); ?>', '<?php echo htmlspecialchars($barangay['city_id']); ?>')">Update</button>
                                     <?php if (in_array('Delete Barangay', $_SESSION['user_permissions'])): ?>
-                                     <button type="button" class="btn btn-danger btn-sm" onclick="deleteBarangay('<?php echo htmlspecialchars($barangay['id']); ?>')">Delete</button>
-                                 <?php endif; ?>
-                             </td>
-                         </tr>
-                     <?php endforeach; ?>
-                 <?php endif; ?>
-             </tbody>
-         </table>
-     </div>
- </div>
+                                       <button type="button" class="btn btn-danger btn-sm" onclick="deleteBarangay('<?php echo htmlspecialchars($barangay['id']); ?>')">Delete</button>
+                                   <?php endif; ?>
+                               </td>
+                           </tr>
+                       <?php endforeach; ?>
+                   <?php endif; ?>
+               </tbody>
+           </table>
+       </div>
+   </div>
 </div>
 </div>
 <!-- Update Barangay Modal -->
@@ -217,7 +215,6 @@
         }
     }
 </script>
- 
 <script type="text/javascript">
     $(document).ready(function() {
         // Fetch cities when the page loads
@@ -238,8 +235,6 @@
                     alert(response.message);
                 }
             },
-  
         });
     });
 </script>
- 

@@ -7,7 +7,6 @@
 			<ul class="nav navbar-right panel_toolbox">
 			</ul>
 			<div class="clearfix"></div>
-	
 		</div>
 		<div class="x_content">
 			<div class="row">
@@ -19,8 +18,6 @@
 									<th>Record No.</th>
 									<th>Form Type</th>
 									<th>Version</th>
-									<th>Period Covered</th>
-									<th>Accepted On</th>
 									<th>Action</th>
 								</tr>
 							</thead>
@@ -31,8 +28,6 @@
 											<td style="vertical-align: middle;"><?php echo htmlspecialchars($accepted['id']); ?></td>
 											<td style="vertical-align: middle;"><?php echo ($accepted['form_type'] == 1) ? 'Report' : 'Plan'; ?></td>
 											<td style="vertical-align: middle;">1</td>
-											<td style="vertical-align: middle;"><?php echo date('F d, Y | h:i A', strtotime($accepted['period_covered'])); ?></td>
-											<td style="vertical-align: middle;"><?php echo date('F d, Y | h:i A', strtotime($accepted['changed_at'])); ?></td>
 											<td style="vertical-align: middle; text-align: center;">
 												<button type="button" class="btn btn-round btn-sm btn-outline viewaccepted_btn"
 												data-title="<?php echo htmlspecialchars($accepted['file_name']); ?>" 
@@ -152,56 +147,54 @@
 		let brgy = $(this).data('brgy');
 		let fperiodCovered = formatDateTime(periodCovered);
 		let fchangedAt = formatDateTime(changedAt);
-    let printContent = `
-        <style>
-            @media print {
-                @page {
-                    size: A4;
-                    margin: 20mm; /* Adjust margins as necessary */
-                }
-                body {
-                    font-family: Arial, sans-serif;
-                    height: auto; /* Allow height to adjust */
-                    display: flex;
-                    flex-direction: column;
-                }
-                .footer {
-                    margin-top: 83%; /* Push footer to the bottom */
-                    text-align: center;
-                    font-size: 0.8rem;
-                    color: gray;
-                }
-                /* Hide headers and footers that may be added by the browser */
-                @page {
-                    margin: 0; /* Remove default margins */
-                }
-                body {
-                    margin: 0; /* Remove body margins */
-                }
-            }
-        </style>
-        <div style="padding: 20px; flex: 1;">
-            <img src="../assets/images/favicon.ico" alt="Company Logo" style="width: 150px; margin-bottom: 20px;">
-            <h3>The following document has been received:</h3>
-            <br>
-            <p><strong>Receiving:</strong> ${changeBy}</p>
-            <p><strong>Receipt Date and Time:</strong> ${fchangedAt}</p>
-            <br><br>
-            <h2>Document Details:</h2>
-            <hr>
-            <div style="text-align: left; font-size: 0.9rem;">
-                <p><strong>Barangay:</strong> ${brgy}</p>
-                <p><strong>Record No.:</strong> ${id}</p>
-                <p><strong>Document Type:</strong> ${formtype}</p>
-                <p><strong>Period Covered:</strong> ${fperiodCovered}</p>
-            </div>
-            <div class="footer">
-                <p>Acceptance of this document is subject to review of forms and contents</p>
-            </div>
-        </div>
-    `;
-
-
+		let printContent = `
+		<style>
+		@media print {
+			@page {
+				size: A4;
+				margin: 20mm; /* Adjust margins as necessary */
+			}
+			body {
+				font-family: Arial, sans-serif;
+				height: auto; /* Allow height to adjust */
+				display: flex;
+				flex-direction: column;
+			}
+			.footer {
+				margin-top: 83%; /* Push footer to the bottom */
+				text-align: center;
+				font-size: 0.8rem;
+				color: gray;
+			}
+			/* Hide headers and footers that may be added by the browser */
+			@page {
+				margin: 0; /* Remove default margins */
+			}
+			body {
+				margin: 0; /* Remove body margins */
+			}
+		}
+		</style>
+		<div style="padding: 20px; flex: 1;">
+		<img src="../assets/images/favicon.ico" alt="Company Logo" style="width: 150px; margin-bottom: 20px;">
+		<h3>The following document has been received:</h3>
+		<br>
+		<p><strong>Receiving:</strong> ${changeBy}</p>
+		<p><strong>Receipt Date and Time:</strong> ${fchangedAt}</p>
+		<br><br>
+		<h2>Document Details:</h2>
+		<hr>
+		<div style="text-align: left; font-size: 0.9rem;">
+		<p><strong>Barangay:</strong> ${brgy}</p>
+		<p><strong>Record No.:</strong> ${id}</p>
+		<p><strong>Document Type:</strong> ${formtype}</p>
+		<p><strong>Period Covered:</strong> ${fperiodCovered}</p>
+		</div>
+		<div class="footer">
+		<p>Acceptance of this document is subject to review of forms and contents</p>
+		</div>
+		</div>
+		`;
     // Open a new window and print the content
     let printWindow = window.open('', '', 'width=800,height=600');
     printWindow.document.write('<html><head><title>Print</title></head><body>');
@@ -211,5 +204,5 @@
     printWindow.focus();
     printWindow.print();
     printWindow.close();
-	});
+});
 </script>

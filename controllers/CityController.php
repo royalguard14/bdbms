@@ -3,12 +3,10 @@ require_once 'connect.php';
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-
 if (isset($_SESSION['log_in']) && $_SESSION['log_in'] ) {
     $data = json_decode(file_get_contents('php://input'), true);
     if ($data !== null && isset($data['action'])) {
         $action = $data['action'];
-
         // Handle store (create) action
         if ($action == 'store') {
             if (in_array('Create City', $_SESSION['user_permissions'])) {
@@ -37,7 +35,6 @@ if (isset($_SESSION['log_in']) && $_SESSION['log_in'] ) {
                 exit();
             }
         }
-
         // Handle update action
         if ($action == 'update') {
             if (in_array('Update City', $_SESSION['user_permissions'])) {
@@ -68,7 +65,6 @@ if (isset($_SESSION['log_in']) && $_SESSION['log_in'] ) {
                 exit();
             }
         }
-
         // Handle delete action
         if ($action == 'delete') {
             if (in_array('Delete City', $_SESSION['user_permissions'])) {
@@ -92,7 +88,6 @@ if (isset($_SESSION['log_in']) && $_SESSION['log_in'] ) {
                 exit();
             }
         }
-
         // Handle fetch cities action
         if ($action == 'fetch') {
             if (in_array('Read City', $_SESSION['user_permissions'])) {
@@ -112,7 +107,6 @@ if (isset($_SESSION['log_in']) && $_SESSION['log_in'] ) {
                 exit();
             }
         }
-
     } else {
         // Default action: Fetch all cities if no specific action is passed
         if (in_array('Read City', $_SESSION['user_permissions'])) {
@@ -120,7 +114,6 @@ if (isset($_SESSION['log_in']) && $_SESSION['log_in'] ) {
                 $stmt = $pdo->prepare('SELECT * FROM city ORDER BY id ASC');
                 $stmt->execute();
                 $cities = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
             } catch (PDOException $e) {
                 echo json_encode(['success' => false, 'message' => 'Failed to fetch cities.']);
             }
