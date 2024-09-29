@@ -10,7 +10,7 @@ require_once 'includes/topbar.php';
   <div class="">
     <div class="page-title">
       <div class="title_left">
-        <h3>Inbox Design <small></small></h3>
+        <h3 style="font-size: 1.3rem;">BRGY DISASTER BUDGET MANAGEMENT SYSTEM <small></small></h3>
       </div>
       <div class="title_right">
         <div class="col-md-5 col-sm-5   form-group pull-right top_search">
@@ -35,7 +35,7 @@ if (isset($_SESSION['log_in'])) {
       include 'views/report/'.$_GET['section'].'.php';
     }
   } else {
-    include 'views/dashboard/index.php';
+    include 'views/dashboard.php';
   }
 } else {
   header('Location: views/auth/login.php');

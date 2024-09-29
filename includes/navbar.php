@@ -3,7 +3,7 @@
   <div class="menu_section">
     <h3>General</h3>
     <ul class="nav side-menu">
-     <li><a href="javascript:void(0)"><i class="fa fa-laptop"></i>Dashboard <span class="label label-success pull-right"></span></a></li>
+     <li><a href="index.php?page=dashboard"><i class="fa fa-laptop"></i>Dashboard <span class="label label-success pull-right"></span></a></li>
      <li><a><i class="fa fa-clone"></i> Report <span class="fa fa-chevron-down"></span></a>
       <ul class="nav child_menu">
         <!-- For BRGY USER roles -->

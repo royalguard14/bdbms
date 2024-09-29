@@ -70,7 +70,7 @@ $findicator = $indicator[0];
             </div>
             <div class="profile_info">
               <span>Welcome,</span>
-              <h2>John Doe</h2>
+              <h2><?php echo ucwords($_SESSION["user_data"]["profile"]["first_name"]. " ". $_SESSION["user_data"]["profile"]["last_name"])?></h2>
             </div>
           </div>
           <!-- /menu profile quick info -->

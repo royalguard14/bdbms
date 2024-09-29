@@ -8,7 +8,7 @@
       <ul class=" navbar-right">
         <li class="nav-item dropdown open" style="padding-left: 15px;">
           <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
-            <img src="assets/images/img.jpg" alt="">John Doe
+            <img src="assets/images/img.jpg" alt=""><?php echo ucwords($_SESSION["user_data"]["profile"]["first_name"]. " ". $_SESSION["user_data"]["profile"]["last_name"])?>
           </a>
           <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
             <a class="dropdown-item"  href="javascript:;"> Profile</a>
@@ -55,7 +55,7 @@
               <a class="dropdown-item">
                 <span class="image"><img src="assets/images/img.jpg" alt="Profile Image" /></span>
                 <span>
-                  <span>John Smith</span>
+                  <span>John Smiths</span>
                   <span class="time">3 mins ago</span>
                 </span>
                 <span class="message">
