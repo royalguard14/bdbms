@@ -10,7 +10,7 @@ require_once 'includes/topbar.php';
   <div class="">
     <div class="page-title">
       <div class="title_left">
-        <h3 style="font-size: 1.3rem;">BRGY DISASTER BUDGET MANAGEMENT SYSTEM <small></small></h3>
+        <h3 style="font-size: 1.3rem;">BRGY <?php echo $_SESSION['user_data']['barangay_name'] ?> <small>DISASTER BUDGET MANAGEMENT SYSTEM </small></h3>
       </div>
       <div class="title_right">
         <div class="col-md-5 col-sm-5   form-group pull-right top_search">
@@ -34,7 +34,10 @@ if (isset($_SESSION['log_in'])) {
     if (array_intersect($required_permissions_brgyLevel, $_SESSION['user_permissions'])) {
       include 'views/report/'.$_GET['section'].'.php';
     }
-  } else {
+  }elseif($page == 'profile'){
+include 'views/account/'.$_GET['page'].'.php';
+  }
+   else {
     include 'views/dashboard.php';
   }
 } else {
@@ -114,5 +117,34 @@ ob_end_flush();
 }
 
 </script>
+
+
+<script>
+  document.getElementById('logout').onclick = function(event) {
+        event.preventDefault(); // Prevent the default link behavior
+        var action = 'logout';
+        var data = {
+          action: action,
+        };
+        $.ajax({
+          url: './controllers/Auth.php',
+          data: JSON.stringify(data),
+          contentType: 'application/json',
+          method: 'POST',
+          dataType: 'json',
+          success: function(response) {
+            if (response.success) {
+                    // Reload the page after successful logout
+                    location.reload();
+                  } else {
+                    alert('Logout failed. Please try again.');
+                  }
+                },
+                error: function(xhr, status, error) {
+                  alert('An error occurred. Please try again later.');
+                }
+              });
+      };
+    </script>
 </body>
 </html>

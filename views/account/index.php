@@ -45,6 +45,7 @@
         </div>
     </div>
 </div>
+
 <div class="col-md-8">
     <div class="x_panel">
         <div class="x_title">
@@ -78,9 +79,13 @@
                             <tr>
                                 <td><?php echo $account['email']; ?></td>
                                 <td>
-                                    <button type="button" class="btn btn-primary btn-sm" onclick="openAccountModal('<?php echo $account['id']; ?>','<?php echo $account['email']; ?>')">Update</button>
-                                    <button type="button" class="btn btn-danger btn-sm" onclick="deleteAccount('<?php echo $account['id']; ?>')">Delete</button>
-                                    <button class="btn btn-warning change-role-btn" data-id="<?php echo $account['id']; ?>" data-role="<?php echo $account['role_id']; ?>">Change Role</button>
+                                    <button type="button" class="btn btn-primary btn-sm" 
+                                        onclick="openAccountModal('<?php echo $account['id']; ?>', '<?php echo $account['email']; ?>', '<?php echo $account['city_id']; ?>', '<?php echo $account['brgy_id']; ?>')">Update</button>
+                                    <button type="button" class="btn btn-danger btn-sm" 
+                                        onclick="deleteAccount('<?php echo $account['id']; ?>')">Delete</button>
+                                    <button class="btn btn-warning change-role-btn" 
+                                        data-id="<?php echo $account['id']; ?>" 
+                                        data-role="<?php echo $account['role_id']; ?>">Change Role</button>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -91,6 +96,7 @@
     </div>
 </div>
 </div>
+
 <!-- Update Account Modal -->
 <div class="modal fade" id="updateAccountModal" tabindex="-1" role="dialog" aria-labelledby="updateAccountModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -108,12 +114,29 @@
                         <label for="updateEmail">Email</label>
                         <input type="text" class="form-control" id="updateEmail" placeholder="Enter email">
                     </div>
+                    <!-- City Selection Dropdown -->
+                    <div class="form-group">
+                        <label for="updateCity">City</label>
+                        <select class="form-control" id="updateCity">
+                            <option value="">Select City</option>
+                            <!-- Dynamic options will be added here -->
+                        </select>
+                    </div>
+                    <!-- Barangay Selection Dropdown -->
+                    <div class="form-group">
+                        <label for="updateBrgy">Barangay</label>
+                        <select class="form-control" id="updateBrgy">
+                            <option value="">Select Barangay</option>
+                            <!-- Dynamic options will be added here -->
+                        </select>
+                    </div>
                     <button type="submit" class="btn btn-primary">Update Account</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
 <!-- Change Role Modal -->
 <div id="changeRoleModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="changeRoleModalLabel">
   <div class="modal-dialog" role="document">
@@ -141,125 +164,92 @@
 </div>
 </div>
 </div>
+
+<!-- JavaScript -->
 <script type="text/javascript">
-    $(document).ready(function() {
-    // When the "Change Role" button is clicked
-    $('.change-role-btn').click(function() {
-        let userId = $(this).data('id');
-        let currentRole = $(this).data('role');
-        // Fill the modal with the current user ID and role
-        $('#changeUserId').val(userId);
-        // Fetch roles from the server
-        $.ajax({
-            type: 'POST',
-            url: 'controllers/AccountController.php', // Replace with your controller URL
-            contentType: 'application/json',
-            data: JSON.stringify({ action: 'fetch_roles' }),
-            success: function(response) {
-                let result = JSON.parse(response);
-                if (result.success) {
-                    let roles = result.roles;
-                    let roleOptions = '';
-                    // Populate the role dropdown with roles from the database
-                    roles.forEach(function(role) {
-                        let selected = (role.id == currentRole) ? 'selected' : '';
-                        roleOptions += `<option value="${role.id}" ${selected}>${role.name}</option>`;
-                    });
-                    $('#changeRole').html(roleOptions);
-                    $('#changeRoleModal').modal('show'); // Show the modal after roles are loaded
-                } else {
-                    alert(result.message);
-                }
-            },
-            error: function() {
-                alert('Error fetching roles from the server.');
-            }
-        });
-    });
-    // Handle the "Change Role" form submission
-    $('#changeRoleForm').submit(function(e) {
-        e.preventDefault();
-        let formData = {
-            action: 'update_role',
-            accountId: $('#changeUserId').val(),
-            role_id: $('#changeRole').val()
-        };
-        $.ajax({
-            type: 'POST',
-            url: 'controllers/AccountController.php', // Replace with your controller URL
-            contentType: 'application/json',
-            data: JSON.stringify(formData),
-            success: function(response) {
-                let result = JSON.parse(response);
-                if (result.success) {
-                    alert(result.message);
-                    location.reload(); // Reload the page or refresh the user list
-                } else {
-                    alert(result.message);
-                }
-            },
-            error: function() {
-                alert('Error updating the user role.');
-            }
-        });
-    });
-});
-</script>
-<!-- JavaScript to Handle Form Submission and AJAX Requests -->
-<script type="text/javascript">
-    // Handle form submission for adding an account
-    $(document).on("submit", "#AccountForm", function(e) {
-        e.preventDefault();
-        var password = $('#password').val();
-        var email = $('#email').val();
-        var action = 'store';
-        if (password === '' || email === '') {
-            alert('Please enter Username and Email');
-            return;
-        }
+    // Open the update modal with the current user's data (pre-fill form)
+    function openAccountModal(accountId, email, cityId, brgyId) {
+        $('#updateAccountId').val(accountId);  // Set the account ID in the hidden field
+        $('#updateEmail').val(email);  // Set the email in the input field
+        fetchCities(cityId, brgyId);  // Fetch cities and barangays, passing the user's current city and barangay
+        $('#updateAccountModal').modal('show');  // Show the modal
+    }
+
+    // Fetch cities and barangays and set user's selected city and barangay
+    function fetchCities(userCityId = null, userBrgyId = null) {
         $.ajax({
             url: 'controllers/AccountController.php',
             method: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({ password: password, email: email, action: action }),
+            data: JSON.stringify({ action: 'citis' }),
             dataType: 'json',
             success: function(response) {
-                if (response.success) {
-                    window.location.href = 'index.php?page=account';
-                } else {
-                    alert(response.message);
+                let cityOptions = '<option value="">Select City</option>';
+                $.each(response.cities, function(index, city) {
+                    let selected = (userCityId && city.id == userCityId) ? 'selected' : '';
+                    cityOptions += `<option value="${city.id}" ${selected}>${city.name}</option>`;
+                });
+                $('#updateCity').html(cityOptions);
+
+                // Fetch barangays after cities are loaded
+                if (userCityId) {
+                    fetchBarangays(userCityId, userBrgyId);
                 }
             },
             error: function(xhr, status, error) {
-                alert('An error occurred');
+                console.log(xhr.responseText);
+                alert('An error occurred while fetching cities.');
             }
         });
-    });
-    // Function to open the update modal and fill the form with current data
-    function openAccountModal(accountId,email) {
-        $('#updateAccountId').val(accountId);  // Set the account ID in the hidden field
-        $('#updateEmail').val(email);  // Set the email in the input field
-        $('#updateAccountModal').modal('show');  // Show the modal
     }
-    // Handle form submission to update the account
-    $(document).on("submit", "#updateAccountForm", function(e) {
-        e.preventDefault();
-        var accountId = $('#updateAccountId').val();
-        var email = $('#updateEmail').val().trim();
-        if (email === '') {
-            alert('Please enter Username and Email');
-            return;
-        }
+
+    // Fetch barangays for a selected city and set user's selected barangay
+    function fetchBarangays(cityId, userBrgyId = null) {
         $.ajax({
             url: 'controllers/AccountController.php',
             method: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({ accountId: accountId, email: email, action: 'update' }),
+            data: JSON.stringify({ action: 'brang', city_id: cityId }),
+            dataType: 'json',
+            success: function(response) {
+                let brgyOptions = '<option value="">Select Barangay</option>';
+                $.each(response.barangays, function(index, brgy) {
+                    let selected = (userBrgyId && brgy.id == userBrgyId) ? 'selected' : '';
+                    brgyOptions += `<option value="${brgy.id}" ${selected}>${brgy.name}</option>`;
+                });
+                $('#updateBrgy').html(brgyOptions);
+            },
+            error: function(xhr, status, error) {
+                console.log(xhr.responseText);
+                alert('An error occurred while fetching barangays.');
+            }
+        });
+    }
+
+    // Submit update form with city and barangay data
+    $('#updateAccountForm').on('submit', function(e) {
+        e.preventDefault();
+        var accountId = $('#updateAccountId').val();
+        var email = $('#updateEmail').val();
+        var cityId = $('#updateCity').val();
+        var brgyId = $('#updateBrgy').val();
+
+        $.ajax({
+            url: 'controllers/AccountController.php',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ 
+                accountId: accountId, 
+                email: email, 
+                city_id: cityId, 
+                brgy_id: brgyId, 
+                action: 'update' 
+            }),
             dataType: 'json',
             success: function(response) {
                 if (response.success) {
-                    $('#updateAccountModal').modal('hide');  // Hide the modal on success
-                    window.location.href = 'index.php?page=account';  // Reload the page
+                    $('#updateAccountModal').modal('hide');  // Hide modal on success
+                    window.location.reload();  // Reload the page or redirect
                 } else {
                     alert(response.message);
                 }
@@ -269,26 +259,4 @@
             }
         });
     });
-    // Function to delete an account
-    function deleteAccount(accountId) {
-        if (confirm('Are you sure you want to delete this account?')) {
-            $.ajax({
-                url: 'controllers/AccountController.php',
-                method: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({ id: accountId, action: 'delete' }),
-                dataType: 'json',
-                success: function(response) {
-                    if (response.success) {
-                        window.location.href = 'index.php?page=account';  // Reload the page after deleting the account
-                    } else {
-                        alert(response.message);
-                    }
-                },
-                error: function(xhr, status, error) {
-                    alert('An error occurred while deleting the account.');
-                }
-            });
-        }
-    }
 </script>

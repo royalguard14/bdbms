@@ -108,6 +108,10 @@ if (isset($_SESSION['log_in']) && $_SESSION['log_in'] ) {
             }
         }
     } else {
+
+
+
+
         // Default action: Fetch all cities if no specific action is passed
         if (in_array('Read City', $_SESSION['user_permissions'])) {
             try {

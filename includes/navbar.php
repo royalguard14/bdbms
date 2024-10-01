@@ -78,30 +78,3 @@
 <!-- /menu footer buttons -->
 </div>
 </div>
-<script>
-  document.getElementById('logout').onclick = function(event) {
-        event.preventDefault(); // Prevent the default link behavior
-        var action = 'logout';
-        var data = {
-          action: action,
-        };
-        $.ajax({
-          url: './controllers/Auth.php',
-          data: JSON.stringify(data),
-          contentType: 'application/json',
-          method: 'POST',
-          dataType: 'json',
-          success: function(response) {
-            if (response.success) {
-                    // Reload the page after successful logout
-                    location.reload();
-                  } else {
-                    alert('Logout failed. Please try again.');
-                  }
-                },
-                error: function(xhr, status, error) {
-                  alert('An error occurred. Please try again later.');
-                }
-              });
-      };
-    </script>

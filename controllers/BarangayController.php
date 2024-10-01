@@ -139,6 +139,8 @@ if (isset($_SESSION['log_in']) && $_SESSION['log_in']) {
         }
     }
 } else {
+
+
         // Default action: Fetch all barangays if no specific action is passed
     if (in_array('Read Barangay', $_SESSION['user_permissions'])) {
         try {

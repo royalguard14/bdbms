@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 28, 2024 at 03:48 PM
+-- Generation Time: Oct 01, 2024 at 03:05 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.27
 
@@ -164,9 +164,18 @@ CREATE TABLE `profiles` (
   `birthplace` varchar(50) NOT NULL,
   `contact_number` varchar(16) NOT NULL,
   `address` varchar(255) NOT NULL,
+  `profile_pic` varchar(500) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `profiles`
+--
+
+INSERT INTO `profiles` (`id`, `user_id`, `first_name`, `middle_name`, `last_name`, `suffix`, `birthdate`, `birthplace`, `contact_number`, `address`, `profile_pic`, `created_at`, `updated_at`) VALUES
+(1, 7, 'zhie', 'atara', 'Bautista', '', '2024-10-01 12:51:33', 'manila', '092772944457', 'asdasdasdasdasd', '', '2024-09-29 13:05:04', '2024-10-01 12:00:33'),
+(3, 6, 'Mark', '', 'Does', '', '2024-10-01 13:05:03', '', '', '', 'assets/profilePic/6.png', '2024-10-01 12:23:16', '2024-10-01 13:02:47');
 
 -- --------------------------------------------------------
 
@@ -189,6 +198,13 @@ CREATE TABLE `reports` (
   `remark` varchar(5000) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `reports`
+--
+
+INSERT INTO `reports` (`id`, `title`, `form_type`, `file_name`, `date_uploaded`, `period_covered`, `status`, `user_id`, `city_id`, `brgy_id`, `created_at`, `remark`) VALUES
+(1, 'xasasdasd', '1', 'ar_day_lessons_from_sonh_and_islamic_laws.pdf', '2024-09-30 09:52:42', '2024-09-30', 'Uploaded', 7, 1, 1, '2024-09-30 09:52:42', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -203,6 +219,13 @@ CREATE TABLE `report_status_logs` (
   `changed_by` int(11) NOT NULL,
   `changed_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `report_status_logs`
+--
+
+INSERT INTO `report_status_logs` (`id`, `report_id`, `previous_status`, `new_status`, `changed_by`, `changed_at`) VALUES
+(1, 1, NULL, 'Uploaded', 7, '2024-09-30 09:52:42');
 
 -- --------------------------------------------------------
 
@@ -318,7 +341,8 @@ INSERT INTO `users` (`id`, `email`, `password`, `role_id`, `city_id`, `brgy_id`,
 (1, 'admin', '$2y$10$pPx1uOWAuFhxbmbWgIfkQeS1cafJGq0kjIXk.OCYPNg0aTsk09tpG', 1, 0, 0, 1, 0, '2024-09-03 00:38:27', '2024-09-03 00:38:27'),
 (5, 'MDRRMO', '$2y$10$pPx1uOWAuFhxbmbWgIfkQeS1cafJGq0kjIXk.OCYPNg0aTsk09tpG', 16, 1, 0, 1, 0, '2024-09-18 21:21:45', '2024-09-18 21:21:45'),
 (6, 'Assistant', '$2y$10$pPx1uOWAuFhxbmbWgIfkQeS1cafJGq0kjIXk.OCYPNg0aTsk09tpG', 17, 1, 0, 1, 0, '2024-09-19 14:25:19', '2024-09-19 14:25:19'),
-(7, 'BRGY', '$2y$10$pPx1uOWAuFhxbmbWgIfkQeS1cafJGq0kjIXk.OCYPNg0aTsk09tpG', 18, 1, 1, 1, 0, '2024-09-19 14:26:49', '2024-09-19 14:26:49');
+(7, 'BRGY', '$2y$10$pPx1uOWAuFhxbmbWgIfkQeS1cafJGq0kjIXk.OCYPNg0aTsk09tpG', 18, 1, 13, 1, 0, '2024-09-19 14:26:49', '2024-10-01 01:30:14'),
+(8, 'zzzz', '$2y$10$Kv1pKfJf24vjZPKAvN6Q2.olACTOgooJFJwa/hbR7AwcIpZAsC3OO', 1, 1, 16, 1, 0, '2024-09-30 10:17:46', '2024-10-01 01:30:56');
 
 --
 -- Indexes for dumped tables
@@ -420,19 +444,19 @@ ALTER TABLE `permissions`
 -- AUTO_INCREMENT for table `profiles`
 --
 ALTER TABLE `profiles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `reports`
 --
 ALTER TABLE `reports`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `report_status_logs`
 --
 ALTER TABLE `report_status_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `roles`
@@ -444,7 +468,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Constraints for dumped tables
