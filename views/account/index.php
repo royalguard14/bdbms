@@ -167,6 +167,45 @@
 
 <!-- JavaScript -->
 <script type="text/javascript">
+
+
+
+
+    $(document).on("submit", "#AccountForm", function(e) {
+        e.preventDefault();
+        var password = $('#password').val();
+        var email = $('#email').val();
+        var action = 'store';
+        if (password === '' || email === '') {
+            alert('Please enter Username and Email');
+            return;
+        }
+        $.ajax({
+            url: 'controllers/AccountController.php',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ password: password, email: email, action: action }),
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    window.location.href = 'index.php?page=account';
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                alert('An error occurred');
+            }
+        });
+    });
+
+
+
+
+
+
+
+
     // Open the update modal with the current user's data (pre-fill form)
     function openAccountModal(accountId, email, cityId, brgyId) {
         $('#updateAccountId').val(accountId);  // Set the account ID in the hidden field
@@ -259,4 +298,78 @@
             }
         });
     });
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+    // When the "Change Role" button is clicked
+    $('.change-role-btn').click(function() {
+        let userId = $(this).data('id');
+        let currentRole = $(this).data('role');
+
+        // Fill the modal with the current user ID and role
+        $('#changeUserId').val(userId);
+        
+        // Fetch roles from the server
+        $.ajax({
+            type: 'POST',
+            url: 'controllers/AccountController.php', // Replace with your controller URL
+            contentType: 'application/json',
+            data: JSON.stringify({ action: 'fetch_roles' }),
+            success: function(response) {
+                let result = JSON.parse(response);
+                if (result.success) {
+                    let roles = result.roles;
+                    let roleOptions = '';
+
+                    // Populate the role dropdown with roles from the database
+                    roles.forEach(function(role) {
+                        let selected = (role.id == currentRole) ? 'selected' : '';
+                        roleOptions += `<option value="${role.id}" ${selected}>${role.name}</option>`;
+                    });
+
+                    $('#changeRole').html(roleOptions);
+                    $('#changeRoleModal').modal('show'); // Show the modal after roles are loaded
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function() {
+                alert('Error fetching roles from the server.');
+            }
+        });
+    });
+
+    // Handle the "Change Role" form submission
+    $('#changeRoleForm').submit(function(e) {
+        e.preventDefault();
+        
+        let formData = {
+            action: 'update_role',
+            accountId: $('#changeUserId').val(),
+            role_id: $('#changeRole').val()
+        };
+        
+        $.ajax({
+            type: 'POST',
+            url: 'controllers/AccountController.php', // Replace with your controller URL
+            contentType: 'application/json',
+            data: JSON.stringify(formData),
+            success: function(response) {
+                let result = JSON.parse(response);
+                if (result.success) {
+                    alert(result.message);
+                    location.reload(); // Reload the page or refresh the user list
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function() {
+                alert('Error updating the user role.');
+            }
+        });
+    });
+});
+
 </script>
