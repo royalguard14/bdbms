@@ -372,4 +372,27 @@ $(document).ready(function() {
     });
 });
 
+
+    function deleteAccount(accountId) {
+        if (confirm('Are you sure you want to delete this account?')) {
+            $.ajax({
+                url: 'controllers/AccountController.php',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ id: accountId, action: 'delete' }),
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        window.location.href = 'index.php?page=account';  // Reload the page after deleting the account
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert('An error occurred while deleting the account.');
+                }
+            });
+        }
+    }
+
 </script>

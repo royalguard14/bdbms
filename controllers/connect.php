@@ -3,9 +3,10 @@ $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "mdrrmo";
+$port = 3306;
 try {
     // Use $pdo instead of $conn for consistency
-    $pdo = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    $pdo = new PDO("mysql:host=$servername;port=$port;dbname=$dbname", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch(PDOException $e) {
     echo "Connection failed: " . $e->getMessage();
