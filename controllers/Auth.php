@@ -15,7 +15,7 @@ if ($data !== null && isset($data['action'])) {
 
     try {
         // Fetch user by email
-        $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
+        $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email AND is_deleted = 0");
         $stmt->bindParam(':email', $email);
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
