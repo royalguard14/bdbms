@@ -105,7 +105,7 @@
                                     <span><?php echo $changedAt; ?></span> by <a><?php echo $fullName; ?></a>
                                 </div>
                                 <p class="excerpt">
-                                    Status changed to "<?php echo $status; ?>". <a href="#">View details</a>
+                                    Status changed to "<?php echo $status; ?>". <a href="#"></a>
                                 </p>
                             </div>
                         </div>

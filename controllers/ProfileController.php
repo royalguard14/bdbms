@@ -148,17 +148,16 @@ function handleUpdateProfile() {
         // Execute the update or insert
         $stmt->execute();
         $pdo->commit();
-        $_SESSION["user_data"]['profile'] = [
-            'first_name' => $firstName,
-            'middle_name' => $middleName,
-            'last_name' => $lastName,
-            'suffix' => $suffix,
-        'birthdate' => $birthDate,   // Make sure to format it if needed
-        'birthplace' => $birthPlace,
-        'contact_number' => $contactNo,
-        'address' => $address,
-        'updated_at' => date('Y-m-d H:i:s') // Set updated_at to current time
-    ];
+
+        // Now check if there is a profile associated with the user
+        $stmt = $pdo->prepare("SELECT * FROM profiles WHERE user_id = :user_id");
+        $stmt->bindParam(':user_id',$userId);
+        $stmt->execute();
+        $profile = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $_SESSION["user_data"]['profile'] = $profile;
+
+
         // Respond with success
     echo json_encode(['success' => true, 'message' => 'Profile updated successfully!']);
 } catch (PDOException $e) {

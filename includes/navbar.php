@@ -53,9 +53,9 @@
   </div>
 <?php endif; ?>
 <div class="menu_section">
-  <h3>System</h3>
+
   <ul class="nav side-menu">
-    <li><a href="javascript:void(0)"><i class="fa fa-laptop"></i> Logs <span class="label label-success pull-right">Coming Soon</span></a></li>
+   
   </ul>
 </div>
 </div>

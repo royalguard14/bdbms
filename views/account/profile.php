@@ -32,7 +32,11 @@
         					<div class="profile_img">
         						<div id="crop-avatar">
         							<!-- Current avatar -->
-        							<img class="img-responsive avatar-view" src="assets/profilePic/default.png" alt="Avatar" title="Change the avatar">
+        							<img class="img-responsive avatar-view" 
+     src="<?php echo !empty($_SESSION["user_data"]['profile']['profile_pic']) ? $_SESSION["user_data"]['profile']['profile_pic'] : '/bdbms/images/default-avatar.png'; ?>" 
+     alt="Avatar" title="Change the avatar" 
+     style="object-fit: contain;">
+
         						</div>
         					</div>
         					<h3><?php echo ucwords($_SESSION["user_data"]["profile"]["first_name"]. " ". $_SESSION["user_data"]["profile"]["last_name"])?></h3>

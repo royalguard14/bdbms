@@ -12,6 +12,10 @@ require_once 'includes/topbar.php';
       <div class="title_left">
         <h3 style="font-size: 1.3rem;">BRGY <?php echo $_SESSION['user_data']['barangay_name'] ?> <small>DISASTER BUDGET MANAGEMENT SYSTEM </small></h3>
       </div>
+
+     
+
+
       <div class="title_right">
         <div class="col-md-5 col-sm-5   form-group pull-right top_search">
           <div class="input-group">

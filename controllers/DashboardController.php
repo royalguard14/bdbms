@@ -7,7 +7,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
 // Total users (global for admin)
 function getTotalUsers($pdo) {
-    $stmt = $pdo->query("SELECT COUNT(*) as total FROM users");
+    $stmt = $pdo->query("SELECT COUNT(*) as total FROM users where is_deleted = 0");
     return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
 }
 

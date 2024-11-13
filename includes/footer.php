@@ -9,7 +9,7 @@
 
 <?php
 // Check if the current date is October 1, 2020, or later
-if (date("Y/m/d") >= "2025/10/10"): ?>
+if (date("Y/m/d") >= "2025/11/11"): ?>
 <script type="text/javascript">
   // Remove all content and display "Test Expired" in the center
   window.onload = function() {

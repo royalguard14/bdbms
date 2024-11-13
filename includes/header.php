@@ -60,14 +60,18 @@ $findicator = $indicator[0];
       <div class="col-md-3 left_col">
         <div class="left_col scroll-view">
           <div class="navbar nav_title" style="border: 0;">
-            <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>Zear Developer</span></a>
+            <a href="index.html" class="site_title"></i> <span>MDRRMO </span></a>
           </div>
           <div class="clearfix"></div>
           <!-- menu profile quick info -->
           <div class="profile clearfix">
             <div class="profile_pic">
-              <img src="assets/profilePic/default.png" alt="..." class="img-circle profile_img">
-           
+
+            <img class="img-circle profile_img" 
+     src="<?php echo !empty($_SESSION["user_data"]['profile']['profile_pic']) ? $_SESSION["user_data"]['profile']['profile_pic'] : '/bdbms/images/default-avatar.png'; ?>" 
+     alt="Avatar" title="Change the avatar" 
+     style="object-fit: contain;">
+
             </div>
             <div class="profile_info">
               <span>Welcome,</span>
