@@ -92,12 +92,7 @@
 					<div class="col-md-6 col-sm-6 form-group">
 						<div class="row">
 							<input type="hidden" id="report_id">
-							<div class="col-md-6 col-sm-6 form-group">
-								<label style="color: transparent;">====================</label>
-								<button type="button" class="btn btn btn-dark col-md-12 col-sm-12" style="font-size: .8rem;">
-									Download PDF
-								</button>
-							</div>
+		
 							<div class="col-md-6 col-sm-6 form-group">
 								<label style="color: transparent;">====================</label>
 								<button type="button" class="btn btn btn-success col-md-12 col-sm-12 toaccepted" style="font-size: .8rem;">
