@@ -106,7 +106,7 @@ if (isset($_SESSION['log_in']) && $_SESSION['log_in']) {
         if (in_array('Delete Account', $_SESSION['user_permissions'])) {
             if (isset($data['id'])) {
                 try {
-                    $stmt = $pdo->prepare('UPDATE users SET is_deleted = 1 WHERE id = :id');
+                    $stmt = $pdo->prepare('DELETE FROM users WHERE id = :id');
                     $stmt->bindParam(':id', $data['id']);
                     $stmt->execute();
                     echo json_encode([

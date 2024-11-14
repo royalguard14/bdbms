@@ -23,7 +23,7 @@
                 <!-- Account Form -->
                 <form class="form-label-left input_mask" id="AccountForm">
                    <div class="form-group row">
-                    <label class="col-form-label col-md-3 col-sm-3">Email</label>
+                    <label class="col-form-label col-md-3 col-sm-3">Username</label>
                     <div class="col-md-9 col-sm-9">
                         <input id="email" type="text" class="form-control">
                     </div>
@@ -69,7 +69,7 @@
             <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                 <thead>
                     <tr>
-                        <th>Email</th>
+                        <th>Username</th>
                         <th>Action</th>
                     </tr>
                 </thead>
