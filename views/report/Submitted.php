@@ -70,6 +70,7 @@
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
       </div>
       <div class="modal-body">
+
         <div class="row">
           <div class="col-md-4 col-sm-4 form-group">
             <h4 class="modal-title" id="myModalLabel">Form Information</h4>
@@ -98,12 +99,13 @@
           <div class="col-md-6 col-sm-6 form-group">
             <div class="row">
               <input type="hidden" id="report_id">
-              <div class="col-md-4 col-sm-4 form-group">
-                <label style="color: transparent;">====================</label>
-                <button type="button" class="btn btn btn-dark col-md-12 col-sm-12" style="font-size: .8rem;">
-                  Download PDF
-                </button>
-              </div>
+    <div class="col-md-4 col-sm-4 form-group">
+  <label style="color: transparent;">====================</label>
+  <button type="button" id="downloadButton" class="btn btn-dark col-md-12 col-sm-12" style="font-size: .8rem;">
+    Download PDF
+  </button>
+</div>
+
               <div class="col-md-4 col-sm-4 form-group">
                 <label style="color: transparent;">====================</label>
                 <button type="button" class="btn btn btn-success col-md-12 col-sm-12 toverify" style="font-size: .8rem;">
@@ -124,7 +126,7 @@
   </div>
 </div>
 <script type="text/javascript">
-  $('.viewsubmitted').on('click', function () {
+$('.viewsubmitted').on('click', function () {
     $('#viewsubmitted').modal('show'); 
     let id = $(this).data('id');
     let title = $(this).data('title');
@@ -132,18 +134,37 @@
     let createdAt = $(this).data('created_at');
     let changeBy = $(this).data('change_by');
     let changedAt = $(this).data('changed_at');
-    let formtype = $(this).data('formtype');
-    let brgy = $(this).data('brgy');
     let fperiodCovered = formatDateTime(periodCovered);
     let fchangedAt = formatDateTime(changedAt);
+
+    // Populate modal fields
     $('#report_id').val(id);
     $('#file_name').val(title);
     $('#submitted_on').val(getFormattedDateTime(createdAt));
-    $('#file_name').val(title);
     $('#period_covered').val(fperiodCovered);
     $('#submitted_by').val(changeBy);
     $('#accepted_on').val(fchangedAt);
-  })
+
+    // Set the data-title attribute for the download button
+    $('#downloadButton').data('title', title);
+});
+
+// Handle download button click
+$('#downloadButton').on('click', function() {
+    let title = $(this).data('title'); // Get the title set above
+    let filePath = `assets/uploaded_files/${title}`;
+
+    // Create a temporary anchor element to trigger the download
+    let tempLink = document.createElement('a');
+    tempLink.href = filePath;
+    tempLink.download = `${title}.pdf`; // Sets the filename for download
+    tempLink.style.display = 'none';
+
+    document.body.appendChild(tempLink);
+    tempLink.click();
+    document.body.removeChild(tempLink);
+});
+
 </script>
 <script type="text/javascript">
    // Handle the "To Verified" button click

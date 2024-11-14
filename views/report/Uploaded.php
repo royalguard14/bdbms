@@ -273,15 +273,10 @@
               type: 'POST',
               data: { id: id },
               success: function (response) {
-                let result = JSON.parse(response);
-                alert(result.message);
-                if (result.success) {
-                  location.reload();
-                }
-              },
-              error: function () {
-                alert('Error deleting the form.');
+     
+          window.location.href = 'index.php?page=report&&section=Submitted';
               }
+     
             });
           }
         });
