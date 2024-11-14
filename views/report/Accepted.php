@@ -74,10 +74,10 @@
 						<h4 class="modal-title" id="myModalLabel">Form Information</h4>
 					</div>
 					<div class="col-md-4 col-sm-4 form-group" style="text-align: right; margin-top: .5rem;">
-						
+						<label class="control-label">Submitted On</label>
 					</div>
 					<div class="col-md-4 col-sm-4 form-group">
-						
+						<input type="text" id="submitted_on" class="form-control" readonly="readonly" style="font-size: .8rem;">
 					</div>
 				</div>
 				<hr>
@@ -128,7 +128,7 @@
 		let fchangedAt = formatDateTime(changedAt);
     // Assign values to the modal fields
     //$('#submitted_on').val(getFormattedDateTime(createdAt));
-     $('#submitted_on').val(formatDateTime(changedAt));
+     $('#submitted_on').val(formatDateTime(createdAt));
     $('#file_name').val(title);
     $('#period_covered').val(fperiodCovered);
     $('#accepted_by').val(changeBy);

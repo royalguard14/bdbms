@@ -3,7 +3,7 @@ $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "mdrrmo";
-$port = 3307;
+$port = 3306;
 try {
     // Use $pdo instead of $conn for consistency
     $pdo = new PDO("mysql:host=$servername;port=$port;dbname=$dbname", $username, $password);
@@ -22,3 +22,5 @@ function getUserPermissions($roleId, $pdo) {
     return $stmt->fetchAll(PDO::FETCH_COLUMN);
 }
 ?>
+
+
