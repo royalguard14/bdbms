@@ -235,13 +235,13 @@ function openPermissions(roleId) {
 				var permissionsList = $('#permissionsList');
 				permissionsList.empty();
 				response.permissions.forEach(function(permission) {
-					var isChecked = response.assigned_permissions.includes(permission.id.toString()) ? 'checked' : '';
-					permissionsList.append(`
-						<div class="form-check">
-						<input class="form-check-input" type="checkbox" value="${permission.id}" id="perm${permission.id}" ${isChecked}>
-						<label class="form-check-label" for="perm${permission.id}">${permission.name}</label>
-						</div>
-						`);
+		    var isChecked = response.assigned_permissions.map(String).includes(permission.id.toString()) ? 'checked' : '';
+    permissionsList.append(`
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="${permission.id}" id="perm${permission.id}" ${isChecked}>
+            <label class="form-check-label" for="perm${permission.id}">${permission.name}</label>
+        </div>
+    `);
 				});
 				$('#permissionsModal').modal('show');
 			} else {

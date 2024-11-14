@@ -115,3 +115,95 @@
 		});
 	});
 </script>
+
+
+<script type="text/javascript">
+	function toDelete(x){
+		var action = 'delete';
+		var requestData = {id:x,action:action};
+		$.ajax({
+			url: 'controllers/PermissionController.php',
+			data: JSON.stringify(requestData),
+			cache: false,
+			contentType: 'application/json',
+			method: 'POST',
+			dataType: 'json',
+			success: function(response) {
+				if (response.success) {
+					window.location.href = 'index.php?page=permission';
+				} else {
+					alert(response.message);
+				}
+			},
+			error: function(xhr, status, error) {
+				window.location.href = 'index.php?page=permission';
+			}
+		});
+	}
+</script>.
+
+
+
+
+<script type="text/javascript">
+	function openModal(x,y){
+		var id = document.getElementById('roleid');
+		var name = document.getElementById('erolename');
+		id.value = x;
+		name.value = y;
+		// var id = document.querySelector('input[name="timeino"]');
+		$('#editrolemodal').modal('show');
+	}
+</script>
+
+
+
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true" id="editrolemodal">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="myModalLabel2">Edit Role</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<h4>Name</h4>
+				<input type="hidden" id="roleid">
+				<input id="erolename" type="text" class="form-control" value="">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" id="saveUpdate">Save changes</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$(document).on("click", "#saveUpdate", function(e) {
+		e.preventDefault();
+		var id = $('#roleid').val();
+		var name = $('#erolename').val();
+		var action = 'update';
+
+
+		alert(id,name,action)
+		// $.ajax({
+		// 	url: 'controllers/RoleController.php',
+		// 	method: 'POST',
+		// 	contentType: 'application/json',
+		// 	data: JSON.stringify({ rolename: name, action: action,id:id}),
+		// 	dataType: 'json',
+		// 	success: function(response) {
+		// 		if (response.success) {
+		// 			window.location.href = 'index.php?page=role';
+		// 		} else {
+		// 			alert(response.message);
+		// 		}
+		// 	},
+		// 	error: function(xhr, status, error) {
+		// 		window.location.href = 'index.php?page=role';
+		// 	}
+		// });
+	});
+</script>
