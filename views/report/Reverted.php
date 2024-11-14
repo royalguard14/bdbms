@@ -137,7 +137,7 @@
 		let fchangedAt = formatDateTime(changedAt);
 		let fperiodCovered = formatDateTime(periodCovered);
     // Assign values to the modal fields
-    $('#submitted_on').val(getFormattedDateTime(createdAt));
+    $('#submitted_on').val(formatDateTime(createdAt));
     $('#file_name').val(title);
     $('#period_covered').val(fperiodCovered);
     $('#reverted_by').val(changeBy);

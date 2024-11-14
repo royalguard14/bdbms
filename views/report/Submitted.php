@@ -140,7 +140,7 @@ $('.viewsubmitted').on('click', function () {
     // Populate modal fields
     $('#report_id').val(id);
     $('#file_name').val(title);
-    $('#submitted_on').val(getFormattedDateTime(createdAt));
+    $('#submitted_on').val(formatDateTime(createdAt));
     $('#period_covered').val(fperiodCovered);
     $('#submitted_by').val(changeBy);
     $('#accepted_on').val(fchangedAt);

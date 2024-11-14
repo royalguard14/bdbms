@@ -151,7 +151,7 @@
     let fchangedAt = formatDateTime(changedAt);
     $('#report_id').val(id);
     $('#file_name').val(title);
-    $('#submitted_on').val(getFormattedDateTime(createdAt));
+    $('#submitted_on').val(formatDateTime(createdAt));
     $('#file_name').val(title);
     $('#period_covered').val(fperiodCovered);
     $('#verify_by').val(changeBy);
