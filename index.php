@@ -111,6 +111,18 @@ ob_end_flush();
     return formattedDate + ' | ' + formattedTime;
 }
 
+
+function formatDateTimeMY(dateString) {
+    let date = new Date(dateString);
+
+    // Format the date to show only month and year
+    let options = { year: 'numeric', month: 'long' };
+    let formattedDate = date.toLocaleDateString('en-US', options);
+
+    // Return only the formatted month and year
+    return formattedDate;
+}
+
 </script>
 
 
