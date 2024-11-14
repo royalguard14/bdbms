@@ -39,17 +39,18 @@
 												>
 												<i class="fa fa-search"></i>
 											</button>
-											<button type="button" id="printBtn" class="btn btn-round btn-sm btn-outline" 
-											data-id ="<?php echo htmlspecialchars($accepted['id']); ?>"
-											data-brgy ="<?php echo htmlspecialchars($accepted['barangay_name']); ?>"
-											data-formtype ="<?php echo ($accepted['form_type'] == 1) ? 'Report' : 'Plan'; ?>"
-											data-title="<?php echo htmlspecialchars($accepted['file_name']); ?>" 
-											data-period_covered="<?php echo htmlspecialchars($accepted['period_covered']); ?>" 
-											data-change_by="<?php echo htmlspecialchars($accepted['first_name']. " " .$accepted['last_name'] ); ?>" 
-											data-created_at="<?php echo htmlspecialchars($accepted['date_uploaded']); ?>" 
-											data-changed_at="<?php echo htmlspecialchars($accepted['changed_at']); ?>" >
-											<i class="fa fa-download"></i>
-										</button>
+						<button type="button" class="btn btn-round btn-sm btn-outline printBtn" 
+    data-id ="<?php echo htmlspecialchars($accepted['id']); ?>"
+    data-brgy ="<?php echo htmlspecialchars($accepted['barangay_name']); ?>"
+    data-formtype ="<?php echo ($accepted['form_type'] == 1) ? 'Report' : 'Plan'; ?>"
+    data-title="<?php echo htmlspecialchars($accepted['file_name']); ?>"
+    data-period_covered="<?php echo htmlspecialchars($accepted['period_covered']); ?>"
+    data-change_by="<?php echo htmlspecialchars($accepted['first_name']. " " .$accepted['last_name'] ); ?>"
+    data-created_at="<?php echo htmlspecialchars($accepted['date_uploaded']); ?>"
+    data-changed_at="<?php echo htmlspecialchars($accepted['changed_at']); ?>">
+    <i class="fa fa-download"></i>
+</button>
+
 									</td>
 								</tr>
 							<?php endforeach; ?>
@@ -137,66 +138,67 @@
 });
 </script>
 <script type="text/javascript">
-	// Attach event listener to the print button
-	$('#printBtn').on('click', function () {
-		let id = $(this).data('id');
-		let title = $(this).data('title');
-		let periodCovered = $(this).data('period_covered');
-		let createdAt = $(this).data('created_at');
-		let changeBy = $(this).data('change_by');
-		let changedAt = $(this).data('changed_at');
-		let formtype = $(this).data('formtype');
-		let brgy = $(this).data('brgy');
-		let fperiodCovered = formatDateTime(periodCovered);
-		let fchangedAt = formatDateTime(changedAt);
-		let printContent = `
-		<style>
-		@media print {
-			@page {
-				size: A4;
-				margin: 20mm; /* Adjust margins as necessary */
-			}
-			body {
-				font-family: Arial, sans-serif;
-				height: auto; /* Allow height to adjust */
-				display: flex;
-				flex-direction: column;
-			}
-			.footer {
-				margin-top: 83%; /* Push footer to the bottom */
-				text-align: center;
-				font-size: 0.8rem;
-				color: gray;
-			}
-			/* Hide headers and footers that may be added by the browser */
-			@page {
-				margin: 0; /* Remove default margins */
-			}
-			body {
-				margin: 0; /* Remove body margins */
-			}
-		}
-		</style>
-		<div style="padding: 20px; flex: 1;">
-		<img src="../assets/images/favicon.ico" alt="Company Logo" style="width: 150px; margin-bottom: 20px;">
-		<h3>The following document has been received:</h3>
-		<br>
-		<p><strong>Receiving:</strong> ${changeBy}</p>
-		<p><strong>Receipt Date and Time:</strong> ${fchangedAt}</p>
-		<br><br>
-		<h2>Document Details:</h2>
-		<hr>
-		<div style="text-align: left; font-size: 0.9rem;">
-		<p><strong>Barangay:</strong> ${brgy}</p>
-		<p><strong>Record No.:</strong> ${id}</p>
-		<p><strong>Document Type:</strong> ${formtype}</p>
-		<p><strong>Period Covered:</strong> ${fperiodCovered}</p>
-		</div>
-		<div class="footer">
-		<p>Acceptance of this document is subject to review of forms and contents</p>
-		</div>
-		</div>
-		`;
+	// Attach event listener to all buttons with the 'printBtn' class
+$('.printBtn').on('click', function () {
+    let id = $(this).data('id');
+    let title = $(this).data('title');
+    let periodCovered = $(this).data('period_covered');
+    let createdAt = $(this).data('created_at');
+    let changeBy = $(this).data('change_by');
+    let changedAt = $(this).data('changed_at');
+    let formtype = $(this).data('formtype');
+    let brgy = $(this).data('brgy');
+    let fperiodCovered = formatDateTime(periodCovered);
+    let fchangedAt = formatDateTime(changedAt);
+    
+    let printContent = `
+    <style>
+        @media print {
+            @page {
+                size: A4;
+                margin: 20mm;
+            }
+            body {
+                font-family: Arial, sans-serif;
+                height: auto;
+                display: flex;
+                flex-direction: column;
+            }
+            .footer {
+                margin-top: 83%;
+                text-align: center;
+                font-size: 0.8rem;
+                color: gray;
+            }
+            @page {
+                margin: 0;
+            }
+            body {
+                margin: 0;
+            }
+        }
+    </style>
+    <div style="padding: 20px; flex: 1;">
+        <img src="../assets/images/favicon.ico" alt="Company Logo" style="width: 150px; margin-bottom: 20px;">
+        <h3>The following document has been received:</h3>
+        <br>
+        <p><strong>Receiving:</strong> ${changeBy}</p>
+        <p><strong>Receipt Date and Time:</strong> ${fchangedAt}</p>
+        <br><br>
+        <h2>Document Details:</h2>
+        <hr>
+        <div style="text-align: left; font-size: 0.9rem;">
+            <p><strong>Barangay:</strong> ${brgy}</p>
+            <p><strong>Record No.:</strong> ${id}</p>
+            <p><strong>Document Type:</strong> ${formtype}</p>
+            <p><strong>Period Covered:</strong> ${fperiodCovered}</p>
+        </div>
+        <div class="footer">
+            <p>Acceptance of this document is subject to review of forms and contents</p>
+        </div>
+    </div>
+    `;
+    
     // Open a new window and print the content
     let printWindow = window.open('', '', 'width=800,height=600');
     printWindow.document.write('<html><head><title>Print</title></head><body>');
@@ -207,4 +209,5 @@
     printWindow.print();
     printWindow.close();
 });
+
 </script>
