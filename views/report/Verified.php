@@ -98,12 +98,12 @@
           <div class="col-md-6 col-sm-6 form-group">
             <div class="row">
               <input type="hidden" id="report_id">
-              <div class="col-md-4 col-sm-4 form-group">
-                <label style="color: transparent;">====================</label>
-                <button type="button" class="btn btn btn-dark col-md-12 col-sm-12" style="font-size: .8rem;">
-                  Download PDF
-                </button>
-              </div>
+    <div class="col-md-4 col-sm-4 form-group">
+  <label style="color: transparent;">====================</label>
+  <button type="button" id="downloadButton" class="btn btn-dark col-md-12 col-sm-12" style="font-size: .8rem;">
+    Download PDF
+  </button>
+</div>
               <div class="col-md-4 col-sm-4 form-group">
                 <label style="color: transparent;">====================</label>
                 <button type="button" class="btn btn btn-success col-md-12 col-sm-12 toconfirm" style="font-size: .8rem;">
@@ -157,6 +157,24 @@
     $('#verify_by').val(changeBy);
     $('#verify_on').val(fchangedAt);
   })
+
+
+
+  // Handle download button click
+$('#downloadButton').on('click', function() {
+    let title = $(this).data('title'); // Get the title set above
+    let filePath = `assets/uploaded_files/${title}`;
+
+    // Create a temporary anchor element to trigger the download
+    let tempLink = document.createElement('a');
+    tempLink.href = filePath;
+    tempLink.download = `${title}.pdf`; // Sets the filename for download
+    tempLink.style.display = 'none';
+
+    document.body.appendChild(tempLink);
+    tempLink.click();
+    document.body.removeChild(tempLink);
+});
 </script>
 <script type="text/javascript">
    // Handle the "To Verified" button click
