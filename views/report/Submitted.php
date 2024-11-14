@@ -157,7 +157,7 @@ $('#downloadButton').on('click', function() {
     // Create a temporary anchor element to trigger the download
     let tempLink = document.createElement('a');
     tempLink.href = filePath;
-    tempLink.download = `${title}.pdf`; // Sets the filename for download
+    tempLink.download = `${title}`; // Sets the filename for download
     tempLink.style.display = 'none';
 
     document.body.appendChild(tempLink);

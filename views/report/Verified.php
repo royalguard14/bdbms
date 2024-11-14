@@ -98,7 +98,7 @@
           <div class="col-md-6 col-sm-6 form-group">
             <div class="row">
               <input type="hidden" id="report_id">
-    <div class="col-md-4 col-sm-4 form-group">
+<div class="col-md-4 col-sm-4 form-group">
   <label style="color: transparent;">====================</label>
   <button type="button" id="downloadButton" class="btn btn-dark col-md-12 col-sm-12" style="font-size: .8rem;">
     Download PDF
@@ -156,25 +156,28 @@
     $('#period_covered').val(fperiodCovered);
     $('#verify_by').val(changeBy);
     $('#verify_on').val(fchangedAt);
+
+        $('#downloadButton').data('title', title);
   })
 
-
-
-  // Handle download button click
-$('#downloadButton').on('click', function() {
-    let title = $(this).data('title'); // Get the title set above
+  $('#downloadButton').on('click', function() {
+    let title = $(this).data('title'); // Get title for file name
     let filePath = `assets/uploaded_files/${title}`;
 
     // Create a temporary anchor element to trigger the download
     let tempLink = document.createElement('a');
     tempLink.href = filePath;
-    tempLink.download = `${title}.pdf`; // Sets the filename for download
+    tempLink.download = `${title}`; // Sets the filename for download
     tempLink.style.display = 'none';
 
     document.body.appendChild(tempLink);
     tempLink.click();
     document.body.removeChild(tempLink);
+
 });
+
+
+
 </script>
 <script type="text/javascript">
    // Handle the "To Verified" button click
