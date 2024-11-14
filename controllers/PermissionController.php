@@ -92,7 +92,7 @@ if (isset($_SESSION['log_in']) && $_SESSION['log_in'] && isset($_SESSION["user_d
     } else {
         // Fetch permissions if no action is provided
         if (in_array('Read Permission', $_SESSION['user_permissions'])) {
-            $stmt = $pdo->prepare('SELECT * FROM permissions ORDER BY name DESC');
+            $stmt = $pdo->prepare('SELECT * FROM permissions ORDER BY id ASC');
             $stmt->execute();
             $permissions = $stmt->fetchAll(PDO::FETCH_ASSOC);
         } else {

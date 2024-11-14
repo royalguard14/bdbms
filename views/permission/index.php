@@ -186,24 +186,22 @@
 		var name = $('#erolename').val();
 		var action = 'update';
 
-
-		alert(id,name,action)
-		// $.ajax({
-		// 	url: 'controllers/RoleController.php',
-		// 	method: 'POST',
-		// 	contentType: 'application/json',
-		// 	data: JSON.stringify({ rolename: name, action: action,id:id}),
-		// 	dataType: 'json',
-		// 	success: function(response) {
-		// 		if (response.success) {
-		// 			window.location.href = 'index.php?page=role';
-		// 		} else {
-		// 			alert(response.message);
-		// 		}
-		// 	},
-		// 	error: function(xhr, status, error) {
-		// 		window.location.href = 'index.php?page=role';
-		// 	}
-		// });
+		$.ajax({
+			url: 'controllers/PermissionController.php',
+			method: 'POST',
+			contentType: 'application/json',
+			data: JSON.stringify({ permissionname: name, action: action,id:id}),
+			dataType: 'json',
+			success: function(response) {
+				if (response.success) {
+					window.location.href = 'index.php?page=permission';
+				} else {
+					alert(response.message);
+				}
+			},
+			error: function(xhr, status, error) {
+				window.location.href = 'index.php?page=permission';
+			}
+		});
 	});
 </script>
