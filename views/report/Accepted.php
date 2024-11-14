@@ -4,6 +4,7 @@
 	<div class="x_panel">
 		<div class="x_title">
 			<h2>Accepted<small>Form</small></h2>
+
 			<ul class="nav navbar-right panel_toolbox">
 			</ul>
 			<div class="clearfix"></div>
@@ -17,7 +18,7 @@
 								<tr>
 									<th>Record No.</th>
 									<th>Form Type</th>
-									<th>Version</th>
+									<th>Title</th>
 									<th>Action</th>
 								</tr>
 							</thead>
@@ -27,7 +28,7 @@
 										<tr>
 											<td style="vertical-align: middle;"><?php echo htmlspecialchars($accepted['id']); ?></td>
 											<td style="vertical-align: middle;"><?php echo ($accepted['form_type'] == 1) ? 'Report' : 'Plan'; ?></td>
-											<td style="vertical-align: middle;">1</td>
+											<td style="vertical-align: middle;"><?php echo htmlspecialchars($accepted['title']); ?></td>
 											<td style="vertical-align: middle; text-align: center;">
 												<button type="button" class="btn btn-round btn-sm btn-outline viewaccepted_btn"
 												data-title="<?php echo htmlspecialchars($accepted['file_name']); ?>" 
