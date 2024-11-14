@@ -124,7 +124,7 @@
 		let createdAt = $(this).data('created_at');
 		let changeBy = $(this).data('change_by');
 		let changedAt = $(this).data('changed_at');
-		let fperiodCovered = formatDateTime(periodCovered);
+		let fperiodCovered = formatDateTimeMY(periodCovered);
 		let fchangedAt = formatDateTime(changedAt);
     // Assign values to the modal fields
     $('#submitted_on').val(getFormattedDateTime(createdAt));
