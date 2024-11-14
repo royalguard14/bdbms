@@ -36,7 +36,7 @@ if (isset($_SESSION['log_in'])) {
           <form id="loginForm">
             <h1>Login Form</h1>
             <div>
-              <input type="text" id="username" class="form-control" placeholder="Email" required="" />
+              <input type="text" id="username" class="form-control" placeholder="Username" required="" />
             </div>
             <div>
               <input type="password" id="password" class="form-control" placeholder="Password" required="" />
