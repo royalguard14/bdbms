@@ -1,0 +1,30 @@
+    label {
+      font-family: 'Arial', sans-serif;
+      font-size: 14px;
+      color: #555;
+      font-weight: bold;
+      margin-bottom: 6px; /* Space between label and input */
+    }
+    .btn-outline {
+      outline: 1px solid blue;
+      background-color: white; /* Default background color */
+      transition: outline 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .btn-outline:hover {
+      outline: 2px solid darkblue; /* Thicker outline on hover */
+      background-color: #e0f7ff; /* Light blue background on hover */
+      box-shadow: 0 0 10px rgba(0, 0, 255, 0.5); /* Add a glowing effect around the button */
+    }
+
+textarea {
+  resize: none;  /* Disable resizing */
+  width: 100%;   /* Ensure the textarea takes up full width of the container */
+  height: auto;  /* Adjust height to fit the content (optional) */
+  overflow-y: auto; /* Show vertical scrollbar if content exceeds the height */
+}
+
+
+  .pieChartCanvas {
+    width: 120px; /* Adjust the width */
+    height: 120px; /* Adjust the height */
+  }

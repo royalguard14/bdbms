@@ -1,4 +1,8 @@
 <?php
+
+
+$sets = ["Gello"];
+
 require_once 'connect.php';
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
@@ -30,6 +34,7 @@ if (isset($_SESSION['log_in']) && $_SESSION['log_in']) {
           AND r.user_id = :user_id 
           AND r.city_id = :city_id
           AND r.brgy_id = :brgy_id
+          AND r.form_type != 2
           ");
     // Bind parameters
             $stmt->bindParam(':status', $status);
@@ -58,6 +63,7 @@ if (isset($_SESSION['log_in']) && $_SESSION['log_in']) {
                 LEFT JOIN barangay b ON r.brgy_id = b.id
                 WHERE r.status = :status 
                 AND r.city_id = :city_id
+                AND r.form_type != 2
                 ");
     // Bind parameters
             $stmt->bindParam(':status', $status);
@@ -66,6 +72,43 @@ if (isset($_SESSION['log_in']) && $_SESSION['log_in']) {
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
+
+
+
+        
+function fetchReportsByStatusAssistant2($status, $pdo) {
+    // SQL query to get reports with the latest status from report_status_logs
+    $stmt = $pdo->prepare("
+        SELECT r.*, rsl.new_status, rsl.changed_at, 
+               COALESCE(p.first_name, 'Joe') AS first_name, 
+               COALESCE(p.last_name, 'Smith') AS last_name,
+               b.name AS barangay_name
+        FROM reports r
+        JOIN (
+            SELECT report_id, MAX(changed_at) AS latest_change
+            FROM report_status_logs
+            GROUP BY report_id
+        ) latest_status ON r.id = latest_status.report_id
+        JOIN report_status_logs rsl ON r.id = rsl.report_id AND rsl.changed_at = latest_status.latest_change
+        LEFT JOIN profiles p ON rsl.changed_by = p.user_id
+        LEFT JOIN barangay b ON r.brgy_id = b.id
+        WHERE r.city_id = :city_id
+        AND r.form_type = 2
+        AND rsl.new_status = :status
+    ");
+
+    // Bind parameters
+    $stmt->bindParam(':city_id', $_SESSION["user_data"]['city_id']);
+    $stmt->bindParam(':status', $status);
+
+    // Execute the query and return the result
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
+
+
         $myuploads = $mysubmitted = $myaccepted = $myreverted = $myarchived = [];
         if (in_array('Upload Report', $_SESSION['user_permissions'])) {
             try {
@@ -77,6 +120,13 @@ if (isset($_SESSION['log_in']) && $_SESSION['log_in']) {
         if (in_array('toVerified', $_SESSION['user_permissions'])) {
             try {
                 $myverify = fetchReportsByStatusAssistant("Verified", $pdo);
+            } catch (PDOException $e) {
+                echo json_encode(['success' => false, 'message' => 'Failed to fetch uploaded reports.']);
+            }
+        }
+        if (in_array('Manage Budget', $_SESSION['user_permissions'])) {
+            try {
+                $bugetPlans = fetchReportsByStatusAssistant2("Accepted", $pdo);
             } catch (PDOException $e) {
                 echo json_encode(['success' => false, 'message' => 'Failed to fetch uploaded reports.']);
             }

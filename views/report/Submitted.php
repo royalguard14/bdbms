@@ -97,22 +97,33 @@
             <input type="text" id="submitted_by" class="form-control" disabled>
           </div>
           <div class="col-md-6 col-sm-6 form-group">
+
+          </div>
+          <div class="col-md-12 col-sm-12 form-group">
             <div class="row">
               <input type="hidden" id="report_id">
-    <div class="col-md-4 col-sm-4 form-group">
-  <label style="color: transparent;">====================</label>
-  <button type="button" id="downloadButton" class="btn btn-dark col-md-12 col-sm-12" style="font-size: .8rem;">
-    Download PDF
-  </button>
-</div>
+              <div class="col-md-3 col-sm-3 form-group">
+                <label style="color: transparent;">====================</label>
+                <button type="button" id="downloadButton" class="btn btn-info col-md-12 col-sm-12" style="font-size: .8rem;">
+                  Download PDF
+                </button>
+              </div>
 
-              <div class="col-md-4 col-sm-4 form-group">
+
+              <div class="col-md-3 col-sm-3 form-group">
+                <label style="color: transparent;">====================</label>
+                <button type="button" id="viewPdfButton" class="btn btn-dark col-md-12 col-sm-12" style="font-size: .8rem;">
+                  View PDF
+                </button>
+              </div>
+
+              <div class="col-md-3 col-sm-3 form-group">
                 <label style="color: transparent;">====================</label>
                 <button type="button" class="btn btn btn-success col-md-12 col-sm-12 toverify" style="font-size: .8rem;">
                   Verified
                 </button>
               </div>
-              <div class="col-md-4 col-sm-4 form-group">
+              <div class="col-md-3 col-sm-3 form-group">
                 <label style="color: transparent;">====================</label>
                 <button type="button" class="btn btn btn-warning col-md-12 col-sm-12 torevert" style="font-size: .8rem;">
                   Revert
@@ -125,8 +136,96 @@
     </div>
   </div>
 </div>
+
+
+
+
+
+
+
+
+
+<!-- modal -->
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="pdfViewerModal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+      </div>
+      <div class="modal-body">
+        <iframe id="pdfViewer" src="" width="100%" height="500px"></iframe>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal for Revert Action with Remark -->
+
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="revertModal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+      </div>
+      <div class="modal-body">
+    <div class="form-group">
+          <label for="remark">Remark:</label>
+          <textarea id="remark" class="form-control" rows="4" required></textarea>
+        </div>
+    
+      </div>
+      <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" id="submitRevert" class="btn btn-warning">Revert</button></div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 <script type="text/javascript">
-$('.viewsubmitted').on('click', function () {
+  $('#viewPdfButton').on('click', function() {
+    let title = $(this).data('title'); // Get the title set above
+    let filePath = `assets/uploaded_files/${title}`;
+
+    // Check if the file exists
+    $.ajax({
+      url: filePath,
+      type: 'HEAD',
+      success: function() {
+            // Set the PDF source to the iframe
+        $('#pdfViewer').attr('src', filePath);
+
+            // Show the modal with the embedded PDF
+        $('#pdfViewerModal').modal('show');
+      },
+      error: function() {
+        alert('File not found or unavailable for viewing.');
+      }
+    });
+  });
+
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+  $('.viewsubmitted').on('click', function () {
     $('#viewsubmitted').modal('show'); 
     let id = $(this).data('id');
     let title = $(this).data('title');
@@ -147,10 +246,11 @@ $('.viewsubmitted').on('click', function () {
 
     // Set the data-title attribute for the download button
     $('#downloadButton').data('title', title);
-});
+    $('#viewPdfButton').data('title', title);
+  });
 
 // Handle download button click
-$('#downloadButton').on('click', function() {
+  $('#downloadButton').on('click', function() {
     let title = $(this).data('title'); // Get the title set above
     let filePath = `assets/uploaded_files/${title}`;
 
@@ -163,12 +263,12 @@ $('#downloadButton').on('click', function() {
     document.body.appendChild(tempLink);
     tempLink.click();
     document.body.removeChild(tempLink);
-});
+  });
 
 </script>
 <script type="text/javascript">
    // Handle the "To Verified" button click
-   $('.toverify').on('click', function () {
+ $('.toverify').on('click', function () {
       let report_id = $('#report_id').val(); // Get the hidden report ID
       if (confirm('Are you sure you want to Verify this form?')) {
         $.ajax({
@@ -189,26 +289,48 @@ $('#downloadButton').on('click', function() {
     });
   </script>
   <script type="text/javascript">
-   // Handle the "To Verified" button click
-   $('.torevert').on('click', function () {
-      let report_id = $('#report_id').val(); // Get the hidden report ID
-      if (confirm('Are you sure you want to Revert this form?')) {
-        $.ajax({
-          url: 'controllers/UploadController.php?action=toRevert',
-          type: 'POST',
-          data: { id: report_id },
-          success: function (response) {
-            if (response.success) {
-              $('#viewsubmitted').modal('hide'); 
-              location.reload(); 
-            }
-          },
-          error: function () {
-            alert('Error verifying the form.');
+   
+
+$('.torevert').on('click', function () {
+  let report_id = $('#report_id').val(); // Get the hidden report ID
+  
+  // Show the modal to ask for remark
+  $('#revertModal').modal('show');
+  
+  // When the 'Revert' button inside the modal is clicked
+  $('#submitRevert').on('click', function () {
+    let remark = $('#remark').val(); // Get the remark entered by the user
+    
+    if (!remark) {
+      alert('Please provide a remark.');
+      return; // Don't proceed if remark is empty
+    }
+
+    if (confirm('Are you sure you want to revert this form?')) {
+      // AJAX request to revert the form with the report ID and remark
+      $.ajax({
+        url: 'controllers/UploadController.php?action=toRevert',
+        type: 'POST',
+        data: {
+          id: report_id,
+          remark: remark // Send the remark along with the report ID
+        },
+        success: function (response) {
+          if (response.success) {
+            $('#revertModal').modal('hide'); // Close the modal
+            location.reload(); // Reload the page
+          } else {
+            alert('Error reverting the form.');
           }
-        });
-      }
-    });
+        },
+        error: function () {
+          alert('Error verifying the form.');
+        }
+      });
+    }
+  });
+});
+
   </script>
   <script type="text/javascript">
     $(function () {

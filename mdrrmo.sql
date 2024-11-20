@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 01, 2024 at 03:05 PM
--- Server version: 10.4.22-MariaDB
--- PHP Version: 7.4.27
+-- Generation Time: Nov 19, 2024 at 11:05 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -33,7 +33,7 @@ CREATE TABLE `barangay` (
   `city_id` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `barangay`
@@ -63,13 +63,28 @@ INSERT INTO `barangay` (`id`, `name`, `city_id`, `created_at`, `updated_at`) VAL
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `barangay_budget`
+--
+
+CREATE TABLE `barangay_budget` (
+  `id` int(11) NOT NULL,
+  `barangay_id` int(11) NOT NULL,
+  `year` year(4) NOT NULL,
+  `allocated_budget` decimal(15,2) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `city`
 --
 
 CREATE TABLE `city` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `city`
@@ -81,16 +96,20 @@ INSERT INTO `city` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `logs`
+-- Table structure for table `liquidations`
 --
 
-CREATE TABLE `logs` (
+CREATE TABLE `liquidations` (
   `id` int(11) NOT NULL,
-  `action` varchar(255) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `budget_plan_id` int(11) NOT NULL,
+  `amount_spent` decimal(10,2) NOT NULL,
+  `description` text NOT NULL,
+  `liquidation_date` date NOT NULL,
+  `supporting_document` varchar(255) DEFAULT NULL,
+  `created_by` int(11) NOT NULL,
+  `created_at` datetime DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -103,7 +122,7 @@ CREATE TABLE `permissions` (
   `name` varchar(50) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `permissions`
@@ -145,7 +164,13 @@ INSERT INTO `permissions` (`id`, `name`, `created_at`, `updated_at`) VALUES
 (33, 'toAccept', '2024-09-28 02:43:12', '2024-09-28 02:43:12'),
 (34, 'toRevert', '2024-09-28 02:43:30', '2024-09-28 02:43:30'),
 (35, 'toArchived', '2024-09-28 02:43:44', '2024-09-28 02:43:44'),
-(36, 'Read Confirm', '2024-09-28 09:42:16', '2024-09-28 09:42:16');
+(36, 'Read Confirm', '2024-09-28 09:42:16', '2024-09-28 09:42:16'),
+(40, 'Manage Budget', '2024-11-15 12:03:44', '2024-11-15 12:03:44'),
+(41, 'My Liquidation', '2024-11-16 10:28:26', '2024-11-16 10:28:26'),
+(42, 'Read Liquidation', '2024-11-16 11:23:23', '2024-11-16 11:23:23'),
+(43, 'Create Liquidation', '2024-11-16 11:23:43', '2024-11-16 11:23:43'),
+(44, 'Update Liquidation', '2024-11-16 11:23:50', '2024-11-16 11:23:50'),
+(45, 'Delete Liquidation', '2024-11-16 11:23:57', '2024-11-16 11:23:57');
 
 -- --------------------------------------------------------
 
@@ -167,7 +192,7 @@ CREATE TABLE `profiles` (
   `profile_pic` varchar(500) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `profiles`
@@ -196,14 +221,7 @@ CREATE TABLE `reports` (
   `brgy_id` int(11) DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `remark` varchar(5000) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `reports`
---
-
-INSERT INTO `reports` (`id`, `title`, `form_type`, `file_name`, `date_uploaded`, `period_covered`, `status`, `user_id`, `city_id`, `brgy_id`, `created_at`, `remark`) VALUES
-(1, 'xasasdasd', '1', 'ar_day_lessons_from_sonh_and_islamic_laws.pdf', '2024-09-30 09:52:42', '2024-09-30', 'Uploaded', 7, 1, 1, '2024-09-30 09:52:42', NULL);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -218,14 +236,7 @@ CREATE TABLE `report_status_logs` (
   `new_status` enum('Uploaded','Submitted','Verified','Confirm','Accepted','Reverted','Archived') DEFAULT NULL,
   `changed_by` int(11) NOT NULL,
   `changed_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `report_status_logs`
---
-
-INSERT INTO `report_status_logs` (`id`, `report_id`, `previous_status`, `new_status`, `changed_by`, `changed_at`) VALUES
-(1, 1, NULL, 'Uploaded', 7, '2024-09-30 09:52:42');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -239,7 +250,7 @@ CREATE TABLE `roles` (
   `module_id` varchar(300) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `roles`
@@ -249,7 +260,7 @@ INSERT INTO `roles` (`id`, `name`, `module_id`, `created_at`, `updated_at`) VALU
 (1, 'Zear Developer', NULL, '2024-09-03 12:10:10', '2024-09-03 12:10:10'),
 (16, 'HDRRMO ADMIN', NULL, '2024-09-17 14:58:05', '2024-09-17 14:58:05'),
 (17, 'ADMIN ASSISTANT', NULL, '2024-09-17 14:58:18', '2024-09-17 14:58:18'),
-(18, 'BRGY USER', NULL, '2024-09-17 14:58:27', '2024-09-17 14:58:27');
+(18, 'BRGY USER', NULL, '2024-09-17 06:58:27', '2024-09-17 06:58:27');
 
 -- --------------------------------------------------------
 
@@ -260,7 +271,7 @@ INSERT INTO `roles` (`id`, `name`, `module_id`, `created_at`, `updated_at`) VALU
 CREATE TABLE `role_permission` (
   `role_id` int(11) NOT NULL,
   `permission_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `role_permission`
@@ -294,13 +305,13 @@ INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES
 (16, 32),
 (16, 34),
 (16, 36),
-(17, 14),
-(17, 15),
-(17, 16),
+(16, 40),
 (17, 23),
 (17, 24),
 (17, 25),
+(17, 26),
 (17, 31),
+(17, 32),
 (17, 33),
 (17, 34),
 (17, 36),
@@ -312,7 +323,12 @@ INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES
 (18, 27),
 (18, 29),
 (18, 30),
-(18, 35);
+(18, 35),
+(18, 41),
+(18, 42),
+(18, 43),
+(18, 44),
+(18, 45);
 
 -- --------------------------------------------------------
 
@@ -331,7 +347,7 @@ CREATE TABLE `users` (
   `is_deleted` int(11) NOT NULL DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
@@ -341,8 +357,7 @@ INSERT INTO `users` (`id`, `email`, `password`, `role_id`, `city_id`, `brgy_id`,
 (1, 'admin', '$2y$10$pPx1uOWAuFhxbmbWgIfkQeS1cafJGq0kjIXk.OCYPNg0aTsk09tpG', 1, 0, 0, 1, 0, '2024-09-03 00:38:27', '2024-09-03 00:38:27'),
 (5, 'MDRRMO', '$2y$10$pPx1uOWAuFhxbmbWgIfkQeS1cafJGq0kjIXk.OCYPNg0aTsk09tpG', 16, 1, 0, 1, 0, '2024-09-18 21:21:45', '2024-09-18 21:21:45'),
 (6, 'Assistant', '$2y$10$pPx1uOWAuFhxbmbWgIfkQeS1cafJGq0kjIXk.OCYPNg0aTsk09tpG', 17, 1, 0, 1, 0, '2024-09-19 14:25:19', '2024-09-19 14:25:19'),
-(7, 'BRGY', '$2y$10$pPx1uOWAuFhxbmbWgIfkQeS1cafJGq0kjIXk.OCYPNg0aTsk09tpG', 18, 1, 13, 1, 0, '2024-09-19 14:26:49', '2024-10-01 01:30:14'),
-(8, 'zzzz', '$2y$10$Kv1pKfJf24vjZPKAvN6Q2.olACTOgooJFJwa/hbR7AwcIpZAsC3OO', 1, 1, 16, 1, 0, '2024-09-30 10:17:46', '2024-10-01 01:30:56');
+(7, 'BRGY', '$2y$10$pPx1uOWAuFhxbmbWgIfkQeS1cafJGq0kjIXk.OCYPNg0aTsk09tpG', 18, 1, 13, 1, 0, '2024-09-19 14:26:49', '2024-10-01 01:30:14');
 
 --
 -- Indexes for dumped tables
@@ -357,6 +372,13 @@ ALTER TABLE `barangay`
   ADD KEY `city_id` (`city_id`);
 
 --
+-- Indexes for table `barangay_budget`
+--
+ALTER TABLE `barangay_budget`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `barangay_id` (`barangay_id`);
+
+--
 -- Indexes for table `city`
 --
 ALTER TABLE `city`
@@ -364,10 +386,12 @@ ALTER TABLE `city`
   ADD UNIQUE KEY `name` (`name`);
 
 --
--- Indexes for table `logs`
+-- Indexes for table `liquidations`
 --
-ALTER TABLE `logs`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `liquidations`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `budget_plan_id` (`budget_plan_id`),
+  ADD KEY `created_by` (`created_by`);
 
 --
 -- Indexes for table `permissions`
@@ -423,22 +447,28 @@ ALTER TABLE `barangay`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
+-- AUTO_INCREMENT for table `barangay_budget`
+--
+ALTER TABLE `barangay_budget`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `city`
 --
 ALTER TABLE `city`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `logs`
+-- AUTO_INCREMENT for table `liquidations`
 --
-ALTER TABLE `logs`
+ALTER TABLE `liquidations`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `permissions`
 --
 ALTER TABLE `permissions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT for table `profiles`
@@ -450,25 +480,25 @@ ALTER TABLE `profiles`
 -- AUTO_INCREMENT for table `reports`
 --
 ALTER TABLE `reports`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `report_status_logs`
 --
 ALTER TABLE `report_status_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Constraints for dumped tables
@@ -479,6 +509,19 @@ ALTER TABLE `users`
 --
 ALTER TABLE `barangay`
   ADD CONSTRAINT `barangay_ibfk_1` FOREIGN KEY (`city_id`) REFERENCES `city` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `barangay_budget`
+--
+ALTER TABLE `barangay_budget`
+  ADD CONSTRAINT `barangay_budget_ibfk_1` FOREIGN KEY (`barangay_id`) REFERENCES `barangay` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `liquidations`
+--
+ALTER TABLE `liquidations`
+  ADD CONSTRAINT `liquidations_ibfk_1` FOREIGN KEY (`budget_plan_id`) REFERENCES `reports` (`id`),
+  ADD CONSTRAINT `liquidations_ibfk_2` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

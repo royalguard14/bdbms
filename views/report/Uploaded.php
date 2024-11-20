@@ -4,8 +4,9 @@
   <div class="x_panel">
     <div class="x_title">
       <h2>Uploaded<small>Form</small></h2>
+
       <ul class="nav navbar-right panel_toolbox">
-        <li><button type="button" class="btn btn-round btn-outline" id="uploadmodal">Upload New Form</button></li>
+  
         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
       </ul>
       <div class="clearfix"></div>
@@ -62,59 +63,8 @@
 </div>
 </div>
 <!-- Modal for Uploading New Form -->
-<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="uploadform">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-md-4 col-sm-4 form-group">
-            <h4 class="modal-title" id="myModalLabel">Form Information</h4>
-          </div>
-          <div class="col-md-4 col-sm-4 form-group" style="text-align: right; margin-top: .5rem;">
-            <label class="control-label">Date today</label>
-          </div>
-          <div class="col-md-4 col-sm-4 form-group">
-            <input type="text" class="form-control" id="currentDateTime" readonly="readonly" value="">
-          </div>
-        </div>
-        <hr>
-        <form id="uploadForm" enctype="multipart/form-data">
-          <div class="row">
-            <div class="col-md-12 col-sm-12 form-group">
-              <input type="hidden" name="id">
-              <label for="form_type">Form Type</label>
-              <select name="form_type" id="form_type" class="form-control" required>
-                <option value="" disabled selected>Select Form Type</option>
-                <option value="1">Report</option>
-                <option value="2">Plan</option>
-              </select>
-            </div>
-            <div class="col-md-12 col-sm-12 form-group">
-              <label for="title">Form Title</label>
-              <input type="text" name="title" id="title" class="form-control" required placeholder="Enter form title">
-            </div>
-            <div class="col-md-12 col-sm-12 form-group">
-              <label for="period_covered">Period Covered</label>
-              <input type="date" name="period_covered" id="period_covered" class="form-control" required placeholder="Enter the period covered">
-            </div>
-            <!-- File Upload Field -->
-            <div class="col-md-12 col-sm-12 form-group" id="fileUploadField">
-              <label for="uploaded_file">Upload File Here</label>
-              <input type="file" name="uploaded_file" id="uploaded_file" class="form-control" required accept=".pdf">
-            </div>
-            <div class="col-md-6 col-sm-6 form-group"></div>
-            <div class="col-md-6 col-sm-6 form-group">
-              <button type="submit" class="btn btn-primary col-md-12 col-sm-12" id="submitUpload" name="submitUpload">Upload</button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
+
+
 <!-- Modal for Non-File Upload Actions -->
 <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="nonUploadForm">
   <div class="modal-dialog modal-lg">
@@ -142,9 +92,10 @@
               <label for="form_type">Form Type</label>
               <select name="form_type" id="form_type_non_upload" class="form-control" required>
                 <option value="" disabled selected>Select Form Type</option>
-                <option value="1">Report</option>
-                <option value="2">Plan</option>
-                <!-- Add other form types as needed -->
+                <option value="2">Budget Plan</option>
+                <option value="1">Other Report</option>
+                <option value="3">Other Plan</option>
+      
               </select>
             </div>
             <div class="col-md-12 col-sm-12 form-group">
@@ -178,35 +129,7 @@
     });
   });
 </script>
-<script type="text/javascript">
-  $('#uploadmodal').on('click', function () {
-    document.getElementById('currentDateTime').value = getFormattedDateTime();
-    $('#uploadform').modal('show');
-    $('#uploadForm')[0].reset(); 
-  });
-  $(document).on('submit', '#uploadForm', function(e) {
-    e.preventDefault();
-    let formData = new FormData(this); 
-    $.ajax({
-      url: 'controllers/UploadController.php?action=upload', 
-      type: 'POST',
-      data: formData,
-      contentType: false, 
-      processData: false, 
-      success: function(response) {
-        //let result = JSON.parse(response);
-        if (response.success) {
-          location.reload(); 
-        } else {
-          alert(result.message);
-        }
-      },
-      error: function() {
-        alert('Error uploading the form.');
-      }
-    });
-  });
-</script>
+
 <script type="text/javascript">
   $('.editUploaddetail').on('click', function () {
     let id = $(this).data('id');
@@ -274,7 +197,7 @@
               data: { id: id },
               success: function (response) {
      
-          window.location.href = 'index.php?page=report&&section=Submitted';
+          window.location.href = 'index.php?page=report&&section=Uploaded';
               }
      
             });
@@ -282,8 +205,4 @@
         });
       </script>
 
-      <script type="text/javascript">
-        
 
-        
-      </script>

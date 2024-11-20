@@ -1,4 +1,12 @@
 <?php require_once 'controllers/StatusController.php'; ?>
+<?php 
+$formTypeLabels = [
+    1 => 'Report',
+    2 => 'Budget Plan',
+     3 => 'Other Plan'
+];
+
+ ?>
 <!-- City Management Content -->
 <div class="col-md-12 col-sm-12">
 	<div class="x_panel">
@@ -27,7 +35,7 @@
 									<?php foreach ($myaccepted as $accepted): ?>
 										<tr>
 											<td style="vertical-align: middle;"><?php echo htmlspecialchars($accepted['id']); ?></td>
-											<td style="vertical-align: middle;"><?php echo ($accepted['form_type'] == 1) ? 'Report' : 'Plan'; ?></td>
+											<td style="vertical-align: middle;"><?php echo $formTypeLabels[$accepted['form_type']] ?? 'Unknown'; ?></td>
 											<td style="vertical-align: middle;"><?php echo htmlspecialchars($accepted['title']); ?></td>
 											<td style="vertical-align: middle; text-align: center;">
 												<button type="button" class="btn btn-round btn-sm btn-outline viewaccepted_btn"
