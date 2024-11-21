@@ -134,7 +134,7 @@ $stmt = $pdo->prepare("
 
 
 
-function getUserTotalReportsForYear($pdo, ) {
+function getUserTotalReportsForYear($pdo ) {
     $stmt = $pdo->prepare("
         SELECT COUNT(*) AS total_reports 
         FROM reports 

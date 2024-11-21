@@ -39,21 +39,19 @@ session_start();
       <div class="col-md-3 left_col menu_fixed">
         <div class="left_col scroll-view">
           <div class="navbar nav_title" style="border: 0;">
-<a href="index.php?page=dashboard" class="site_title">
-  <img src="assets/images/zear_logo.png" alt="Zear Logo" style="width: 2rem; height: 2rem; border: 2px solid white; border-radius: 50%; box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);">
-  <span>Zear Developer</span>
-</a>
-
-
+            <a href="index.php?page=dashboard" class="site_title">
+              <img src="assets/images/zear_logo.png" alt="Zear Logo" style="width: 2rem; height: 2rem; border: 2px solid white; border-radius: 50%; box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);">
+              <span>Zear Developer</span>
+            </a>
           </div>
           <div class="clearfix"></div>
           <!-- menu profile quick info -->
           <div class="profile clearfix">
             <div class="profile_pic">
               <img class="img-circle profile_img" 
-                  src="<?php echo !empty($_SESSION['user_data']['profile']['profile_pic']) 
-                     ? $_SESSION['user_data']['profile']['profile_pic'] 
-                     : '/bdbms/assets/images/user.png'; ?>" 
+              src="<?php echo !empty($_SESSION['user_data']['profile']['profile_pic']) 
+              ? $_SESSION['user_data']['profile']['profile_pic'] 
+              : '/bdbms/assets/images/user.png'; ?>" 
               alt="Avatar" title="Change the avatar" 
               style="object-fit: contain;">
             </div>
@@ -128,12 +126,18 @@ session_start();
           <div class="menu_section">
             <h3>Report Management</h3>
             <ul class="nav side-menu">
+<?php 
+              if ($role === "BRGY USER") {
+                echo '
               <li>
                 <a href="#" id="uploadmodal">
                   <i class="fa fa-upload"></i> Upload Report 
                   <span class="label label-success pull-right"></span>
                 </a>
-              </li>
+              </li>';
+            }
+
+             ?>
               <li>
                 <a>
                   <i class="fa fa-files-o"></i> Report Status
@@ -259,33 +263,28 @@ session_start();
             <li><a class="dropdown-item"  href="index.php?page=profile"> Profile</a></li>
           </ul>
         </li>
-          </ul>
-        </nav>
-      </div>
-    </div>
-    <!-- /top navigation -->
-    <!-- page content -->
-    <div class="right_col" role="main">
-
-      <div class="">
+      </ul>
+    </nav>
+  </div>
+</div>
+<!-- /top navigation -->
+<!-- page content -->
+<div class="right_col" role="main">
+  <div class="">
     <div class="page-title">
       <div class="title_left">
         <h3 style="font-size: 1.3rem;">
-  <?php 
-    if ($role == 'BRGY USER') {
-      echo "BRGY " . $_SESSION['user_data']['barangay_name'] . " <small>DISASTER BUDGET MANAGEMENT SYSTEM</small>";
-    } else {
-      echo "DISASTER BUDGET MANAGEMENT SYSTEM";
-    }
-  ?>
-</h3>
+          <?php 
+          if ($role == 'BRGY USER') {
+            echo "BRGY " . $_SESSION['user_data']['barangay_name'] . " <small>DISASTER BUDGET MANAGEMENT SYSTEM</small>";
+          } else {
+            echo "DISASTER BUDGET MANAGEMENT SYSTEM";
+          }
+          ?>
+        </h3>
       </div>
     </div>
     <div class="clearfix"></div>
-
- 
-
-
     <?php
     $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
     if (isset($_SESSION['log_in'])) {
@@ -312,61 +311,61 @@ session_start();
     }
     ob_end_flush(); 
     ?>
-      </div>
-    </div>
-    <!-- /page content -->
-    <!-- footer content -->
-    <footer>
-      <div class="pull-right">
-        <a href="https://www.facebook.com/royalguard14">Zear Developer</a>
-      </div>
-      <div class="clearfix"></div>
-    </footer>
-    <!-- /footer content -->
   </div>
 </div>
- <!-- Modal -->
-    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="uploadform">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+<!-- /page content -->
+<!-- footer content -->
+<footer>
+  <div class="pull-right">
+    <a href="https://www.facebook.com/royalguard14">Zear Developer</a>
+  </div>
+  <div class="clearfix"></div>
+</footer>
+<!-- /footer content -->
+</div>
+</div>
+<!-- Modal -->
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="uploadform">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-4 col-sm-4 form-group">
+            <h4 class="modal-title" id="myModalLabel">Form Information</h4>
           </div>
-          <div class="modal-body">
-            <div class="row">
-              <div class="col-md-4 col-sm-4 form-group">
-                <h4 class="modal-title" id="myModalLabel">Form Information</h4>
-              </div>
-              <div class="col-md-4 col-sm-4 form-group" style="text-align: right; margin-top: .5rem;">
-                <label class="control-label">Date today</label>
-              </div>
-              <div class="col-md-4 col-sm-4 form-group">
-                <input type="text" class="form-control" id="currentDateTime" readonly="readonly" value="">
-              </div>
-            </div>
-            <hr>
-            <form id="uploadForm" enctype="multipart/form-data">
-              <div class="row">
-                <div class="col-md-12 col-sm-12 form-group">
-                  <label for="form_type">Form Type</label>
-                  <select name="form_type" id="form_type" class="form-control" required>
-                    <option value="" disabled selected>Select Form Type</option>
-                    <option value="2">Budget Plan</option>
-                    <option value="5">Calamity Report</option>
-                    <option value="4">Liquidation</option>
-                    <option value="1">Other Report</option>
-                    <option value="3">Other Plan</option>
-                  </select>
-                </div>
-                <div class="col-md-12 col-sm-12 form-group">
-                  <button type="submit" class="btn btn-primary col-md-12 col-sm-12" id="submitUpload" name="submitUpload">Upload</button>
-                </div>
-              </div>
-            </form>
+          <div class="col-md-4 col-sm-4 form-group" style="text-align: right; margin-top: .5rem;">
+            <label class="control-label">Date today</label>
+          </div>
+          <div class="col-md-4 col-sm-4 form-group">
+            <input type="text" class="form-control" id="currentDateTime" readonly="readonly" value="">
           </div>
         </div>
+        <hr>
+        <form id="uploadForm" enctype="multipart/form-data">
+          <div class="row">
+            <div class="col-md-12 col-sm-12 form-group">
+              <label for="form_type">Form Type</label>
+              <select name="form_type" id="form_type" class="form-control" required>
+                <option value="" disabled selected>Select Form Type</option>
+                <option value="2">Budget Plan</option>
+                <option value="5">Calamity Report</option>
+                <option value="4">Liquidation</option>
+                <option value="1">Other Report</option>
+                <option value="3">Other Plan</option>
+              </select>
+            </div>
+            <div class="col-md-12 col-sm-12 form-group">
+              <button type="submit" class="btn btn-primary col-md-12 col-sm-12" id="submitUpload" name="submitUpload">Upload</button>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
+  </div>
+</div>
 <!-- jQuery -->
 <script src="assets/vendors/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap -->
@@ -376,8 +375,6 @@ session_start();
 <!-- NProgress -->
 <script src="assets/vendors/nprogress/nprogress.js"></script>
 <!-- Chart.js -->
-
-
 <!-- jQuery Sparklines -->
 <script src="assets/vendors/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
 <!-- Morris.js -->
@@ -436,22 +433,22 @@ session_start();
       if (selectedFormType === '2' || selectedFormType === '5') {
         // For Budget Plan
         additionalFields = `
-          <div class="col-md-6 col-sm-6 form-group dynamic-fields">
-            <label for="title">Form Title</label>
-            <input type="text" name="title" id="title" class="form-control" required placeholder="Enter form title">
-          </div>
-          <div class="col-md-6 col-sm-6 form-group dynamic-fields">
-            <label for="period_covered">Period Covered</label>
-            <input type="date" name="period_covered" id="period_covered" class="form-control" required placeholder="Enter the period covered">
-          </div>
-          <div class="col-md-6 col-sm-6 form-group dynamic-fields">
-            <label for="amount_budget">Amount Budget</label>
-            <input type="number" name="amount_budget" id="amount_budget" class="form-control" required placeholder="Enter the budget amount" step="0.01" min="0">
-          </div>
-          <div class="col-md-6 col-sm-6 form-group dynamic-fields">
-            <label for="uploaded_file_budget">Upload File Here</label>
-            <input type="file" name="uploaded_file" id="uploaded_file_budget" class="form-control" required accept=".pdf">
-          </div>
+        <div class="col-md-6 col-sm-6 form-group dynamic-fields">
+        <label for="title">Form Title</label>
+        <input type="text" name="title" id="title" class="form-control" required placeholder="Enter form title">
+        </div>
+        <div class="col-md-6 col-sm-6 form-group dynamic-fields">
+        <label for="period_covered">Period Covered</label>
+        <input type="date" name="period_covered" id="period_covered" class="form-control" required placeholder="Enter the period covered">
+        </div>
+        <div class="col-md-6 col-sm-6 form-group dynamic-fields">
+        <label for="amount_budget">Amount Budget</label>
+        <input type="number" name="amount_budget" id="amount_budget" class="form-control" required placeholder="Enter the budget amount" step="0.01" min="0">
+        </div>
+        <div class="col-md-6 col-sm-6 form-group dynamic-fields">
+        <label for="uploaded_file_budget">Upload File Here</label>
+        <input type="file" name="uploaded_file" id="uploaded_file_budget" class="form-control" required accept=".pdf">
+        </div>
         `;
       } else if (selectedFormType === '4') {
         $.ajax({
@@ -473,28 +470,28 @@ session_start();
               options = '<option value="">No Budget Plans Available</option>';
             }
             additionalFields = `
-              <div class="col-md-6 col-sm-6 form-group dynamic-fields">
-                <label for="budget_plan_id">Select Budget Plan</label>
-                <select name="budget_plan_id" id="budget_plan_id" class="form-control" required>
-                  ${options}
-                </select>
-              </div>
-              <div class="col-md-6 col-sm-6 form-group dynamic-fields">
-                <label for="amount_spent">Amount Spent</label>
-                <input type="number" name="amount_spent" id="amount_spent" class="form-control" required placeholder="Enter the amount spent" step="0.01" min="0">
-              </div>
-              <div class="col-md-12 col-sm-12 form-group dynamic-fields">
-                <label for="description">Description</label>
-                <textarea name="description" id="description" class="form-control" required placeholder="Enter a brief description" rows="5" style="resize: none;"></textarea>
-              </div>
-              <div class="col-md-6 col-sm-6 form-group dynamic-fields">
-                <label for="liquidation_date">Liquidation Date</label>
-                <input type="date" name="liquidation_date" id="liquidation_date" class="form-control" required>
-              </div>
-              <div class="col-md-6 col-sm-6 form-group dynamic-fields">
-                <label for="uploaded_file_liquidation">Upload Supporting Document</label>
-                <input type="file" name="uploaded_file" id="uploaded_file_liquidation" class="form-control" required accept=".pdf">
-              </div>
+            <div class="col-md-6 col-sm-6 form-group dynamic-fields">
+            <label for="budget_plan_id">Select Budget Plan</label>
+            <select name="budget_plan_id" id="budget_plan_id" class="form-control" required>
+            ${options}
+            </select>
+            </div>
+            <div class="col-md-6 col-sm-6 form-group dynamic-fields">
+            <label for="amount_spent">Amount Spent</label>
+            <input type="number" name="amount_spent" id="amount_spent" class="form-control" required placeholder="Enter the amount spent" step="0.01" min="0">
+            </div>
+            <div class="col-md-12 col-sm-12 form-group dynamic-fields">
+            <label for="description">Description</label>
+            <textarea name="description" id="description" class="form-control" required placeholder="Enter a brief description" rows="5" style="resize: none;"></textarea>
+            </div>
+            <div class="col-md-6 col-sm-6 form-group dynamic-fields">
+            <label for="liquidation_date">Liquidation Date</label>
+            <input type="date" name="liquidation_date" id="liquidation_date" class="form-control" required>
+            </div>
+            <div class="col-md-6 col-sm-6 form-group dynamic-fields">
+            <label for="uploaded_file_liquidation">Upload Supporting Document</label>
+            <input type="file" name="uploaded_file" id="uploaded_file_liquidation" class="form-control" required accept=".pdf">
+            </div>
             `;
             // Append the additional fields after the dropdown
             $('#form_type').closest('.form-group').after(additionalFields);
@@ -507,24 +504,24 @@ session_start();
       } else {
         // Default fields for other types
         additionalFields = `
-          <div class="col-md-12 col-sm-12 form-group dynamic-fields">
-            <label for="title">Form Title</label>
-            <input type="text" name="title" id="title" class="form-control" required placeholder="Enter form title">
-          </div>
-          <div class="col-md-12 col-sm-12 form-group dynamic-fields">
-            <label for="period_covered">Period Covered</label>
-            <input type="date" name="period_covered" id="period_covered" class="form-control" required placeholder="Enter the period covered">
-          </div>
-          <div class="col-md-12 col-sm-12 form-group dynamic-fields">
-            <label for="uploaded_file">Upload File Here</label>
-            <input type="file" name="uploaded_file" id="uploaded_file" class="form-control" required accept=".pdf">
-          </div>
+        <div class="col-md-12 col-sm-12 form-group dynamic-fields">
+        <label for="title">Form Title</label>
+        <input type="text" name="title" id="title" class="form-control" required placeholder="Enter form title">
+        </div>
+        <div class="col-md-12 col-sm-12 form-group dynamic-fields">
+        <label for="period_covered">Period Covered</label>
+        <input type="date" name="period_covered" id="period_covered" class="form-control" required placeholder="Enter the period covered">
+        </div>
+        <div class="col-md-12 col-sm-12 form-group dynamic-fields">
+        <label for="uploaded_file">Upload File Here</label>
+        <input type="file" name="uploaded_file" id="uploaded_file" class="form-control" required accept=".pdf">
+        </div>
         `;
       }
       // Append the additional fields after the dropdown
       $('#form_type').closest('.form-group').after(additionalFields);
     });
-  });
+});
 </script>
 <script type="text/javascript">
   $('#uploadmodal').on('click', function () {
@@ -580,37 +577,37 @@ session_start();
       };
     </script>
     <script type="text/javascript">
-  function getFormattedDateTime() {
-    const today = new Date();
-    const options = { 
-      month: 'long', 
-      day: 'numeric', 
-      year: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      hour12: true 
-    };
-    return today.toLocaleString('en-US', options).replace('at', ' |');
-  }
-  function formatDateTime(dateString) {
-    let date = new Date(dateString);
+      function getFormattedDateTime() {
+        const today = new Date();
+        const options = { 
+          month: 'long', 
+          day: 'numeric', 
+          year: 'numeric',
+          hour: 'numeric',
+          minute: 'numeric',
+          hour12: true 
+        };
+        return today.toLocaleString('en-US', options).replace('at', ' |');
+      }
+      function formatDateTime(dateString) {
+        let date = new Date(dateString);
     // Format the date
-    let options = { year: 'numeric', month: 'long', day: 'numeric' };
-    let formattedDate = date.toLocaleDateString('en-US', options);
+        let options = { year: 'numeric', month: 'long', day: 'numeric' };
+        let formattedDate = date.toLocaleDateString('en-US', options);
     // Format the time
-    let timeOptions = { hour: 'numeric', minute: 'numeric', hour12: true };
-    let formattedTime = date.toLocaleTimeString('en-US', timeOptions);
+        let timeOptions = { hour: 'numeric', minute: 'numeric', hour12: true };
+        let formattedTime = date.toLocaleTimeString('en-US', timeOptions);
     // Return the formatted string
-    return formattedDate + ' | ' + formattedTime;
-  }
-  function formatDateTimeMY(dateString) {
-    let date = new Date(dateString);
+        return formattedDate + ' | ' + formattedTime;
+      }
+      function formatDateTimeMY(dateString) {
+        let date = new Date(dateString);
     // Format the date to show only month and year
-    let options = { year: 'numeric', month: 'long' };
-    let formattedDate = date.toLocaleDateString('en-US', options);
+        let options = { year: 'numeric', month: 'long' };
+        let formattedDate = date.toLocaleDateString('en-US', options);
     // Return only the formatted month and year
-    return formattedDate;
-  }
-</script>
-</body>
-</html>
+        return formattedDate;
+      }
+    </script>
+  </body>
+  </html>
