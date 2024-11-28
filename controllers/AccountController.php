@@ -169,7 +169,7 @@ if (isset($_SESSION['log_in']) && $_SESSION['log_in']) {
     if ($action == 'fetch_roles') {
         if (in_array('Read Role', $_SESSION['user_permissions'])) {
             try {
-                $stmt = $pdo->prepare('SELECT id, name FROM roles ORDER BY id ASC');
+                $stmt = $pdo->prepare('SELECT id, name FROM roles where id != 1 ORDER BY id ASC');
                 $stmt->execute();
                 $roles = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 echo json_encode([
@@ -188,7 +188,7 @@ if (isset($_SESSION['log_in']) && $_SESSION['log_in']) {
         // Default action if no action is passed
     if (in_array('Read Account', $_SESSION['user_permissions'])) {
         try {
-            $stmt = $pdo->prepare('SELECT * FROM users where is_deleted != 1 ORDER BY id ASC');
+            $stmt = $pdo->prepare('SELECT * FROM users where is_deleted != 1 AND id != 1 ORDER BY id ASC');
             $stmt->execute();
             $accounts = $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
