@@ -41,7 +41,7 @@ session_start();
           <div class="navbar nav_title" style="border: 0;">
             <a href="index.php?page=dashboard" class="site_title">
               <img src="assets/images/zear_logo.png" alt="Zear Logo" style="width: 2rem; height: 2rem; border: 2px solid white; border-radius: 50%; box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);">
-              <span>Zear Developer</span>
+              <span>BDBMS</span>
             </a>
           </div>
           <div class="clearfix"></div>
@@ -317,7 +317,7 @@ session_start();
 <!-- footer content -->
 <footer>
   <div class="pull-right">
-    <a href="https://www.facebook.com/royalguard14">Zear Developer</a>
+    <a href="#">DISASTER BUDGET MANAGEMENT SYSTEM</a>
   </div>
   <div class="clearfix"></div>
 </footer>
@@ -352,7 +352,7 @@ session_start();
                 <option value="" disabled selected>Select Form Type</option>
                 <option value="2">Budget Plan</option>
                 <option value="5">Calamity Report</option>
-                <option value="4">Liquidation</option>
+                <option value="4">Liquidation Report</option>
                 <option value="1">Other Report</option>
                 <option value="3">Other Plan</option>
               </select>
@@ -433,6 +433,23 @@ session_start();
       if (selectedFormType === '2' || selectedFormType === '5') {
         // For Budget Plan
         additionalFields = `
+        <div class="col-md-12 col-sm-12 form-group dynamic-fields">
+        <label for="title">Thematic Area plan</label>
+        
+        <select name="name_extention" class="form-control" required>
+
+        <option  disabled selected> Select Here</option>
+        <option value="DISASTER PREVENTION AND MITIGATION">A. DISASTER PREVENTION AND MITIGATION</option>
+        <option value="DISASTER PREPAREDNESS">B. DISASTER PREPAREDNESS</option>
+        <option value="DISASTER RESPONSE">C. DISASTER RESPONSE</option>
+        <option value="DISASTER REHABILITIES AND RECOVERY">D. DISASTER REHABILITIES AND RECOVERY</option>
+
+        </select>
+
+
+
+
+        </div>
         <div class="col-md-6 col-sm-6 form-group dynamic-fields">
         <label for="title">Form Title</label>
         <input type="text" name="title" id="title" class="form-control" required placeholder="Enter form title">
@@ -440,6 +457,7 @@ session_start();
         <div class="col-md-6 col-sm-6 form-group dynamic-fields">
         <label for="period_covered">Period Covered</label>
         <input type="date" name="period_covered" id="period_covered" class="form-control" required placeholder="Enter the period covered">
+       
         </div>
         <div class="col-md-6 col-sm-6 form-group dynamic-fields">
         <label for="amount_budget">Amount Budget</label>
@@ -449,6 +467,12 @@ session_start();
         <label for="uploaded_file_budget">Upload File Here</label>
         <input type="file" name="uploaded_file" id="uploaded_file_budget" class="form-control" required accept=".pdf">
         </div>
+
+
+
+
+
+        
         `;
       } else if (selectedFormType === '4') {
         $.ajax({

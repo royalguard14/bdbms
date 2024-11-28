@@ -54,7 +54,9 @@ function handleUpload() {
 
     // Extract form data
     $file = $_FILES['uploaded_file'];
-    $title = trim($_POST['title'] ?? '');
+    $title1 = trim($_POST['title'] ?? '');
+    $title2 = trim($_POST['name_extention'] ?? '');
+    $title = strtoupper($title2 . ': ' . $title1);
     $amount_budget = $_POST['amount_budget'] ?? null;
     $form_type = (int) ($_POST['form_type'] ?? 0);
     $file_name = basename($file['name']);
@@ -67,6 +69,7 @@ function handleUpload() {
     $description = $_POST['description'] ?? '';
     $liquidation_date = $_POST['liquidation_date'] ?? date('Y-m-d');
     $bpid = (int) ($_POST['budget_plan_id'] ?? 0);
+    
 
     // Define upload directory and file path
     $uploadDir = '../assets/uploaded_files/';

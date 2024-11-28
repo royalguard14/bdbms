@@ -36,6 +36,16 @@
                       <td style="vertical-align: middle;"><?php echo date('F d, Y | h:i A', strtotime($upload['date_uploaded'])); ?></td>
                       <td style="vertical-align: middle;"><?php echo htmlspecialchars($upload['period_covered']); ?></td>
                       <td style="vertical-align: middle; text-align: center;">
+
+
+                     <button type="button" class="btn btn-round btn-sm btn-outline" 
+                     id="viewPdfButton"
+                      data-title="<?php echo $upload['file_name']; ?>" >
+                      <i class="fa fa-eye"></i>
+                    </button>
+
+
+
                         <button type="button" class="btn btn-round btn-sm btn-outline editUploaddetail" 
                         data-id="<?php echo $upload['id']; ?>" 
                         data-formtype="<?php echo $upload['form_type']; ?>" 
@@ -204,5 +214,47 @@
           }
         });
       </script>
+
+<script type="text/javascript">
+  $('#viewPdfButton').on('click', function() {
+    let title = $(this).data('title'); // Get the title set above
+    let filePath = `assets/uploaded_files/${title}`;
+
+    // Check if the file exists
+    $.ajax({
+      url: filePath,
+      type: 'HEAD',
+      success: function() {
+            // Set the PDF source to the iframe
+        $('#pdfViewer').attr('src', filePath);
+
+            // Show the modal with the embedded PDF
+        $('#pdfViewerModal').modal('show');
+      },
+      error: function() {
+        alert('File not found or unavailable for viewing.');
+      }
+    });
+  });
+
+</script>
+
+
+
+
+<!-- modal -->
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="pdfViewerModal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+      </div>
+      <div class="modal-body">
+        <iframe id="pdfViewer" src="" width="100%" height="500px"></iframe>
+
+      </div>
+    </div>
+  </div>
+</div>
 
 
