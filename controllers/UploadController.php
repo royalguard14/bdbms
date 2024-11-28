@@ -52,6 +52,7 @@ function handleUpload() {
         return;
     }
 
+
     // Extract form data
     $file = $_FILES['uploaded_file'];
     $title1 = trim($_POST['title'] ?? '');
@@ -60,7 +61,7 @@ function handleUpload() {
     $amount_budget = $_POST['amount_budget'] ?? null;
     $form_type = (int) ($_POST['form_type'] ?? 0);
     $file_name = basename($file['name']);
-    $period_covered = $_POST['period_covered'] ?? '';
+    $period_covered = $_POST['period_covered'] ?? date('Y-m-d');
     $status = ($form_type == 2 || $form_type == 5) ? 'Accepted' : 'Uploaded';
     $user_id = $_SESSION['user_data']['id'] ?? null;
     $city_id = $_SESSION['user_data']['city_id'] ?? null;
@@ -69,7 +70,8 @@ function handleUpload() {
     $description = $_POST['description'] ?? '';
     $liquidation_date = $_POST['liquidation_date'] ?? date('Y-m-d');
     $bpid = (int) ($_POST['budget_plan_id'] ?? 0);
-    
+
+
 
     // Define upload directory and file path
     $uploadDir = '../assets/uploaded_files/';
@@ -104,13 +106,13 @@ function handleUpload() {
                 : null;
 
             $stmt = $pdo->prepare("
-                INSERT INTO reports (title, form_type, period_covered, status, remark, file_name, user_id, city_id, brgy_id) 
-                VALUES (:title, :form_type, :period_covered, :status, :remark, :uploaded_file, :user_id, :city_id, :brgy_id)
+                INSERT INTO reports (title, form_type, status, remark, file_name, user_id, city_id, brgy_id) 
+                VALUES (:title, :form_type,  :status, :remark, :uploaded_file, :user_id, :city_id, :brgy_id)
             ");
             $stmt->execute([
                 ':title' => $title,
                 ':form_type' => $form_type,
-                ':period_covered' => $period_covered,
+                
                 ':status' => $status,
                 ':remark' => $remark,
                 ':uploaded_file' => $file_name,
@@ -154,15 +156,15 @@ function handleEdit() {
             $id = $_POST['id'] ?? '';
             $title = $_POST['title'] ?? '';
             $form_type = $_POST['form_type'] ?? '';
-            $period_covered = $_POST['period_covered'] ?? '';
+            $period_covered = $_POST['period_covered'] ?? date('Y-m-d');
             $pdo->beginTransaction();
             $stmt = $pdo->prepare("
-                UPDATE reports SET title = :title, form_type = :form_type, period_covered = :period_covered WHERE id = :id
+                UPDATE reports SET title = :title, form_type = :form_type WHERE id = :id
                 ");
             $stmt->bindParam(':id', $id);
             $stmt->bindParam(':title', $title); 
             $stmt->bindParam(':form_type', $form_type);
-            $stmt->bindParam(':period_covered', $period_covered);
+          
             $stmt->execute();
             $pdo->commit();
             echo json_encode(['success' => true, 'message' => 'Report updated successfully!']);

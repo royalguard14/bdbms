@@ -454,9 +454,9 @@ session_start();
         <label for="title">Form Title</label>
         <input type="text" name="title" id="title" class="form-control" required placeholder="Enter form title">
         </div>
-        <div class="col-md-6 col-sm-6 form-group dynamic-fields">
+        <div class="col-md-6 col-sm-6 form-group dynamic-fields" hidden>
         <label for="period_covered">Period Covered</label>
-        <input type="date" name="period_covered" id="period_covered" class="form-control" required placeholder="Enter the period covered">
+        <input type="date" name="period_covered" id="period_covered" class="form-control"  placeholder="Enter the period covered">
        
         </div>
         <div class="col-md-6 col-sm-6 form-group dynamic-fields">
@@ -472,7 +472,7 @@ session_start();
 
 
 
-        
+
         `;
       } else if (selectedFormType === '4') {
         $.ajax({
@@ -532,9 +532,9 @@ session_start();
         <label for="title">Form Title</label>
         <input type="text" name="title" id="title" class="form-control" required placeholder="Enter form title">
         </div>
-        <div class="col-md-12 col-sm-12 form-group dynamic-fields">
+        <div class="col-md-12 col-sm-12 form-group dynamic-fields" hidden>
         <label for="period_covered">Period Covered</label>
-        <input type="date" name="period_covered" id="period_covered" class="form-control" required placeholder="Enter the period covered">
+        <input type="date" name="period_covered" id="period_covered" class="form-control" placeholder="Enter the period covered">
         </div>
         <div class="col-md-12 col-sm-12 form-group dynamic-fields">
         <label for="uploaded_file">Upload File Here</label>
