@@ -37,10 +37,11 @@ $formTypeLabels = [
                         <td style="vertical-align: middle;"><?php echo htmlspecialchars($data['id']); ?></td>
                         <td style="vertical-align: middle;"><?php echo htmlspecialchars($data['title']); ?></td>
                         <td style="vertical-align: middle;">
-                            <?php
-                            $date = DateTime::createFromFormat('Y-m-d', $data['period_covered']);
-                            echo htmlspecialchars($date ? $date->format('F Y') : 'Invalid Date');
-                            ?>
+                      <?php
+$date = DateTime::createFromFormat('Y-m-d H:i:s', $data['period_covered']);
+echo htmlspecialchars($date ? $date->format('F Y') : 'Invalid Date');
+?>
+
                         </td>
                         <td style="vertical-align: middle;">
                             <?php
