@@ -34,7 +34,7 @@ if (isset($_SESSION['log_in']) && $_SESSION['log_in']) {
           AND r.user_id = :user_id 
           AND r.city_id = :city_id
           AND r.brgy_id = :brgy_id
-          AND r.form_type != 2
+          
           ");
     // Bind parameters
             $stmt->bindParam(':status', $status);
