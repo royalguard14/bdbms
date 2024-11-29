@@ -353,8 +353,7 @@ session_start();
                 <option value="2">Budget Plan</option>
                 <option value="5">Calamity Report</option>
                 <option value="4">Liquidation Report</option>
-                <option value="1">Other Report</option>
-                <option value="3">Other Plan</option>
+
               </select>
             </div>
             <div class="col-md-12 col-sm-12 form-group">
