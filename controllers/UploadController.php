@@ -62,7 +62,8 @@ function handleUpload() {
     $form_type = (int) ($_POST['form_type'] ?? 0);
     $file_name = basename($file['name']);
     $period_covered = $_POST['period_covered'] ?? date('Y-m-d');
-    $status = ($form_type == 2 || $form_type == 5) ? 'Accepted' : 'Uploaded';
+    #$status = ($form_type == 2 || $form_type == 5) ? 'Accepted' : 'Uploaded';
+    $status = ($form_type == 2 || $form_type == 5) ? 'Uploaded' : 'Uploaded';
     $user_id = $_SESSION['user_data']['id'] ?? null;
     $city_id = $_SESSION['user_data']['city_id'] ?? null;
     $brgy_id = $_SESSION['user_data']['brgy_id'] ?? 0;
