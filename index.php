@@ -139,7 +139,7 @@ session_start();
 
               '      <li>
                 <a href="index.php?page=report&&section=route" id="uploadmodal">
-                  <i class="fa fa-bezier-curve"></i> Routing Report 
+                  <i class="fa fa-arrows-alt"></i> Routing Report 
                   <span class="label label-success pull-right"></span>
                 </a>
               </li>'
