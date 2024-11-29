@@ -134,7 +134,17 @@ session_start();
                   <i class="fa fa-upload"></i> Upload Report 
                   <span class="label label-success pull-right"></span>
                 </a>
-              </li>';
+              </li>'.
+
+
+              '      <li>
+                <a href="index.php?page=report&&section=route" id="uploadmodal">
+                  <i class="fa fa-bezier-curve"></i> Routing Report 
+                  <span class="label label-success pull-right"></span>
+                </a>
+              </li>'
+
+              ;
             }
 
              ?>
@@ -166,6 +176,7 @@ session_start();
                       echo '<li><a href="index.php?page=report&&section=Submitted">Pending</a></li>';
                       echo '<li><a href="index.php?page=report&&section=Accepted">Accepted</a></li>';
                       echo '<li><a href="index.php?page=report&&section=Reverted">Reverted</a></li>';
+
                     }
           // For ADMIN ASSISTANT and HDRRMO ADMIN
                     if (in_array($role, ["ADMIN ASSISTANT", "HDRRMO ADMIN"])) {
