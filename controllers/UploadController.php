@@ -176,6 +176,64 @@ function handleEdit() {
     }
 }
 
+// function handleStatusChange($access, $statuss) {
+//     if (in_array($access, $_SESSION['user_permissions'])) {
+//         try {
+//             global $pdo;
+//             $id = $_POST['id'] ?? null;
+//             $remark = $_POST['remark'] ?? '';
+//             $status = $statuss;
+//             $user_id = $_SESSION['user_data']['id'] ?? null;
+
+//             if (!$id) {
+//                 echo json_encode(['success' => false, 'message' => 'Report ID is required.']);
+//                 return;
+//             }
+
+//             $pdo->beginTransaction();
+
+//             // Fetch the current status of the report
+//             $currentStatusStmt = $pdo->prepare("SELECT status FROM reports WHERE id = ?");
+//             $currentStatusStmt->execute([$id]);
+//             $currentStatus = $currentStatusStmt->fetchColumn();
+
+//             if (!$currentStatus) {
+//                 throw new Exception('Report not found.');
+//             }
+
+//             // Update the report status
+//             $stmt = $pdo->prepare("UPDATE reports SET status = :status, remark = :remark WHERE id = :id");
+//             $stmt->bindParam(':status', $status);
+//             $stmt->bindParam(':remark', $remark);
+//             $stmt->bindParam(':id', $id);
+//             $stmt->execute();
+
+//             // Log the status change in report_status_logs
+//             $logStmt = $pdo->prepare("
+//                 INSERT INTO report_status_logs (report_id, previous_status, new_status, changed_by) 
+//                 VALUES (:report_id, :previous_status, :new_status, :changed_by)
+//                 ");
+//             $logStmt->bindParam(':report_id', $id);
+//             $logStmt->bindParam(':previous_status', $currentStatus);
+//             $logStmt->bindParam(':new_status', $status);
+//             $logStmt->bindParam(':changed_by', $user_id);
+//             $logStmt->execute();
+
+//             $pdo->commit();
+
+//             // Return a success response
+//             echo json_encode(['success' => true, 'message' => "Report status changed to '$status' and log updated successfully!"]);
+//         } catch (Exception $e) {
+//             $pdo->rollBack();
+//             echo json_encode(['success' => false, 'message' => 'An error occurred: ' . $e->getMessage()]);
+//         }
+//     } else {
+//         echo json_encode(['success' => false, 'message' => 'Permission denied.']);
+//     }
+// }
+
+
+
 function handleStatusChange($access, $statuss) {
     if (in_array($access, $_SESSION['user_permissions'])) {
         try {
@@ -201,10 +259,15 @@ function handleStatusChange($access, $statuss) {
                 throw new Exception('Report not found.');
             }
 
-            // Update the report status
-            $stmt = $pdo->prepare("UPDATE reports SET status = :status, remark = :remark WHERE id = :id");
+            // Check if status is "Reverted" and adjust the SQL query accordingly
+            if ($status === 'Reverted') {
+                $stmt = $pdo->prepare("UPDATE reports SET status = :status, remark = :remark WHERE id = :id");
+                $stmt->bindParam(':remark', $remark);  // Bind remark for "Reverted" status
+            } else {
+                $stmt = $pdo->prepare("UPDATE reports SET status = :status WHERE id = :id");
+            }
+            
             $stmt->bindParam(':status', $status);
-            $stmt->bindParam(':remark', $remark);
             $stmt->bindParam(':id', $id);
             $stmt->execute();
 
@@ -231,3 +294,4 @@ function handleStatusChange($access, $statuss) {
         echo json_encode(['success' => false, 'message' => 'Permission denied.']);
     }
 }
+

@@ -63,7 +63,7 @@ if (isset($_SESSION['log_in']) && $_SESSION['log_in']) {
                 LEFT JOIN barangay b ON r.brgy_id = b.id
                 WHERE r.status = :status 
                 AND r.city_id = :city_id
-                AND r.form_type != 2
+                
                 ");
     // Bind parameters
             $stmt->bindParam(':status', $status);
