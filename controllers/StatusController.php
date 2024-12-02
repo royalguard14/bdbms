@@ -87,25 +87,47 @@ if (isset($_SESSION['log_in']) && $_SESSION['log_in']) {
         function fetchReportsByStatusAssistant($status, $pdo) {
     // SQL query to get reports with the latest status from report_status_logs
             $stmt = $pdo->prepare("
-                SELECT r.*, rsl.new_status, rsl.changed_at, 
-                COALESCE(p.first_name, 'Joe') AS first_name, 
-                COALESCE(p.last_name, 'Smith') AS last_name,
-                b.name AS barangay_name
-                FROM reports r
-                JOIN (
-                    SELECT report_id, MAX(changed_at) AS latest_change
-                    FROM report_status_logs
-                    GROUP BY report_id
-                    ) latest_status ON r.id = latest_status.report_id
-                JOIN report_status_logs rsl ON r.id = rsl.report_id AND rsl.changed_at = latest_status.latest_change
-                LEFT JOIN profiles p ON rsl.changed_by = p.user_id
-                LEFT JOIN barangay b ON r.brgy_id = b.id
-                WHERE r.status = :status 
-                AND r.city_id = :city_id
-                
+  SELECT 
+    r.*, 
+    rsl.new_status, 
+    rsl.changed_at, 
+    COALESCE(p.first_name, 'Joe') AS first_name, 
+    COALESCE(p.last_name, 'Smith') AS last_name,
+    b.name AS barangay_name
+FROM 
+    reports r
+JOIN (
+    SELECT 
+        report_id, 
+        MAX(changed_at) AS latest_change
+    FROM 
+        report_status_logs
+    GROUP BY 
+        report_id
+) latest_status 
+    ON r.id = latest_status.report_id
+JOIN 
+    report_status_logs rsl 
+    ON r.id = rsl.report_id AND rsl.changed_at = latest_status.latest_change
+LEFT JOIN 
+    profiles p 
+    ON rsl.changed_by = p.user_id
+LEFT JOIN 
+    barangay b 
+    ON r.brgy_id = b.id
+WHERE 
+    r.city_id = :city_id
+    AND r.status NOT IN ('Archived','Uploaded')
+ORDER BY 
+    CASE 
+        WHEN r.status = 'Submitted' THEN 1
+        WHEN r.status = 'Verified' THEN 2
+        WHEN r.status = 'Confirm' THEN 3
+        WHEN r.status = 'Accepted' THEN 4
+    END;
                 ");
     // Bind parameters
-            $stmt->bindParam(':status', $status);
+           
             $stmt->bindParam(':city_id', $_SESSION["user_data"]['city_id']);
     // Execute the query and return the result
             $stmt->execute();

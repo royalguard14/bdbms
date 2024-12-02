@@ -26,15 +26,20 @@ if (isset($_SESSION['log_in'])) {
   <!-- jQuery -->
   <script src="../../assets/vendors/jquery/dist/jquery.min.js"></script>
 </head>
-<body class="login">
+<body class="login" style="background: white;">
+  
   <div>
-    <a class="hiddenanchor" id="signup"></a>
-    <a class="hiddenanchor" id="signin"></a>
+
     <div class="login_wrapper">
       <div class="animate form login_form">
+         
+
         <section class="login_content">
+
           <form id="loginForm">
             <h1>Login Form</h1>
+            <img src="../../assets/48283c90-d24f-4a45-828e-66d5fef20a0f.jpg" style="width: 20rem;">
+            <hr>
             <div>
               <input type="text" id="username" class="form-control" placeholder="Username" required="" />
             </div>

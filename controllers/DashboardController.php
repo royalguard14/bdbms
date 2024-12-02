@@ -103,6 +103,7 @@ function getTotalamountspentofmybrgy($pdo, $brgyId) {
             r.brgy_id = :brgy_id
             AND r.form_type = 2
             AND YEAR(l.liquidation_date) = YEAR(CURDATE())
+                    AND status = 'Accepted'
     ");
 
     $stmt->bindParam(':brgy_id', $brgyId, PDO::PARAM_INT);
@@ -121,6 +122,7 @@ $stmt = $pdo->prepare("
           form_type = 5
           AND brgy_id = :brgy_id
           AND YEAR(period_covered) = YEAR(CURDATE())
+                  AND status = 'Accepted'
     ");
 
     $stmt->bindParam(':brgy_id', $brgyId, PDO::PARAM_INT);
@@ -234,47 +236,11 @@ function getAllBudgetForThisYear($pdo) {
 }
 
 
-
-// function getBarangayBudgetDetails($pdo) {
-//     $stmt = $pdo->prepare("
-//         SELECT
-//             b.name,
-//             -- Get the total allocated budget
-//             SUM(bb.allocated_budget) AS total_budget,
-            
-//             -- Get the total amount spent from budget plans (form_type = 2)
-//             IFNULL(SUM(CAST(JSON_EXTRACT(rp.remark, '$.amount_spent') AS DECIMAL(10,2))), 0) AS total_budget_plan_spent,
-            
-//             -- Get the total calamity report amount (form_type = 5)
-//             IFNULL(SUM(CAST(JSON_EXTRACT(rp2.remark, '$.amount_spent') AS DECIMAL(10,2))), 0) AS total_calamity_report_spent,
-            
-//             -- Get the total liquidation amount for this barangay
-//             IFNULL(SUM(l.amount_spent), 0) AS total_liquidation
-//         FROM
-//             barangay_budget bb
-//         LEFT JOIN
-//             barangay b ON bb.barangay_id = b.id
-//         LEFT JOIN
-//             reports rp ON rp.brgy_id = b.id AND rp.form_type = 2 -- Budget Plan
-//         LEFT JOIN
-//             reports rp2 ON rp2.brgy_id = b.id AND rp2.form_type = 5 -- Calamity Report
-//         LEFT JOIN
-//             liquidations l ON l.barangay_id = b.id
-//         WHERE
-//             YEAR(bb.year) = YEAR(CURDATE()) -- Filter for current year
-//         GROUP BY
-//             b.name
-//     ");
-//     $stmt->execute();
-//     return $stmt->fetchAll(PDO::FETCH_ASSOC);
-// }
-
-
-
 function getBarangayBudgetDetails($pdo) {
     $stmt = $pdo->prepare("
   SELECT
     b.name AS barangay_name,
+    b.id as barangay_id,
     
     -- Total allocated budget for the barangay
     IFNULL(SUM(bb.allocated_budget), 0) AS total_budget,

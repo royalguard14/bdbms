@@ -30,13 +30,7 @@ endif
   <div class="tile_count col-md-12 col-sm-12">
     <?php if ($_SESSION["role"]['name'] == "BRGY USER"): ?>
       <div class="col-md-4 col-sm-4 tile_stats_count">
-        <span class="count_top"><i class="fa fa-money"></i> Budget Allocated (This year)</span>
-        <div class="count red">
-          <?php
-          $formattedAmount = '₱ ' . number_format($totalAlocatedBudget?? 0, 2);
-          echo htmlspecialchars($formattedAmount);
-          ?>
-        </div>
+  
       </div>
       <div class="col-md-4 col-sm-4 tile_stats_count">
         <span class="count_top"><i class="fa fa-bolt"></i> Quick Response Funds (This year)</span>
@@ -60,14 +54,52 @@ endif
           ?>
         </div>
       </div>
+
+
+<!-- 1 -->
+
+
       <div class="col-md-4 col-sm-4 tile_stats_count">
-        <span class="count_top"><i class="fa fa-file"></i> Total Reports / Plans (This Month)</span>
-        <div class="count">
-          <?php echo $totalReportsForMonth; ?>
+        
+             <span class="count_top"><i class="fa fa-money"></i> Budget Allocated (This year)</span>
+        <div class="count red">
+          <?php
+          $formattedAmount = '₱ ' . number_format($totalAlocatedBudget?? 0, 2);
+          echo htmlspecialchars($formattedAmount);
+          ?>
         </div>
       </div>
       <div class="col-md-4 col-sm-4 tile_stats_count">
-        <span class="count_top"><i class="fa fa-area-chart"></i> Quick Response Funds (Remaining)</span>
+        <span class="count_top"><i class="fa fa-area-chart"></i> Total amount Spent (QRF)</span>
+        <div class="count">
+          <?php
+          $totalAllocatedQRFBudget = $totalgetfromQRFBudget ?? 0;
+      
+       
+          $formattedThirtyPercent = '₱ ' . number_format($totalAllocatedQRFBudget, 2); 
+          echo htmlspecialchars($formattedThirtyPercent);
+          ?>
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-4 tile_stats_count">
+        <span class="count_top"><i class="fa fa-pie-chart"></i> Total amount Spent (Plans)</span>
+        <div class="count">
+          <?php
+       
+          $pwdpa = $totalgetfromAlocatedBudget ?? 0;
+          $formatedPwdpa = '₱ ' . number_format($pwdpa, 2); 
+          echo htmlspecialchars($formatedPwdpa);
+          ?>
+        </div>
+      </div>
+
+
+
+      <div class="col-md-4 col-sm-4 tile_stats_count">
+       
+      </div>
+      <div class="col-md-4 col-sm-4 tile_stats_count">
+        <span class="count_top"><i class="fa fa-area-chart"></i> Total Remaining Balance (QRF)</span>
         <div class="count">
           <?php
           $totalAllocatedQRFBudget = $totalgetfromQRFBudget ?? 0;
@@ -79,7 +111,7 @@ endif
         </div>
       </div>
       <div class="col-md-4 col-sm-4 tile_stats_count">
-        <span class="count_top"><i class="fa fa-pie-chart"></i> Remaining funds</span>
+        <span class="count_top"><i class="fa fa-pie-chart"></i> Total Remaining Balance (Plans)</span>
         <div class="count">
           <?php
           $totalAllocatedBudget = $totalAlocatedBudget ?? 0;
@@ -91,6 +123,11 @@ endif
           ?>
         </div>
       </div>
+
+
+
+
+
     <?php endif; ?>
     <?php if ($_SESSION["role"]['name'] == "ADMIN ASSISTANT" || $_SESSION["role"]['name'] == "HDRRMO ADMIN"): ?>
       <div class="col-md-2 col-sm-4 tile_stats_count">
@@ -297,22 +334,67 @@ endif
 
 
  <?php if ($_SESSION["role"]['name'] == "ADMIN ASSISTANT" || $_SESSION["role"]['name'] == "HDRRMO ADMIN"): ?>
-<div class="row">
-  <?php foreach ($getBarangayBudgetDetails as $barangay): ?>
-    <div class="col-md-4 col-sm-6">
-      <div class="x_panel fixed_height_320">
-        <div class="x_title">
-          <h2><?php echo htmlspecialchars($barangay['barangay_name']); ?></h2>
-          <div class="clearfix"></div>
-        </div>
-        <div class="x_content">
-          <?php if (empty($barangay['total_budget']) || $barangay['total_budget'] == 0): ?>
-            <!-- No Budget Assigned -->
+
+<form id="barangayBudgetForm">
+  <div class="form-group">
+    <label for="barangaySelect">Select Barangay</label>
+    <select id="barangaySelect" class="form-control">
+      <option value="">Select Barangay</option>
+      <?php foreach ($getBarangayBudgetDetails as $barangay): ?>
+        <!-- Only show barangays with a budget set -->
+        <?php if (!empty($barangay['total_budget']) && $barangay['total_budget'] != 0): ?>
+          <option value="<?php echo $barangay['barangay_id']; ?>">
+            <?php echo htmlspecialchars($barangay['barangay_name']); ?>
+          </option>
+        <?php endif; ?>
+      <?php endforeach; ?>
+    </select>
+  </div>
+</form>
+
+<div id="barangayBudgetDetails" style="display: none;">
+  <!-- Budget details will be dynamically inserted here -->
+</div>
+
+<script>
+  // JavaScript to handle dropdown selection change
+  document.getElementById('barangaySelect').addEventListener('change', function() {
+    const barangayId = this.value;
+    const detailsDiv = document.getElementById('barangayBudgetDetails');
+    
+    if (barangayId) {
+      // Find the selected barangay's details (using AJAX or directly from PHP if needed)
+      const barangayData = <?php echo json_encode($getBarangayBudgetDetails); ?>;
+      const selectedBarangay = barangayData.find(barangay => barangay.barangay_id == barangayId);
+      
+      if (selectedBarangay) {
+        // Convert values to numbers to avoid errors with toFixed()
+        const totalBudget = parseFloat(selectedBarangay['total_budget']) || 0;
+        const totalBudgetPlanSpent = parseFloat(selectedBarangay['total_budget_plan_spent']) || 0;
+        const totalCalamityReportSpent = parseFloat(selectedBarangay['total_calamity_report_spent']) || 0;
+
+        let htmlContent = `
+          <div class="x_panel fixed_height_320">
+            <div class="x_title">
+              <h2>Barangay ${selectedBarangay['barangay_name']}</h2>
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+        `;
+        
+        if (totalBudget === 0) {
+          htmlContent += `
             <div class="alert alert-warning text-center" role="alert">
               <strong>No budget assigned for this barangay.</strong>
             </div>
-          <?php else: ?>
-            <!-- Display Budget Details -->
+          `;
+        } else {
+          const totalSpent = totalBudgetPlanSpent + totalCalamityReportSpent;
+          const utilization = totalBudget > 0 
+            ? (totalSpent / totalBudget) * 100 
+            : 0;
+          
+          htmlContent += `
             <table class="table table-striped">
               <thead>
                 <tr>
@@ -323,45 +405,43 @@ endif
               <tbody>
                 <tr>
                   <td>Total Budget</td>
-                  <td><?php echo number_format($barangay['total_budget'], 2); ?></td>
+                  <td>${totalBudget.toFixed(2)}</td>
                 </tr>
                 <tr>
                   <td>Budget Plan Spent</td>
-                  <td><?php echo number_format($barangay['total_budget_plan_spent'], 2); ?></td>
+                  <td>${totalBudgetPlanSpent.toFixed(2)}</td>
                 </tr>
                 <tr>
                   <td>Calamity Report Spent</td>
-                  <td><?php echo number_format($barangay['total_calamity_report_spent'], 2); ?></td>
+                  <td>${totalCalamityReportSpent.toFixed(2)}</td>
                 </tr>
               </tbody>
             </table>
             <div>
               <strong>Budget Utilization:</strong>
-              <?php 
-                $totalSpent = $barangay['total_budget_plan_spent'] + $barangay['total_calamity_report_spent'];
-                $utilization = $barangay['total_budget'] > 0 
-                  ? ($totalSpent / $barangay['total_budget']) * 100 
-                  : 0;
-              ?>
               <div class="progress">
-                <div 
-                  class="progress-bar <?php echo $utilization > 80 ? 'bg-danger' : 'bg-success'; ?>" 
+                <div class="progress-bar ${utilization > 80 ? 'bg-danger' : 'bg-success'}" 
                   role="progressbar" 
-                  style="width: <?php echo $utilization; ?>%" 
-                  aria-valuenow="<?php echo $utilization; ?>" 
+                  style="width: ${utilization}%" 
+                  aria-valuenow="${utilization}" 
                   aria-valuemin="0" 
-                  aria-valuemax="100"
-                >
-                  <?php echo round($utilization, 2); ?>%
+                  aria-valuemax="100">
+                  ${utilization.toFixed(2)}%
                 </div>
               </div>
             </div>
-          <?php endif; ?>
-        </div>
-      </div>
-    </div>
-  <?php endforeach; ?>
-</div>
+          `;
+        }
+
+        htmlContent += '</div></div>';
+        detailsDiv.innerHTML = htmlContent;
+        detailsDiv.style.display = 'block';  // Show the details
+      }
+    } else {
+      detailsDiv.style.display = 'none';  // Hide the details if no barangay is selected
+    }
+  });
+</script>
 
 
  <?php endif; ?>

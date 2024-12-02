@@ -7,6 +7,12 @@ $formTypeLabels = [
 ];
 
  ?>
+
+
+
+<?php echo '<pre>'.var_export($mysubmitted, true).'</pre>' ?>
+
+ 
 <!-- City Management Content -->
 <div class="col-md-12 col-sm-12">
 	<div class="x_panel">

@@ -58,7 +58,81 @@ public function fetchBudgetPlans()
             $stmt->execute();
             
             $budgetPlans = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            echo json_encode(['success' => true, 'budgetPlans' => $budgetPlans]);
+
+
+
+    $stmt = $this->db->prepare("
+        SELECT 
+            SUM(l.amount_spent) AS total_spent
+        FROM 
+            liquidations l
+        JOIN 
+            reports r ON l.budget_plan_id = r.id
+        WHERE 
+            r.brgy_id = :brgy_id
+            AND r.form_type = 2
+            AND YEAR(l.liquidation_date) = YEAR(CURDATE())
+    ");
+
+    $stmt->bindParam(':brgy_id', $brgyId, PDO::PARAM_INT);
+    $stmt->execute();
+
+    $getTotalamountspentofmybrgy = $stmt->fetchColumn() ?? 0;
+
+
+$stmt = $this->db->prepare("
+        SELECT SUM(CAST(JSON_EXTRACT(remark, '$.amount_request') AS DECIMAL(10,2))) AS total_amount_request
+        FROM reports
+        WHERE 
+          form_type = 5
+          AND brgy_id = :brgy_id
+          AND YEAR(period_covered) = YEAR(CURDATE())
+                  AND status = 'Accepted'
+    ");
+
+    $stmt->bindParam(':brgy_id', $brgyId, PDO::PARAM_INT);
+    $stmt->execute();
+
+    $getTotalamountspentofmybrgyqrf = $stmt->fetchColumn() ?? 0;
+
+
+
+    $stmt = $this->db->prepare("
+        SELECT allocated_budget FROM barangay_budget
+        WHERE barangay_id = :barangay_id 
+        AND YEAR(year) = YEAR(CURDATE())
+
+    ");
+
+    $stmt->bindParam(':barangay_id', $brgyId);
+    $stmt->execute();
+    $totalAlocatedBudget = $stmt->fetchColumn() ?? 0;
+
+
+
+$stmt = $this->db->prepare("
+        SELECT SUM(CAST(JSON_EXTRACT(remark, '$.amount_request') AS DECIMAL(10,2))) AS total_amount_request
+        FROM reports
+        WHERE 
+          form_type = 2
+          AND brgy_id = :brgy_id
+          AND YEAR(period_covered) = YEAR(CURDATE())
+          AND status = 'Accepted'
+    ");
+
+    $stmt->bindParam(':brgy_id', $brgyId, PDO::PARAM_INT);
+    $stmt->execute();
+
+    $totalbudgetplan = $stmt->fetchColumn() ?? 0;
+
+
+
+            echo json_encode([
+                'success' => true, 
+                'budgetPlans' => $budgetPlans, 
+                'totalbudget' => ($totalAlocatedBudget*.7)-$getTotalamountspentofmybrgy, 
+                'totalqrf' => ($totalAlocatedBudget*.3)-$getTotalamountspentofmybrgyqrf, 
+                'totalleft' => $totalAlocatedBudget - $totalbudgetplan]);
         } catch (PDOException $e) {
             echo json_encode([
                 'success' => false, 
@@ -71,6 +145,30 @@ public function fetchBudgetPlans()
         exit();
     }
 }
+
+
+
+
+public function fetchlimit(){
+            $cityId = $_SESSION['user_data']['city_id']; 
+            $brgyId = $_SESSION['user_data']['brgy_id']; 
+   try{
+
+
+
+
+
+
+        
+    }
+    catch (Exception $e) {
+        $this->db->rollBack();
+        echo json_encode(['success' => false, 'message' => 'Error saving data: ' . $e->getMessage()]);
+    }
+
+}
+
+
 
 
     public function fetchLiquidationRecords()
@@ -114,7 +212,9 @@ if (isset($_SESSION['log_in']) && $_SESSION['log_in']) {
             $controller->fetchBudgetPlans();
         } elseif ($action === 'fetch') {
             $controller->fetchLiquidationRecords();
-        } else {
+        } elseif ($action === 'getLimit') {
+            $controller->fetchlimit();
+        }else {
             echo json_encode(['error' => true, 'message' => 'Invalid action.']);
         }
     } else {

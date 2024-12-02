@@ -37,11 +37,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         break;
         case 'toAccepted':
         handleStatusChange('toAccept', 'Accepted');
+   
+
+
+
+        
         break;
         default:
         echo json_encode(['success' => false, 'message' => 'Invalid action: ' . $action]);
     }
 }
+
+
+
 
 function handleUpload() {
     global $pdo;
@@ -55,15 +63,19 @@ function handleUpload() {
 
     // Extract form data
     $file = $_FILES['uploaded_file'];
-    $title1 = trim($_POST['title'] ?? '');
-    $title2 = trim($_POST['name_extention'] ?? '');
+$title1 = trim($_POST['title'] ?? '');
+$title2 = trim($_POST['name_extention'] ?? '');
+
+if (!empty($title2)) {
     $title = strtoupper($title2 . ': ' . $title1);
+} else {
+    $title = $title1;
+}
     $amount_budget = $_POST['amount_budget'] ?? null;
     $form_type = (int) ($_POST['form_type'] ?? 0);
     $file_name = basename($file['name']);
     $period_covered = $_POST['period_covered'] ?? date('Y-m-d');
-    #$status = ($form_type == 2 || $form_type == 5) ? 'Accepted' : 'Uploaded';
-    $status = ($form_type == 2 || $form_type == 5) ? 'Uploaded' : 'Uploaded';
+    $status = ($form_type == 5) ? 'Accepted' : 'Uploaded';
     $user_id = $_SESSION['user_data']['id'] ?? null;
     $city_id = $_SESSION['user_data']['city_id'] ?? null;
     $brgy_id = $_SESSION['user_data']['brgy_id'] ?? 0;
@@ -112,8 +124,7 @@ function handleUpload() {
             ");
             $stmt->execute([
                 ':title' => $title,
-                ':form_type' => $form_type,
-                
+                ':form_type' => $form_type,                
                 ':status' => $status,
                 ':remark' => $remark,
                 ':uploaded_file' => $file_name,
@@ -175,63 +186,6 @@ function handleEdit() {
         }
     }
 }
-
-// function handleStatusChange($access, $statuss) {
-//     if (in_array($access, $_SESSION['user_permissions'])) {
-//         try {
-//             global $pdo;
-//             $id = $_POST['id'] ?? null;
-//             $remark = $_POST['remark'] ?? '';
-//             $status = $statuss;
-//             $user_id = $_SESSION['user_data']['id'] ?? null;
-
-//             if (!$id) {
-//                 echo json_encode(['success' => false, 'message' => 'Report ID is required.']);
-//                 return;
-//             }
-
-//             $pdo->beginTransaction();
-
-//             // Fetch the current status of the report
-//             $currentStatusStmt = $pdo->prepare("SELECT status FROM reports WHERE id = ?");
-//             $currentStatusStmt->execute([$id]);
-//             $currentStatus = $currentStatusStmt->fetchColumn();
-
-//             if (!$currentStatus) {
-//                 throw new Exception('Report not found.');
-//             }
-
-//             // Update the report status
-//             $stmt = $pdo->prepare("UPDATE reports SET status = :status, remark = :remark WHERE id = :id");
-//             $stmt->bindParam(':status', $status);
-//             $stmt->bindParam(':remark', $remark);
-//             $stmt->bindParam(':id', $id);
-//             $stmt->execute();
-
-//             // Log the status change in report_status_logs
-//             $logStmt = $pdo->prepare("
-//                 INSERT INTO report_status_logs (report_id, previous_status, new_status, changed_by) 
-//                 VALUES (:report_id, :previous_status, :new_status, :changed_by)
-//                 ");
-//             $logStmt->bindParam(':report_id', $id);
-//             $logStmt->bindParam(':previous_status', $currentStatus);
-//             $logStmt->bindParam(':new_status', $status);
-//             $logStmt->bindParam(':changed_by', $user_id);
-//             $logStmt->execute();
-
-//             $pdo->commit();
-
-//             // Return a success response
-//             echo json_encode(['success' => true, 'message' => "Report status changed to '$status' and log updated successfully!"]);
-//         } catch (Exception $e) {
-//             $pdo->rollBack();
-//             echo json_encode(['success' => false, 'message' => 'An error occurred: ' . $e->getMessage()]);
-//         }
-//     } else {
-//         echo json_encode(['success' => false, 'message' => 'Permission denied.']);
-//     }
-// }
-
 
 
 function handleStatusChange($access, $statuss) {

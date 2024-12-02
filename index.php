@@ -70,7 +70,7 @@ session_start();
              </ul>
            </div>
            <div class="menu_section">
-            <h3>Budget Management</h3>
+        
             <ul class="nav side-menu">
               <?php
     // Define role for cleaner checks
@@ -92,8 +92,9 @@ session_start();
                 </li>';
               } else {
       // For ADMIN ASSISTANT and HDRRMO ADMIN
-                if (in_array($role, ["ADMIN ASSISTANT", "HDRRMO ADMIN"])) {
+                if (in_array($role, ["HDRRMO ADMIN"])) {
                   echo '
+                      <h3>Budget Management</h3>
                   <li>
                   <a>
                   <i class="fa fa-money"></i> Budget Setting
@@ -116,6 +117,8 @@ session_start();
                   <ul class="nav child_menu">
                   <li><a href="#" id="uploadmodalbudget">Upload Budget Plan</a></li>
                   <li><a href="index.php?page=budget&&section=mybudgetPlan">Barangay Budget Plans</a></li>
+                  <li><a href="#" id="uploadmodalcalamity">Upload Calamity Report</a></li>
+
                   <li><a href="index.php?page=budget&&section=calamity">Barangay Calamity Report</a></li>
                   </ul>
                   </li>';
@@ -128,66 +131,35 @@ session_start();
             <h3>Report Management</h3>
             <ul class="nav side-menu">
 <?php 
-              if ($role === "BRGY USER") {
-                echo '
-              <li>
-                <a href="#" id="uploadmodal">
-                  <i class="fa fa-upload"></i> Upload Report 
-                  <span class="label label-success pull-right"></span>
-                </a>
-              </li>'.
+if ($role === "BRGY USER") {
+  echo '
+  <li>
+  <a href="#" id="uploadliquidation">
+  <i class="fa fa-upload"></i> Upload Liquidation 
+  <span class="label label-success pull-right"></span>
+  </a>
+  </li>'
+  ;
+}
+if ($role === "ADMIN ASSISTANT"){
+  echo '
+  <li>
+  <a href="index.php?page=report&&section=allstatus">
+  <i class="fa fa-files-o"></i> Report Status 
+  <span class="label label-success pull-right"></span>
+  </a>
+  </li>'
+  ;
+}
 
 
-              '      <li>
-                <a href="index.php?page=report&&section=route" id="uploadmodal">
-                  <i class="fa fa-arrows-alt"></i> Routing Report 
-                  <span class="label label-success pull-right"></span>
-                </a>
-              </li>'
 
-              ;
-            }
+
+
+
 
              ?>
-              <li>
-                <a>
-                  <i class="fa fa-files-o"></i> Report Status
-                  <span class="fa fa-chevron-down"></span>
-                </a>
-                <ul class="nav child_menu">
-                  <?php 
-        // Open all options for Zear Developer
-                  if ($role === "Zear Developer") {
-                    echo '
-                    <li><a href="index.php?page=report&&section=Uploaded">Uploaded</a></li>
-                    <li><a href="index.php?page=report&&section=Archived">Archived</a></li>
-                    <li><a href="index.php?page=report&&section=Submitted">Pending</a></li>
-                    <li><a href="index.php?page=report&&section=Accepted">Accepted</a></li>
-                    <li><a href="index.php?page=report&&section=Reverted">Reverted</a></li>
-                    <li><a href="index.php?page=report&&section=Verified">Verified</a></li>
-                    <li><a href="index.php?page=report&&section=Confirmed">Confirmed</a></li>';
-                  } else {
-          // For BRGY USER
-                    if ($role === "BRGY USER") {
-                      echo '<li><a href="index.php?page=report&&section=Uploaded">Uploaded</a></li>';
-                      echo '<li><a href="index.php?page=report&&section=Archived">Archived</a></li>';
-                    }
-          // For both ADMIN ASSISTANT and BRGY USER
-                    if (in_array($role, ["ADMIN ASSISTANT", "BRGY USER"])) {
-                      echo '<li><a href="index.php?page=report&&section=Submitted">Pending</a></li>';
-                      echo '<li><a href="index.php?page=report&&section=Accepted">Accepted</a></li>';
-                      echo '<li><a href="index.php?page=report&&section=Reverted">Reverted</a></li>';
-
-                    }
-          // For ADMIN ASSISTANT and HDRRMO ADMIN
-                    if (in_array($role, ["ADMIN ASSISTANT", "HDRRMO ADMIN"])) {
-                      echo '<li><a href="index.php?page=report&&section=Verified">Verified</a></li>';
-                      echo '<li><a href="index.php?page=report&&section=Confirmed">Confirmed</a></li>';
-                    }
-                  }
-                  ?>
-                </ul>
-              </li>
+    
             </ul>
           </div>
           <?php if ($_SESSION["role"]['name'] == "Zear Developer"): ?>
@@ -224,16 +196,8 @@ session_start();
         <!-- /sidebar menu -->
         <!-- /menu footer buttons -->
         <div class="sidebar-footer hidden-small">
-          <a data-toggle="tooltip" data-placement="top" title="Settings">
-            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-          </a>
-          <a data-toggle="tooltip" data-placement="top" title="FullScreen">
-            <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
-          </a>
-          <a data-toggle="tooltip" data-placement="top" title="Lock">
-            <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
-          </a>
-          <a data-toggle="tooltip" data-placement="top" title="Logout" href="#" id="logout">
+         
+          <a data-toggle="tooltip" data-placement="top" title="Logout" href="#" id="logout" style="width:100%">
             <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
           </a>
         </div>
@@ -329,7 +293,7 @@ session_start();
 <!-- footer content -->
 <footer>
   <div class="pull-right">
-    <a href="#">DISASTER BUDGET MANAGEMENT SYSTEM</a>
+    <a href="#">SMCC CCIS</a>
   </div>
   <div class="clearfix"></div>
 </footer>
@@ -337,12 +301,16 @@ session_start();
 </div>
 </div>
 
+
+
 <!-- Modal -->
-<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="uploadform">
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="modalLiq">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">×</span>
+        </button>
       </div>
       <div class="modal-body">
         <div class="row">
@@ -353,15 +321,63 @@ session_start();
             <label class="control-label">Date today</label>
           </div>
           <div class="col-md-4 col-sm-4 form-group">
-            <input type="text" class="form-control" id="currentDateTime" readonly="readonly" value="">
+            <input type="text" class="form-control" id="currentDateTime1" readonly="readonly" value="">
           </div>
         </div>
         <hr>
-        <form id="uploadForm" enctype="multipart/form-data">
+        <form id="modalLiqForm" enctype="multipart/form-data">
           <div class="row">
- 
+            <!-- Dynamic fields will be appended here -->
+            <div class="col-md-12 col-sm-12 form-group submits">
+              <button type="submit" class="btn btn-primary col-md-12 col-sm-12" id="submitUpload" name="submitUpload">Upload</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 
-<div class="col-md-12 col-sm-12 form-group dynamic-fields">
+
+<script>
+  $('#uploadmodalbudget').on('click', function () {
+
+
+
+    document.getElementById('currentDateTime1').value = getFormattedDateTime();
+    // Show the modal
+    $('#modalLiq').modal('show');
+
+    // Reset the form
+    $('#modalLiqForm')[0].reset();
+
+
+
+    // Fetch budget plans via AJAX
+    $.ajax({
+      url: 'controllers/LiquidationController.php',
+      method: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify({ action: 'fetch_budget_plans' }),
+      success: function (response) {
+   
+        // Parse the response if it comes as a string
+        const parsedResponse = typeof response === 'string' ? JSON.parse(response) : response;
+
+        // Remove previous dynamic fields to prevent duplicates
+        $('.dynamic-fields').remove();
+
+
+
+
+
+
+
+
+
+ additionalFields = `
+        <input type="hidden" name="form_type" value="2">
+        <div class="col-md-12 col-sm-12 form-group dynamic-fields">
         <label for="title">Thematic Area plan</label>
         
         <select name="name_extention" class="form-control" required>
@@ -373,10 +389,6 @@ session_start();
         <option value="DISASTER REHABILITIES AND RECOVERY">D. DISASTER REHABILITIES AND RECOVERY</option>
 
         </select>
-
-
-
-
         </div>
         <div class="col-md-6 col-sm-6 form-group dynamic-fields">
         <label for="title">Form Title</label>
@@ -389,12 +401,100 @@ session_start();
         </div>
         <div class="col-md-6 col-sm-6 form-group dynamic-fields">
         <label for="amount_budget">Amount Budget</label>
-        <input type="number" name="amount_budget" id="amount_budget" class="form-control" required placeholder="Enter the budget amount" step="0.01" min="0">
+        <input type="number" name="amount_budget" id="amount_budget" class="form-control" required placeholder="Enter the budget amount" step="0.01" min="0" max="${parsedResponse.totalleft}">
+        <span>Remaining Balance: ${parsedResponse.totalleft}</span>
         </div>
         <div class="col-md-6 col-sm-6 form-group dynamic-fields">
         <label for="uploaded_file_budget">Upload File Here</label>
         <input type="file" name="uploaded_file" id="uploaded_file_budget" class="form-control" required accept=".pdf">
+        </div>`
+ $('.submits').before(additionalFields);
+
+
+}});
+
+
+
+
+
+
+
+
+
+
+
+
+  });
+
+
+
+
+
+
+
+
+  $('#uploadmodalcalamity').on('click', function () {
+    document.getElementById('currentDateTime1').value = getFormattedDateTime();
+    // Show the modal
+    $('#modalLiq').modal('show');
+
+    // Reset the form
+    $('#modalLiqForm')[0].reset();
+
+
+    // Fetch budget plans via AJAX
+    $.ajax({
+      url: 'controllers/LiquidationController.php',
+      method: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify({ action: 'fetch_budget_plans' }),
+      success: function (response) {
+   
+        // Parse the response if it comes as a string
+        const parsedResponse = typeof response === 'string' ? JSON.parse(response) : response;
+
+        // Remove previous dynamic fields to prevent duplicates
+        $('.dynamic-fields').remove();
+
+
+
+
+
+ additionalFields = `
+        <input type="hidden" name="form_type" value="5">
+        <div class="col-md-6 col-sm-6 form-group dynamic-fields">
+        <label for="title">Form Title</label>
+        <input type="text" name="title" id="title" class="form-control" required placeholder="Enter form title">
         </div>
+        <div class="col-md-6 col-sm-6 form-group dynamic-fields" hidden>
+        <label for="period_covered">Period Covered</label>
+        <input type="date" name="period_covered" id="period_covered" class="form-control"  placeholder="Enter the period covered">
+       
+        </div>
+        <div class="col-md-6 col-sm-6 form-group dynamic-fields">
+        <label for="amount_budget">Amount Budget</label>
+        <input type="number" name="amount_budget" id="amount_budget" class="form-control" required placeholder="Enter the budget amount" step="0.01" min="0" max="${parsedResponse.totalqrf}" >
+
+
+
+        <span>Remaining Balance: ${parsedResponse.totalqrf}</span>
+        </div>
+        <div class="col-md-6 col-sm-6 form-group dynamic-fields">
+        <label for="uploaded_file_budget">Upload File Here</label>
+        <input type="file" name="uploaded_file" id="uploaded_file_budget" class="form-control" required accept=".pdf">
+        </div>`
+ $('.submits').before(additionalFields);
+
+
+
+
+
+
+
+
+
+}
+})
 
 
 
@@ -405,19 +505,122 @@ session_start();
 
 
 
+  });
 
-            <div class="col-md-12 col-sm-12 form-group">
-              <button type="submit" class="btn btn-primary col-md-12 col-sm-12" id="submitUpload" name="submitUpload">Upload</button>
-            </div>
+
+
+
+
+
+
+
+
+
+  $('#uploadliquidation').on('click', function () {
+  
+    // Set the current date and time
+    document.getElementById('currentDateTime1').value = getFormattedDateTime();
+
+    // Show the modal
+    $('#modalLiq').modal('show');
+
+    // Reset the form
+    $('#modalLiqForm')[0].reset();
+
+
+
+
+
+    // Fetch budget plans via AJAX
+    $.ajax({
+      url: 'controllers/LiquidationController.php',
+      method: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify({ action: 'fetch_budget_plans' }),
+      success: function (response) {
+   
+        // Parse the response if it comes as a string
+        const parsedResponse = typeof response === 'string' ? JSON.parse(response) : response;
+
+        // Remove previous dynamic fields to prevent duplicates
+        $('.dynamic-fields').remove();
+
+        // Generate options for the budget plan dropdown
+        let options = '<option value="">Select Budget Plan</option>';
+        if (parsedResponse.success && parsedResponse.budgetPlans.length > 0) {
+          parsedResponse.budgetPlans.forEach(plan => {
+            options += `<option value="${plan.id}">${plan.title} (Period: ${plan.period_covered})</option>`;
+          });
+        } else {
+          options = '<option value="">No Budget Plans Available</option>';
+        }
+
+        // Create additional dynamic fields
+
+        const additionalFields = `
+        <input type="hidden" name="form_type" value="4">
+          <div class="col-md-6 col-sm-6 form-group dynamic-fields">
+            <label for="budget_plan_id">Select Budget Plan</label>
+            <select name="budget_plan_id" id="budget_plan_id" class="form-control" required>
+              ${options}
+            </select>
           </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
+          <div class="col-md-6 col-sm-6 form-group dynamic-fields">
+            <label for="amount_spent">Amount Spent</label>
+            <input type="number" name="amount_spent" id="amount_spent" class="form-control" required placeholder="Enter the amount spent" step="0.01" min="0" max="${parsedResponse.totalbudget}">
+            <span>Remaining Balance: ${parsedResponse.totalbudget}</span>
+          </div>
+          <div class="col-md-12 col-sm-12 form-group dynamic-fields">
+            <label for="description">Description</label>
+            <textarea name="description" id="description" class="form-control" required placeholder="Enter a brief description" rows="5" style="resize: none;"></textarea>
+          </div>
+          <div class="col-md-6 col-sm-6 form-group dynamic-fields">
+            <label for="liquidation_date">Liquidation Date</label>
+            <input type="date" name="liquidation_date" id="liquidation_date" class="form-control" required>
+          </div>
+          <div class="col-md-6 col-sm-6 form-group dynamic-fields">
+            <label for="uploaded_file_liquidation">Upload Supporting Document</label>
+            <input type="file" name="uploaded_file" id="uploaded_file_liquidation" class="form-control" required accept=".pdf">
+          </div>
+        `;
+
+        // Append the fields after the submit button
+        $('.submits').before(additionalFields);
+      },
+      error: function (xhr, status, error) {
+        console.error('Error details:', xhr.responseText, status, error);
+        alert('Failed to fetch budget plans. Please try again.');
+      }
+    });
+  });
+
+  // Function to get formatted date and time
+  function getFormattedDateTime() {
+    const now = new Date();
+    return now.toISOString().slice(0, 19).replace('T', ' '); // Example: "2024-12-02 15:30:45"
+  }
 
 
 
+
+  // Attach an event listener to the input field
+document.addEventListener('DOMContentLoaded', () => {
+    const amountSpentInput = document.getElementById('amount_spent');
+
+    if (amountSpentInput) {
+        amountSpentInput.addEventListener('input', () => {
+            const maxLimit = parseFloat(amountSpentInput.getAttribute('max')); // Get the max attribute
+            const currentValue = parseFloat(amountSpentInput.value); // Get the current input value
+            
+            // If the current value exceeds the max limit, set it to the max limit
+            if (currentValue > maxLimit) {
+                amountSpentInput.value = maxLimit;
+            }
+        });
+    }
+});
+
+</script>
 
 
 <!-- jQuery -->
@@ -478,135 +681,8 @@ session_start();
 <!-- Custom Theme Scripts -->
 <script src="assets/build/js/custom.min.js"></script>
 <!-- Custom -->
+
 <script type="text/javascript">
-  $(document).ready(function () {
-    $('#form_type').on('change', function () {
-      var selectedFormType = $(this).val();
-      $('.dynamic-fields').remove(); // Remove any existing dynamic fields
-      var additionalFields = '';
-      if (selectedFormType === '2' || selectedFormType === '5') {
-        // For Budget Plan
-        additionalFields = `
-        <div class="col-md-12 col-sm-12 form-group dynamic-fields">
-        <label for="title">Thematic Area plan</label>
-        
-        <select name="name_extention" class="form-control" required>
-
-        <option  disabled selected> Select Here</option>
-        <option value="DISASTER PREVENTION AND MITIGATION">A. DISASTER PREVENTION AND MITIGATION</option>
-        <option value="DISASTER PREPAREDNESS">B. DISASTER PREPAREDNESS</option>
-        <option value="DISASTER RESPONSE">C. DISASTER RESPONSE</option>
-        <option value="DISASTER REHABILITIES AND RECOVERY">D. DISASTER REHABILITIES AND RECOVERY</option>
-
-        </select>
-
-
-
-
-        </div>
-        <div class="col-md-6 col-sm-6 form-group dynamic-fields">
-        <label for="title">Form Title</label>
-        <input type="text" name="title" id="title" class="form-control" required placeholder="Enter form title">
-        </div>
-        <div class="col-md-6 col-sm-6 form-group dynamic-fields" hidden>
-        <label for="period_covered">Period Covered</label>
-        <input type="date" name="period_covered" id="period_covered" class="form-control"  placeholder="Enter the period covered">
-       
-        </div>
-        <div class="col-md-6 col-sm-6 form-group dynamic-fields">
-        <label for="amount_budget">Amount Budget</label>
-        <input type="number" name="amount_budget" id="amount_budget" class="form-control" required placeholder="Enter the budget amount" step="0.01" min="0">
-        </div>
-        <div class="col-md-6 col-sm-6 form-group dynamic-fields">
-        <label for="uploaded_file_budget">Upload File Here</label>
-        <input type="file" name="uploaded_file" id="uploaded_file_budget" class="form-control" required accept=".pdf">
-        </div>
-
-
-
-
-
-
-        `;
-      } else if (selectedFormType === '4') {
-        $.ajax({
-          url: 'controllers/LiquidationController.php',
-          method: 'POST',
-          contentType: 'application/json',
-          data: JSON.stringify({ action: 'fetch_budget_plans' }),
-          success: function (response) {
-            // Parse the response if it comes as a string
-            const parsedResponse = typeof response === 'string' ? JSON.parse(response) : response;
-            // Remove previous dynamic fields to prevent duplicates
-            $('.dynamic-fields').remove();
-            let options = '<option value="">Select Budget Plan</option>';
-            if (parsedResponse.success && parsedResponse.budgetPlans.length > 0) {
-              parsedResponse.budgetPlans.forEach(plan => {
-                options += `<option value="${plan.id}">${plan.title} (Period: ${plan.period_covered})</option>`;
-              });
-            } else {
-              options = '<option value="">No Budget Plans Available</option>';
-            }
-            additionalFields = `
-            <div class="col-md-6 col-sm-6 form-group dynamic-fields">
-            <label for="budget_plan_id">Select Budget Plan</label>
-            <select name="budget_plan_id" id="budget_plan_id" class="form-control" required>
-            ${options}
-            </select>
-            </div>
-            <div class="col-md-6 col-sm-6 form-group dynamic-fields">
-            <label for="amount_spent">Amount Spent</label>
-            <input type="number" name="amount_spent" id="amount_spent" class="form-control" required placeholder="Enter the amount spent" step="0.01" min="0">
-            </div>
-            <div class="col-md-12 col-sm-12 form-group dynamic-fields">
-            <label for="description">Description</label>
-            <textarea name="description" id="description" class="form-control" required placeholder="Enter a brief description" rows="5" style="resize: none;"></textarea>
-            </div>
-            <div class="col-md-6 col-sm-6 form-group dynamic-fields">
-            <label for="liquidation_date">Liquidation Date</label>
-            <input type="date" name="liquidation_date" id="liquidation_date" class="form-control" required>
-            </div>
-            <div class="col-md-6 col-sm-6 form-group dynamic-fields">
-            <label for="uploaded_file_liquidation">Upload Supporting Document</label>
-            <input type="file" name="uploaded_file" id="uploaded_file_liquidation" class="form-control" required accept=".pdf">
-            </div>
-            `;
-            // Append the additional fields after the dropdown
-            $('#form_type').closest('.form-group').after(additionalFields);
-          },
-          error: function (xhr, status, error) {
-            console.error('Error details:', xhr.responseText, status, error);
-            alert('Failed to fetch budget plans. Please try again.');
-          }
-        });
-      } else {
-        // Default fields for other types
-        additionalFields = `
-        <div class="col-md-12 col-sm-12 form-group dynamic-fields">
-        <label for="title">Form Title</label>
-        <input type="text" name="title" id="title" class="form-control" required placeholder="Enter form title">
-        </div>
-        <div class="col-md-12 col-sm-12 form-group dynamic-fields" hidden>
-        <label for="period_covered">Period Covered</label>
-        <input type="date" name="period_covered" id="period_covered" class="form-control" placeholder="Enter the period covered">
-        </div>
-        <div class="col-md-12 col-sm-12 form-group dynamic-fields">
-        <label for="uploaded_file">Upload File Here</label>
-        <input type="file" name="uploaded_file" id="uploaded_file" class="form-control" required accept=".pdf">
-        </div>
-        `;
-      }
-      // Append the additional fields after the dropdown
-      $('#form_type').closest('.form-group').after(additionalFields);
-    });
-});
-</script>
-<script type="text/javascript">
-  $('#uploadmodalbudget').on('click', function () {
-    document.getElementById('currentDateTime').value = getFormattedDateTime();
-    $('#uploadform').modal('show');
-    $('#uploadForm')[0].reset(); 
-  });
 
 
 
@@ -617,8 +693,16 @@ session_start();
 
 
 
-  $(document).on('submit', '#uploadForm', function(e) {
+
+
+
+
+
+
+
+  $(document).on('submit', '#modalLiqForm', function(e) {
     e.preventDefault();
+   
     let formData = new FormData(this); 
     $.ajax({
       url: 'controllers/UploadController.php?action=upload', 

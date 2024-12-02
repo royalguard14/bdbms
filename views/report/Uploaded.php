@@ -1,4 +1,18 @@
-<?php require_once 'controllers/StatusController.php'; ?>
+<?php require_once 'controllers/StatusController.php'; 
+
+$formTypeLabels = [
+    1 => 'Report',
+    2 => 'Budget Plan',
+    5 => 'Calamity Report',
+];
+
+
+
+
+?>
+
+
+
 <!-- City Management Content -->
 <div class="col-md-12 col-sm-12">
   <div class="x_panel">
@@ -30,7 +44,7 @@
                 <?php if (!empty($myuploads)): ?>
                   <?php foreach ($myuploads as $upload): ?>
                     <tr>
-                      <td style="vertical-align: middle;"><?php echo ($upload['form_type'] == 1) ? 'Report' : 'Plan'; ?></td>
+                      <td style="vertical-align: middle;"><?php echo $formTypeLabels[$upload['form_type']] ?? 'Unknown'; ?></td>
                       <td style="vertical-align: middle;"><?php echo htmlspecialchars($upload['title']); ?></td>
                       <td style="vertical-align: middle;"><?php echo htmlspecialchars($upload['file_name']); ?></td>
                       <td style="vertical-align: middle;"><?php echo date('F d, Y | h:i A', strtotime($upload['date_uploaded'])); ?></td>

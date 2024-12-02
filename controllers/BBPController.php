@@ -171,7 +171,7 @@ if ($action == 'delete') {
                 AND r.city_id = :city_id
                 AND r.brgy_id = :brgy_id
                 AND r.form_type = 2
-                AND r.status = "Accepted"
+             
                 ');
             $stmt->bindParam(':user_id', $_SESSION["user_data"]['id']);
             $stmt->bindParam(':city_id', $_SESSION["user_data"]['city_id']);

@@ -3,9 +3,18 @@
 $formTypeLabels = [
     1 => 'Report',
     2 => 'Budget Plan',
-     3 => 'Other Plan'
+    3 => 'Other Plan'
 ];
 
+function getFormTypeLabel($formType, $formTypeLabels)
+{
+    return $formTypeLabels[$formType] ?? 'Unknown';
+}
+
+function isAdminAssistant()
+{
+    return isset($_SESSION['role']['name']) && $_SESSION['role']['name'] === 'ADMIN ASSISTANT';
+}
  ?>
 <!-- City Management Content -->
 <div class="col-md-12 col-sm-12">
