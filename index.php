@@ -336,51 +336,9 @@ session_start();
 <!-- /footer content -->
 </div>
 </div>
+
 <!-- Modal -->
 <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="uploadform">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-md-4 col-sm-4 form-group">
-            <h4 class="modal-title" id="myModalLabel">Form Information</h4>
-          </div>
-          <div class="col-md-4 col-sm-4 form-group" style="text-align: right; margin-top: .5rem;">
-            <label class="control-label">Date today</label>
-          </div>
-          <div class="col-md-4 col-sm-4 form-group">
-            <input type="text" class="form-control" id="currentDateTime" readonly="readonly" value="">
-          </div>
-        </div>
-        <hr>
-        <form id="uploadForm" enctype="multipart/form-data">
-          <div class="row">
-            <div class="col-md-12 col-sm-12 form-group">
-              <label for="form_type">Form Type</label>
-              <select name="form_type" id="form_type" class="form-control" required>
-                <option value="" disabled selected>Select Form Type</option>
-                <option value="2">Budget Plan</option>
-                <option value="5">Calamity Report</option>
-                <option value="4">Liquidation Report</option>
-
-              </select>
-            </div>
-            <div class="col-md-12 col-sm-12 form-group">
-              <button type="submit" class="btn btn-primary col-md-12 col-sm-12" id="submitUpload" name="submitUpload">Upload</button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- Modal -->
-<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="uploadform1">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -447,7 +405,7 @@ session_start();
 
 
 
- 
+
             <div class="col-md-12 col-sm-12 form-group">
               <button type="submit" class="btn btn-primary col-md-12 col-sm-12" id="submitUpload" name="submitUpload">Upload</button>
             </div>
@@ -644,18 +602,12 @@ session_start();
 });
 </script>
 <script type="text/javascript">
-  $('#uploadmodal').on('click', function () {
+  $('#uploadmodalbudget').on('click', function () {
     document.getElementById('currentDateTime').value = getFormattedDateTime();
     $('#uploadform').modal('show');
     $('#uploadForm')[0].reset(); 
   });
 
-
-  $('#uploadmodalbudget').on('click', function () {
-    document.getElementById('currentDateTime').value = getFormattedDateTime();
-    $('#uploadform1').modal('show');
-    $('#uploadForm1')[0].reset(); 
-  });
 
 
 
