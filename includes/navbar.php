@@ -9,7 +9,7 @@
 
  
  <div class="menu_section">
-  <h3>Budget Management</h3>
+  <h3>Budget Managements</h3>
   <ul class="nav side-menu">
    <?php if ($_SESSION["role"]['name'] == "ADMIN ASSISTANT" || $_SESSION["role"]['name'] == "HDRRMO ADMIN"): ?>
      <li><a><i class="fa fa-money"></i> Budget Setting<span class="fa fa-chevron-down"></span></a>
@@ -20,7 +20,7 @@
     </li>
   <?php endif; ?>
   <?php if ($_SESSION["role"]['name'] == "BRGY USER"): ?>
-   <li><a><i class="fa fa-money"></i> Budget Plan<span class="fa fa-chevron-down"></span></a>
+   <li><a><i class="fa fa-money"></i> Budget Plans<span class="fa fa-chevron-down"></span></a>
     <ul class="nav child_menu">
       <li><a href="#" id="uploadmodal">Upload Budget Plan</a></li>
       <li><a href="index.php?page=budget&&section=mybudgetPlan">Barangay Budget Plans</a></li>

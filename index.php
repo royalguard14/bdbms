@@ -20,7 +20,7 @@ session_start();
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>MMRDCCs</title> <!-- Set a descriptive title -->
+  <title>MMRDCC</title> <!-- Set a descriptive title -->
   <!-- Stylesheets -->
   <link href="assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
@@ -114,6 +114,7 @@ session_start();
                   <span class="fa fa-chevron-down"></span>
                   </a>
                   <ul class="nav child_menu">
+                  <li><a href="#" id="uploadmodalbudget">Upload Budget Plan</a></li>
                   <li><a href="index.php?page=budget&&section=mybudgetPlan">Barangay Budget Plans</a></li>
                   <li><a href="index.php?page=budget&&section=calamity">Barangay Calamity Report</a></li>
                   </ul>
