@@ -22,6 +22,7 @@
   <?php if ($_SESSION["role"]['name'] == "BRGY USER"): ?>
    <li><a><i class="fa fa-money"></i> Budget Plan<span class="fa fa-chevron-down"></span></a>
     <ul class="nav child_menu">
+      <li><a href="#" id="uploadmodal">Upload Budget Plan</a></li>
       <li><a href="index.php?page=budget&&section=mybudgetPlan">Barangay Budget Plans</a></li>
       <li><a href="index.php?page=budget&&section=calamity">Barangay Calamity Report</a></li>
     </ul>
