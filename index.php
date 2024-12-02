@@ -377,6 +377,91 @@ session_start();
     </div>
   </div>
 </div>
+
+
+<!-- Modal -->
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="uploadform1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-4 col-sm-4 form-group">
+            <h4 class="modal-title" id="myModalLabel">Form Information</h4>
+          </div>
+          <div class="col-md-4 col-sm-4 form-group" style="text-align: right; margin-top: .5rem;">
+            <label class="control-label">Date today</label>
+          </div>
+          <div class="col-md-4 col-sm-4 form-group">
+            <input type="text" class="form-control" id="currentDateTime" readonly="readonly" value="">
+          </div>
+        </div>
+        <hr>
+        <form id="uploadForm" enctype="multipart/form-data">
+          <div class="row">
+ 
+
+<div class="col-md-12 col-sm-12 form-group dynamic-fields">
+        <label for="title">Thematic Area plan</label>
+        
+        <select name="name_extention" class="form-control" required>
+
+        <option  disabled selected> Select Here</option>
+        <option value="DISASTER PREVENTION AND MITIGATION">A. DISASTER PREVENTION AND MITIGATION</option>
+        <option value="DISASTER PREPAREDNESS">B. DISASTER PREPAREDNESS</option>
+        <option value="DISASTER RESPONSE">C. DISASTER RESPONSE</option>
+        <option value="DISASTER REHABILITIES AND RECOVERY">D. DISASTER REHABILITIES AND RECOVERY</option>
+
+        </select>
+
+
+
+
+        </div>
+        <div class="col-md-6 col-sm-6 form-group dynamic-fields">
+        <label for="title">Form Title</label>
+        <input type="text" name="title" id="title" class="form-control" required placeholder="Enter form title">
+        </div>
+        <div class="col-md-6 col-sm-6 form-group dynamic-fields" hidden>
+        <label for="period_covered">Period Covered</label>
+        <input type="date" name="period_covered" id="period_covered" class="form-control"  placeholder="Enter the period covered">
+       
+        </div>
+        <div class="col-md-6 col-sm-6 form-group dynamic-fields">
+        <label for="amount_budget">Amount Budget</label>
+        <input type="number" name="amount_budget" id="amount_budget" class="form-control" required placeholder="Enter the budget amount" step="0.01" min="0">
+        </div>
+        <div class="col-md-6 col-sm-6 form-group dynamic-fields">
+        <label for="uploaded_file_budget">Upload File Here</label>
+        <input type="file" name="uploaded_file" id="uploaded_file_budget" class="form-control" required accept=".pdf">
+        </div>
+
+
+
+
+
+
+
+
+
+
+ 
+            <div class="col-md-12 col-sm-12 form-group">
+              <button type="submit" class="btn btn-primary col-md-12 col-sm-12" id="submitUpload" name="submitUpload">Upload</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
 <!-- jQuery -->
 <script src="assets/vendors/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap -->
@@ -564,6 +649,22 @@ session_start();
     $('#uploadform').modal('show');
     $('#uploadForm')[0].reset(); 
   });
+
+
+  $('#uploadmodalbudget').on('click', function () {
+    document.getElementById('currentDateTime').value = getFormattedDateTime();
+    $('#uploadform1').modal('show');
+    $('#uploadForm1')[0].reset(); 
+  });
+
+
+
+
+
+
+
+
+
   $(document).on('submit', '#uploadForm', function(e) {
     e.preventDefault();
     let formData = new FormData(this); 
