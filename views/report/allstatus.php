@@ -51,10 +51,40 @@ $formTypeLabels = [
                     <?php if ($_SESSION["role"]['name'] == "BRGY USER"): ?>
 
                      <?php if ($submitted['status'] == "Uploaded"): ?>
-                      <td>
-                        <button type="button" class="btn btn-round btn-sm btn-outline submited-btn" data-id="<?php echo $submitted['id']; ?>">
-                          <i class="fa fa-send-o"></i>
-                        </button>
+                     <td style="vertical-align: middle; text-align: center;">
+
+
+
+
+                     <button type="button" class="btn btn-round btn-sm btn-outline" 
+                     id="viewPdfButton"
+                      data-title="<?php echo $submitted['file_name']; ?>" >
+                      <i class="fa fa-eye"></i>
+                    </button>
+
+
+
+                        <button type="button" class="btn btn-round btn-sm btn-outline editUploaddetail" 
+                        data-id="<?php echo $submitted['id']; ?>" 
+                        data-formtype="<?php echo $submitted['form_type']; ?>" 
+                        data-title="<?php echo htmlspecialchars($submitted['title']); ?>" 
+                        data-period="<?php echo htmlspecialchars($submitted['period_covered']); ?>">
+                        <i class="fa fa-pencil"></i>
+                      </button>
+
+
+
+                      <button type="button" class="btn btn-round btn-sm btn-outline delete-btn" 
+                      data-id="<?php echo $submitted['id']; ?>" >
+                      <i class="fa fa-trash"></i>
+                    </button>
+                    <button type="button" class="btn btn-round btn-sm btn-outline submited-btn" data-id="<?php echo $submitted['id']; ?>">
+                      <i class="fa fa-send-o"></i>
+                    </button>
+
+
+
+
                       </td>
                     <?php elseif ($submitted['status'] == "Accepted"): ?>
                       <td style="vertical-align: middle; text-align: center;">
@@ -81,7 +111,7 @@ $formTypeLabels = [
 
                   </td>
                 <?php else: ?>
-                  <td>Waiting</td>
+                 <td style="vertical-align: middle; text-align: center;">Pending</td>
                 <?php endif; ?>
 
               <?php endif; ?>
@@ -722,3 +752,105 @@ $formTypeLabels = [
 
 
 </script>
+
+
+<!-- upload.php -->
+<!-- Modal for Non-File Upload Actions -->
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="nonUploadForm">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-4 col-sm-4 form-group">
+            <h4 class="modal-title">Form Information</h4>
+          </div>
+          <div class="col-md-4 col-sm-4 form-group" style="text-align: right; margin-top: .5rem;">
+            <label class="control-label">Date Today</label>
+          </div>
+          <div class="col-md-4 col-sm-4 form-group">
+            <input type="text" class="form-control" id="currentDateTimeNonUpload" readonly="readonly" value="">
+          </div>
+        </div>
+        <hr>
+        <form id="nonUploadForm" enctype="multipart/form-data">
+          <div class="row">
+            <div class="col-md-12 col-sm-12 form-group">
+              <input type="hidden" name="id">
+            
+            </div>
+            <div class="col-md-12 col-sm-12 form-group">
+              <label for="title">Form Title</label>
+              <input type="text" name="title" id="title_non_upload" class="form-control" required placeholder="Enter form title">
+            </div>
+     
+            <div class="col-md-6 col-sm-6 form-group"></div>
+            <div class="col-md-6 col-sm-6 form-group">
+              <button type="submit" class="btn btn-primary col-md-12 col-sm-12" id="submitNonUpload">Update</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $('.editUploaddetail').on('click', function () {
+    let id = $(this).data('id');
+    let formtype = $(this).data('formtype');
+    let title = $(this).data('title');
+    let period = $(this).data('period');
+    $('input[name="id"]').val(id); 
+    $('#form_type_non_upload').val(formtype); 
+    $('#title_non_upload').val(title); 
+    $('#period_covered_non_upload').val(period); 
+    $('#currentDateTimeNonUpload').val(getFormattedDateTime());
+    $('#nonUploadForm').modal('show'); 
+  });
+  $(document).on('submit', '#nonUploadForm', function(e) {
+    e.preventDefault();
+    let formData = new FormData(this); 
+    $.ajax({
+      url: 'controllers/UploadController.php?action=updateUpload', 
+      type: 'POST',
+      data: formData,
+      contentType: false, 
+      processData: false, 
+      success: function(response) {
+        //let result = JSON.parse(response);
+        if (response.success) {
+          location.reload(); 
+        } else {
+          alert(result.message);
+        }
+      },
+    });
+  });
+</script>
+
+
+<script type="text/javascript">
+        // Handle delete action
+        $(document).on('click', '.delete-btn', function () {
+          let id = $(this).data('id');
+          if (confirm('Are you sure you want to delete this form?')) {
+            $.ajax({
+              url: 'controllers/UploadController.php?action=delete',
+              type: 'POST',
+              data: { id: id },
+              success: function (response) {
+                let result = JSON.parse(response);
+                alert(result.message);
+                if (result.success) {
+                  location.reload();
+                }
+              },
+              error: function () {
+                alert('Error deleting the form.');
+              }
+            });
+          }
+        });
+      </script>
