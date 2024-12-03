@@ -359,6 +359,7 @@ function getTotalAvailableBudget($pdo, $brgyId) {
 
     return [
         'last_year_unused_budget' => number_format($lastYearBudget, 2),
+        'this_year_allocated_budget' => number_format($thisYearBudget, 2),
         'current_year_remaining' => number_format($remainingThisYear, 2),
         'total_available_budget' => number_format($totalAvailableBudget, 2),
     ];
