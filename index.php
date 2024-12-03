@@ -321,10 +321,12 @@ if ($role === "HDRRMO ADMIN"){
 <!-- footer content -->
 <footer>
   <div class="pull-right">
-    <a href="#">SMCC CCIS</a>
+    <span>Developed by: </span><strong>DENVER V., JOY T., MARK KEVIN S.</strong> <span>SMCC CCIS</span>
   </div>
   <div class="clearfix"></div>
 </footer>
+
+
 <!-- /footer content -->
 </div>
 </div>

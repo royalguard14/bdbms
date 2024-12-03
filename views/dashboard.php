@@ -25,7 +25,6 @@ endif
 
 ?>
 
-<?php var_export($lastyear); ?>
 
 <div class="row top_tiles" >
   <div class="tile_count col-md-12 col-sm-12">
