@@ -23,8 +23,9 @@ endif
 
 
 
-
 ?>
+
+
 
 <div class="row top_tiles" >
   <div class="tile_count col-md-12 col-sm-12">
@@ -63,10 +64,11 @@ endif
         
              <span class="count_top"><i class="fa fa-money"></i> Budget Allocated (This year)</span>
         <div class="count red">
-          <?php
-          $formattedAmount = '₱ ' . number_format($totalAlocatedBudget?? 0, 2);
-          echo htmlspecialchars($formattedAmount);
-          ?>
+<?php
+$buotira = (int) str_replace(',', '', $lastyear['total_available_budget']);
+$formattedAmount = '₱ ' . number_format($buotira ?? 0, 2);
+echo htmlspecialchars($formattedAmount);
+?>
         </div>
       </div>
       <div class="col-md-4 col-sm-4 tile_stats_count">

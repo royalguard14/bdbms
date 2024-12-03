@@ -226,6 +226,14 @@ function getCalamityFundsUsage($pdo, $brgy_id) {
 
 
 
+
+
+
+
+
+
+
+
 function getAllBudgetForThisYear($pdo) {
     $stmt = $pdo->prepare("
         SELECT Sum(allocated_budget) FROM barangay_budget
@@ -274,6 +282,89 @@ GROUP BY
 
 
 
+function getUnusedBudgetFromPastYears($pdo, $brgyId) {
+    $stmt = $pdo->prepare("
+        SELECT 
+            IFNULL(SUM(b.allocated_budget), 0) - IFNULL(SUM(l.amount_spent), 0) AS unused_budget
+        FROM 
+            barangay_budget b
+        LEFT JOIN 
+            reports r ON r.brgy_id = b.barangay_id
+        LEFT JOIN 
+            liquidations l ON l.budget_plan_id = r.id
+        WHERE 
+            b.barangay_id = :brgy_id
+            AND YEAR(b.year) < YEAR(CURDATE()) -- Include only past years
+            AND (r.status = 'Accepted' OR r.status IS NULL) -- Consider only accepted reports or no liquidations
+    ");
+
+    $stmt->bindParam(':brgy_id', $brgyId, PDO::PARAM_INT);
+    $stmt->execute();
+
+    return $stmt->fetchColumn(); // Returns the remaining unused budget from past years
+}
+
+function getTotalAvailableBudget($pdo, $brgyId) {
+    // Get last year's unused budget
+    $stmtLastYear = $pdo->prepare("
+        SELECT 
+            IFNULL(SUM(allocated_budget), 0) AS last_year_budget 
+        FROM 
+            barangay_budget
+        WHERE 
+            barangay_id = :barangay_id 
+            AND YEAR(year) = YEAR(CURDATE()) - 1
+    ");
+    $stmtLastYear->bindParam(':barangay_id', $brgyId, PDO::PARAM_INT);
+    $stmtLastYear->execute();
+    $lastYearBudget = $stmtLastYear->fetchColumn();
+
+    // Get this year's allocated budget
+    $stmtThisYear = $pdo->prepare("
+        SELECT 
+            IFNULL(allocated_budget, 0) AS this_year_budget 
+        FROM 
+            barangay_budget
+        WHERE 
+            barangay_id = :barangay_id 
+            AND YEAR(year) = YEAR(CURDATE())
+    ");
+    $stmtThisYear->bindParam(':barangay_id', $brgyId, PDO::PARAM_INT);
+    $stmtThisYear->execute();
+    $thisYearBudget = $stmtThisYear->fetchColumn();
+
+    // Get total expenses for this year
+    $stmtSpentThisYear = $pdo->prepare("
+        SELECT 
+            IFNULL(SUM(l.amount_spent), 0) AS total_spent
+        FROM 
+            liquidations l
+        JOIN 
+            reports r ON l.budget_plan_id = r.id
+        WHERE 
+            r.brgy_id = :brgy_id
+            AND YEAR(l.liquidation_date) = YEAR(CURDATE())
+            AND r.form_type = 2
+            AND r.status = 'Accepted'
+    ");
+    $stmtSpentThisYear->bindParam(':brgy_id', $brgyId, PDO::PARAM_INT);
+    $stmtSpentThisYear->execute();
+    $spentThisYear = $stmtSpentThisYear->fetchColumn();
+
+    // Calculate remaining budget
+    $remainingThisYear = $thisYearBudget - $spentThisYear;
+
+    // Total available budget = remaining this year's budget + unused last year's budget
+    $totalAvailableBudget = $remainingThisYear + $lastYearBudget;
+
+    return [
+        'last_year_unused_budget' => number_format($lastYearBudget, 2),
+        'current_year_remaining' => number_format($remainingThisYear, 2),
+        'total_available_budget' => number_format($totalAvailableBudget, 2),
+    ];
+}
+
+
 
 
 
@@ -297,8 +388,6 @@ if ($role == "ADMIN ASSISTANT" || $role == "HDRRMO ADMIN") {
     $getAllBudgetForThisYear = getAllBudgetForThisYear($pdo);
     $getBarangayBudgetDetails = getBarangayBudgetDetails($pdo);
 
-
-
 } 
 
 // Fetch user-specific data for BRGY USER
@@ -312,6 +401,15 @@ if ($role == "BRGY USER") {
     $totalAmounNaNagastosThisYear = ($totalgetfromAlocatedBudget + $totalgetfromQRFBudget);
     $getTotalSpentByUserBarangay =getTotalSpentByUserBarangayGroupedByDate($pdo, $brgyID);
     $calamityFundsUsage = getCalamityFundsUsage($pdo, $brgyID);
+    $lastyear = getTotalAvailableBudget($pdo, $brgyID);
+
+
+
+
+
+
+
+
 }
 
 ?>
