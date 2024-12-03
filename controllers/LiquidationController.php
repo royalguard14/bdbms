@@ -236,6 +236,24 @@ public function fetchBudgetPlans()
 
 
 
+              $stmt =$this->db->prepare("
+        SELECT SUM(CAST(JSON_EXTRACT(remark, '$.amount_request') AS DECIMAL(10,2))) AS total_amount_request
+        FROM reports
+        WHERE 
+          form_type = 2
+          AND brgy_id = :brgy_id
+          AND YEAR(period_covered) = YEAR(CURDATE())
+                  AND status = 'Accepted'
+    ");
+
+    $stmt->bindParam(':brgy_id', $brgyId, PDO::PARAM_INT);
+    $stmt->execute();
+
+    $allacceptedbudgetplan = $stmt->fetchColumn();
+
+
+
+
             // Calculate remaining budget for this year
             $remainingThisYear = $thisYearBudget - $spentThisYear;
 
@@ -260,12 +278,15 @@ public function fetchBudgetPlans()
             // Calculate the total of this year’s allocated budget and last year’s unused budget
             $totalThisYearAllocatedBudget = $thisYearBudget + $lastYearBudget;
 
+            $availblebudgetoffer = $totalBudget - $allacceptedbudgetplan;
+
             echo json_encode([
                 'success' => true,
                 'budgetPlans' => $budgetPlans,
                 'total_budger' => $totalBudget,
                 'remainingQRF' => $remainingQRF,
                 'remainingbudget' => $remainingPlans,
+                'availblebudgetoffer' => $availblebudgetoffer,
           
 
             ]);
