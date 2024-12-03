@@ -400,7 +400,7 @@ if ($role === "HDRRMO ADMIN"){
 
 
 
-
+console.log(response);
 
 
 
@@ -431,8 +431,8 @@ if ($role === "HDRRMO ADMIN"){
         </div>
         <div class="col-md-6 col-sm-6 form-group dynamic-fields">
         <label for="amount_budget">Amount Budget</label>
-        <input type="number" name="amount_budget" id="amount_budget" class="form-control" required placeholder="Enter the budget amount" step="0.01" min="0" max="${parsedResponse.totalleft}">
-        <span>Remaining Balance: ${parsedResponse.totalleft}</span>
+        <input type="number" name="amount_budget" id="amount_budget" class="form-control" required placeholder="Enter the budget amount" step="0.01" min="0" max="${parsedResponse.total_this_year_allocated_budget}">
+        <span>Remaining Balance: ${parsedResponse.total_this_year_allocated_budget}</span>
         </div>
         <div class="col-md-6 col-sm-6 form-group dynamic-fields">
         <label for="uploaded_file_budget">Upload File Here</label>
@@ -489,7 +489,6 @@ if ($role === "HDRRMO ADMIN"){
 
 
 
-
  additionalFields = `
         <input type="hidden" name="form_type" value="5">
         <div class="col-md-6 col-sm-6 form-group dynamic-fields">
@@ -503,11 +502,11 @@ if ($role === "HDRRMO ADMIN"){
         </div>
         <div class="col-md-6 col-sm-6 form-group dynamic-fields">
         <label for="amount_budget">Amount Budget</label>
-        <input type="number" name="amount_budget" id="amount_budget" class="form-control" required placeholder="Enter the budget amount" step="0.01" min="0" max="${parsedResponse.totalqrf}" >
+        <input type="number" name="amount_budget" id="amount_budget" class="form-control" required placeholder="Enter the budget amount" step="0.01" min="0" max="${parsedResponse.remainingQRF}" >
 
 
 
-        <span>Remaining Balance: ${parsedResponse.totalqrf}</span>
+        <span>Remaining Balance: ${parsedResponse.remainingQRF}</span>
         </div>
         <div class="col-md-6 col-sm-6 form-group dynamic-fields">
         <label for="uploaded_file_budget">Upload File Here</label>
@@ -597,8 +596,8 @@ if ($role === "HDRRMO ADMIN"){
           </div>
           <div class="col-md-6 col-sm-6 form-group dynamic-fields">
             <label for="amount_spent">Amount Spent</label>
-            <input type="number" name="amount_spent" id="amount_spent" class="form-control" required placeholder="Enter the amount spent" step="0.01" min="0" max="${parsedResponse.totalbudget}">
-            <span>Remaining Balance: ${parsedResponse.totalbudget}</span>
+            <input type="number" name="amount_spent" id="amount_spent" class="form-control" required placeholder="Enter the amount spent" step="0.01" min="0" max="${parsedResponse.remainingbudget}">
+            <span>Remaining Balance: ${parsedResponse.remainingbudget}</span>
           </div>
           <div class="col-md-12 col-sm-12 form-group dynamic-fields">
             <label for="description">Description</label>

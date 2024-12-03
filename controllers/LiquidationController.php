@@ -45,42 +45,180 @@ class LiquidationController
         }
     }
 
+// public function fetchBudgetPlans()
+// {
+//     if (in_array('My Liquidation', $_SESSION['user_permissions'])) {
+//         try {
+//             $cityId = $_SESSION['user_data']['city_id']; 
+//             $brgyId = $_SESSION['user_data']['brgy_id']; 
+            
+//             $stmt = $this->db->prepare("SELECT * FROM reports WHERE status = 'Accepted' AND form_type = 2 AND city_id = :city AND brgy_id = :brgy");
+//             $stmt->bindParam(':city', $cityId, PDO::PARAM_INT);
+//             $stmt->bindParam(':brgy', $brgyId, PDO::PARAM_INT);
+//             $stmt->execute();
+            
+//             $budgetPlans = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+
+//     $stmt = $this->db->prepare("
+//         SELECT 
+//             SUM(l.amount_spent) AS total_spent
+//         FROM 
+//             liquidations l
+//         JOIN 
+//             reports r ON l.budget_plan_id = r.id
+//         WHERE 
+//             r.brgy_id = :brgy_id
+//             AND r.form_type = 2
+//             AND YEAR(l.liquidation_date) = YEAR(CURDATE())
+//     ");
+
+//     $stmt->bindParam(':brgy_id', $brgyId, PDO::PARAM_INT);
+//     $stmt->execute();
+
+//     $getTotalamountspentofmybrgy = $stmt->fetchColumn() ?? 0;
+
+
+// $stmt = $this->db->prepare("
+//         SELECT SUM(CAST(JSON_EXTRACT(remark, '$.amount_request') AS DECIMAL(10,2))) AS total_amount_request
+//         FROM reports
+//         WHERE 
+//           form_type = 5
+//           AND brgy_id = :brgy_id
+//           AND YEAR(period_covered) = YEAR(CURDATE())
+//                   AND status = 'Accepted'
+//     ");
+
+//     $stmt->bindParam(':brgy_id', $brgyId, PDO::PARAM_INT);
+//     $stmt->execute();
+
+//     $getTotalamountspentofmybrgyqrf = $stmt->fetchColumn() ?? 0;
+
+
+
+//     $stmt = $this->db->prepare("
+//         SELECT allocated_budget FROM barangay_budget
+//         WHERE barangay_id = :barangay_id 
+//         AND YEAR(year) = YEAR(CURDATE())
+
+//     ");
+
+//     $stmt->bindParam(':barangay_id', $brgyId);
+//     $stmt->execute();
+//     $totalAlocatedBudget = $stmt->fetchColumn() ?? 0;
+
+
+
+// $stmt = $this->db->prepare("
+//         SELECT SUM(CAST(JSON_EXTRACT(remark, '$.amount_request') AS DECIMAL(10,2))) AS total_amount_request
+//         FROM reports
+//         WHERE 
+//           form_type = 2
+//           AND brgy_id = :brgy_id
+//           AND YEAR(period_covered) = YEAR(CURDATE())
+//           AND status = 'Accepted'
+//     ");
+
+//     $stmt->bindParam(':brgy_id', $brgyId, PDO::PARAM_INT);
+//     $stmt->execute();
+
+//     $totalbudgetplan = $stmt->fetchColumn() ?? 0;
+
+
+
+//             echo json_encode([
+//                 'success' => true, 
+//                 'budgetPlans' => $budgetPlans, 
+//                 'totalbudget' => ($totalAlocatedBudget*.7)-$getTotalamountspentofmybrgy, 
+//                 'totalqrf' => ($totalAlocatedBudget*.3)-$getTotalamountspentofmybrgyqrf, 
+//                 'totalleft' => $totalAlocatedBudget - $totalbudgetplan]);
+//         } catch (PDOException $e) {
+//             echo json_encode([
+//                 'success' => false, 
+//                 'message' => 'Failed to fetch budget plans.', 
+//                 'error_details' => $e->getMessage()
+//             ]);
+//         }
+//     } else {
+//         header("Location: views/errors/500.html");
+//         exit();
+//     }
+// }
+
+
 public function fetchBudgetPlans()
 {
     if (in_array('My Liquidation', $_SESSION['user_permissions'])) {
         try {
-            $cityId = $_SESSION['user_data']['city_id']; 
-            $brgyId = $_SESSION['user_data']['brgy_id']; 
-            
-            $stmt = $this->db->prepare("SELECT * FROM reports WHERE status = 'Accepted' AND form_type = 2 AND city_id = :city AND brgy_id = :brgy");
+            $cityId = $_SESSION['user_data']['city_id'];
+            $brgyId = $_SESSION['user_data']['brgy_id'];
+
+            // Fetch budget plans
+            $stmt = $this->db->prepare("
+                SELECT * 
+                FROM reports 
+                WHERE status = 'Accepted' 
+                  AND form_type = 2 
+                  AND city_id = :city 
+                  AND brgy_id = :brgy
+            ");
             $stmt->bindParam(':city', $cityId, PDO::PARAM_INT);
             $stmt->bindParam(':brgy', $brgyId, PDO::PARAM_INT);
             $stmt->execute();
-            
             $budgetPlans = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+            // Get last year's unused budget
+            $stmtLastYear = $this->db->prepare("
+                SELECT 
+                    IFNULL(SUM(allocated_budget), 0) AS last_year_budget 
+                FROM 
+                    barangay_budget
+                WHERE 
+                    barangay_id = :barangay_id 
+                    AND YEAR(year) = YEAR(CURDATE()) - 1
+            ");
+            $stmtLastYear->bindParam(':barangay_id', $brgyId, PDO::PARAM_INT);
+            $stmtLastYear->execute();
+            $lastYearBudget = $stmtLastYear->fetchColumn() ?? 0;
+
+            // Get this year's allocated budget
+            $stmtThisYear = $this->db->prepare("
+                SELECT 
+                    IFNULL(SUM(allocated_budget), 0) AS this_year_budget 
+                FROM 
+                    barangay_budget
+                WHERE 
+                    barangay_id = :barangay_id 
+                    AND YEAR(year) = YEAR(CURDATE())
+            ");
+            $stmtThisYear->bindParam(':barangay_id', $brgyId, PDO::PARAM_INT);
+            $stmtThisYear->execute();
+            $thisYearBudget = $stmtThisYear->fetchColumn() ?? 0;
+
+            // Get total expenses for this year
+            $stmtSpentThisYear = $this->db->prepare("
+                SELECT 
+                    IFNULL(SUM(l.amount_spent), 0) AS total_spent
+                FROM 
+                    liquidations l
+                JOIN 
+                    reports r ON l.budget_plan_id = r.id
+                WHERE 
+                    r.brgy_id = :brgy_id
+                    AND YEAR(l.liquidation_date) = YEAR(CURDATE())
+                    AND r.form_type = 2
+                    AND r.status = 'Accepted'
+            ");
+            $stmtSpentThisYear->bindParam(':brgy_id', $brgyId, PDO::PARAM_INT);
+            $stmtSpentThisYear->execute();
+            $spentThisYear = $stmtSpentThisYear->fetchColumn() ?? 0;
 
 
-    $stmt = $this->db->prepare("
-        SELECT 
-            SUM(l.amount_spent) AS total_spent
-        FROM 
-            liquidations l
-        JOIN 
-            reports r ON l.budget_plan_id = r.id
-        WHERE 
-            r.brgy_id = :brgy_id
-            AND r.form_type = 2
-            AND YEAR(l.liquidation_date) = YEAR(CURDATE())
-    ");
-
-    $stmt->bindParam(':brgy_id', $brgyId, PDO::PARAM_INT);
-    $stmt->execute();
-
-    $getTotalamountspentofmybrgy = $stmt->fetchColumn() ?? 0;
 
 
-$stmt = $this->db->prepare("
+
+            $stmt =$this->db->prepare("
         SELECT SUM(CAST(JSON_EXTRACT(remark, '$.amount_request') AS DECIMAL(10,2))) AS total_amount_request
         FROM reports
         WHERE 
@@ -93,50 +231,48 @@ $stmt = $this->db->prepare("
     $stmt->bindParam(':brgy_id', $brgyId, PDO::PARAM_INT);
     $stmt->execute();
 
-    $getTotalamountspentofmybrgyqrf = $stmt->fetchColumn() ?? 0;
+    $qrfSpend = $stmt->fetchColumn();
 
 
 
-    $stmt = $this->db->prepare("
-        SELECT allocated_budget FROM barangay_budget
-        WHERE barangay_id = :barangay_id 
-        AND YEAR(year) = YEAR(CURDATE())
 
-    ");
+            // Calculate remaining budget for this year
+            $remainingThisYear = $thisYearBudget - $spentThisYear;
 
-    $stmt->bindParam(':barangay_id', $brgyId);
-    $stmt->execute();
-    $totalAlocatedBudget = $stmt->fetchColumn() ?? 0;
+            // Total available budget = remaining this year's budget + unused last year's budget
+            $totalAvailableBudget = $remainingThisYear + $lastYearBudget;
 
+            // Total budget (This year + Last year's unused budget)
+            $totalBudget = $thisYearBudget + $lastYearBudget;
 
+            // Quick Response Fund (30% of total budget)
+            $qrfBudget = $totalBudget * 0.3;
 
-$stmt = $this->db->prepare("
-        SELECT SUM(CAST(JSON_EXTRACT(remark, '$.amount_request') AS DECIMAL(10,2))) AS total_amount_request
-        FROM reports
-        WHERE 
-          form_type = 2
-          AND brgy_id = :brgy_id
-          AND YEAR(period_covered) = YEAR(CURDATE())
-          AND status = 'Accepted'
-    ");
+            // Barangay Plans Allocation (70% of total budget)
+            $plansBudget = $totalBudget * 0.7;
 
-    $stmt->bindParam(':brgy_id', $brgyId, PDO::PARAM_INT);
-    $stmt->execute();
+            // Remaining QRF Balance
+            $remainingQRF = $qrfBudget - $qrfSpend; // Assume totalAllocatedQRFBudget = $spentThisYear for simplicity
 
-    $totalbudgetplan = $stmt->fetchColumn() ?? 0;
+            // Remaining Plans Balance
+            $remainingPlans = $plansBudget - $spentThisYear; // Assume totalSpentOnPlans = $spentThisYear for simplicity
 
-
+            // Calculate the total of this year’s allocated budget and last year’s unused budget
+            $totalThisYearAllocatedBudget = $thisYearBudget + $lastYearBudget;
 
             echo json_encode([
-                'success' => true, 
-                'budgetPlans' => $budgetPlans, 
-                'totalbudget' => ($totalAlocatedBudget*.7)-$getTotalamountspentofmybrgy, 
-                'totalqrf' => ($totalAlocatedBudget*.3)-$getTotalamountspentofmybrgyqrf, 
-                'totalleft' => $totalAlocatedBudget - $totalbudgetplan]);
+                'success' => true,
+                'budgetPlans' => $budgetPlans,
+                'total_budger' => $totalBudget,
+                'remainingQRF' => $remainingQRF,
+                'remainingbudget' => $remainingPlans,
+          
+
+            ]);
         } catch (PDOException $e) {
             echo json_encode([
-                'success' => false, 
-                'message' => 'Failed to fetch budget plans.', 
+                'success' => false,
+                'message' => 'Failed to fetch budget plans.',
                 'error_details' => $e->getMessage()
             ]);
         }
