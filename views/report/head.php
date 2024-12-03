@@ -1,4 +1,13 @@
-<?php require_once 'controllers/StatusController.php'; ?>
+<?php require_once 'controllers/StatusController.php'; 
+
+$formTypeLabels = [
+  1 => 'Report',
+  2 => 'Budget Plan',
+  5 => 'Calamity Report',
+];
+
+
+?>
 <!-- City Management Content -->
 <div class="col-md-12 col-sm-12">
   <div class="x_panel">
@@ -18,9 +27,10 @@
                   <th>Record No.</th>
                   <th>Form Type</th>
                   <th>Barangay</th>
-                  <th>Period Covered</th>
+                  
                   <th>Verify By</th>
                   <th>Verify On</th>
+                  <th>Status</th>
                   <?php if ($_SESSION["role"]['name'] == "HDRRMO ADMIN"): ?>
                     <th>Action</th>
                   <?php endif; ?>
@@ -31,20 +41,18 @@
                   <?php foreach ($myverify as $verify): ?>
                     <tr>
                       <td style="vertical-align: middle;"><?php echo htmlspecialchars($verify['id']); ?></td>
-                      <td style="vertical-align: middle;"><?php echo ($verify['form_type'] == 1) ? 'Report' : 'Plan'; ?></td>
+                      <td style="vertical-align: middle;"><?php echo $formTypeLabels[$verify['form_type']] ?? 'Unknown'; ?></td>
                       <td style="vertical-align: middle;"><?php echo htmlspecialchars($verify['barangay_name']); ?></td>
-                      <td style="vertical-align: middle;"><?php echo date('F d, Y | h:i A', strtotime($verify['period_covered'])); ?></td>
+                  
                       <td style="vertical-align: middle;"><?php echo htmlspecialchars($verify['first_name']. " " .$verify['last_name'] ); ?></td>
                       <td style="vertical-align: middle;"><?php echo date('F d, Y | h:i A', strtotime($verify['changed_at'])); ?></td>
+                        <td style="vertical-align: middle;"><?php echo htmlspecialchars($verify['status']); ?></td>
                       <?php if ($_SESSION["role"]['name'] == "HDRRMO ADMIN"): ?>
 
 
-                        <?php if (($verify['status']  == "HDRRMO ADMIN"): ?>
+                        <?php if ($verify['status']  == "Verified"): ?>
 
 
-
-
-<?php endif; ?>
 
                         <td style="vertical-align: middle; text-align: center;">
                           <button type="button" class="btn btn-round btn-sm btn-outline viewverify_btn"
@@ -59,6 +67,23 @@
                           <i class="fa fa-search"></i>
                         </button>
                       </td>
+
+                        <?php else: ?>
+                          <td style="vertical-align: middle; text-align: center;">
+
+                          <button type="button" class="btn btn-round btn-sm btn-outline viewpdf"
+                          data-id ="<?php echo htmlspecialchars($verify['id']); ?>"
+                          data-title="<?php echo htmlspecialchars($verify['file_name']); ?>" 
+                          >
+                          <i class="fa fa-eye"></i>
+                        </button>
+
+
+
+                          </td>
+
+<?php endif; ?>
+
                     <?php endif; ?>
                   </tr>
                 <?php endforeach; ?>
@@ -274,6 +299,35 @@
     document.body.removeChild(tempLink);
 
   });
+
+
+
+</script>
+
+
+
+
+<script type="text/javascript">
+  $('.viewpdf').on('click', function () {
+    let title = $(this).data('title'); // Get the title set above
+    let filePath = `assets/uploaded_files/${title}`;
+    // Check if the file exists
+    $.ajax({
+      url: filePath,
+      type: 'HEAD',
+      success: function() {
+            // Set the PDF source to the iframe
+        $('#pdfViewer').attr('src', filePath);
+
+            // Show the modal with the embedded PDF
+        $('#pdfViewerModal').modal('show');
+      },
+      error: function() {
+        alert('File not found or unavailable for viewing.');
+      }
+    });
+  });
+
 
 
 

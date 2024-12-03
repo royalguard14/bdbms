@@ -29,9 +29,9 @@ $formTypeLabels = [
                   <th>Status</th>
                   <?php if ($_SESSION["role"]['name'] == "ADMIN ASSISTANT"): ?>
                    <th>Barangay</th>
-                  
+
                  <?php endif; ?>
-                  <th>Action</th>
+                 <th>Action</th>
                </tr>
              </thead>
              <tbody>
@@ -48,115 +48,100 @@ $formTypeLabels = [
 
 
 
-<?php if ($_SESSION["role"]['name'] == "BRGY USER"): ?>
+                    <?php if ($_SESSION["role"]['name'] == "BRGY USER"): ?>
 
-   <?php if ($submitted['status'] == "Uploaded"): ?>
-    <td>
-          <button type="button" class="btn btn-round btn-sm btn-outline submited-btn" data-id="<?php echo $submitted['id']; ?>">
-                      <i class="fa fa-send-o"></i>
-                    </button>
-                    </td>
-
-                  <?php else: ?>
-                      <td>Waiting</td>
-       <?php endif; ?>
-
-   <?php endif; ?>
-
-
-
-
-                    <?php if ($_SESSION["role"]['name'] == "ADMIN ASSISTANT"): ?>
-
-
-
-
-                      <?php if ($submitted['status'] == "Submitted"): ?>
-                        <td>
-                          <button type="button" class="btn btn-round btn-sm btn-outline viewsubmitted" 
-                          data-id ="<?php echo htmlspecialchars($submitted['id']); ?>"
-                          data-brgy ="<?php echo htmlspecialchars($submitted['barangay_name']); ?>"
-                          data-formtype ="<?php echo ($submitted['form_type'] == 1) ? 'Report' : 'Plan'; ?>"
-                          data-title="<?php echo htmlspecialchars($submitted['file_name']); ?>" 
-                          data-period_covered="<?php echo htmlspecialchars($submitted['period_covered']); ?>" 
-                          data-change_by="<?php echo htmlspecialchars($submitted['first_name']. " " .$submitted['last_name'] ); ?>" 
-                          data-created_at="<?php echo htmlspecialchars($submitted['date_uploaded']); ?>" 
-                          data-changed_at="<?php echo htmlspecialchars($submitted['changed_at']); ?>" >
-                          <i class="fa fa-search"></i>
+                     <?php if ($submitted['status'] == "Uploaded"): ?>
+                      <td>
+                        <button type="button" class="btn btn-round btn-sm btn-outline submited-btn" data-id="<?php echo $submitted['id']; ?>">
+                          <i class="fa fa-send-o"></i>
                         </button>
                       </td>
-
-                    <?php elseif ($submitted['status'] == "Verified"): ?>
-                      <td>Waiting to Confirm</td>
-
-
-
-
-
-                    <?php elseif ($submitted['status'] == "Confirm"): ?>
-                      <td> 
-                        <button type="button" class="btn btn-round btn-sm btn-outline viewconfirm" 
-                        data-id="<?php echo htmlspecialchars($submitted['id']); ?>"
-                        data-brgy="<?php echo htmlspecialchars($submitted['barangay_name']); ?>"
-                        data-formtype="<?php echo $formTypeLabels[$submitted['form_type']]; ?>"
+                    <?php elseif ($submitted['status'] == "Accepted"): ?>
+                      <td style="vertical-align: middle; text-align: center;">
+                        <button type="button" class="btn btn-round btn-sm btn-outline viewaccepted_btn"
                         data-title="<?php echo htmlspecialchars($submitted['file_name']); ?>" 
                         data-period_covered="<?php echo htmlspecialchars($submitted['period_covered']); ?>" 
-                        data-change_by="<?php echo htmlspecialchars($submitted['first_name'] . " " . $submitted['last_name']); ?>" 
+                        data-change_by="<?php echo htmlspecialchars($submitted['first_name']. " " .$submitted['last_name'] ); ?>" 
                         data-created_at="<?php echo htmlspecialchars($submitted['date_uploaded']); ?>" 
                         data-changed_at="<?php echo htmlspecialchars($submitted['changed_at']); ?>" 
-                        aria-label="View details for <?php echo htmlspecialchars($submitted['file_name']); ?>">
+                        >
                         <i class="fa fa-search"></i>
                       </button>
-                    </td>
-
-
-
-
-
-
-
-                  <?php elseif ($submitted['status'] == "Accepted"): ?>
-
-
-
-                    <td style="vertical-align: middle; text-align: center;">
-                      <button type="button" class="btn btn-round btn-sm btn-outline viewaccepted_btn"
-                      data-title="<?php echo htmlspecialchars($submitted['file_name']); ?>" 
-                      data-period_covered="<?php echo htmlspecialchars($submitted['period_covered']); ?>" 
-                      data-change_by="<?php echo htmlspecialchars($submitted['first_name']. " " .$submitted['last_name'] ); ?>" 
-                      data-created_at="<?php echo htmlspecialchars($submitted['date_uploaded']); ?>" 
-                      data-changed_at="<?php echo htmlspecialchars($submitted['changed_at']); ?>" 
-                      >
-                      <i class="fa fa-search"></i>
+                      <button type="button" class="btn btn-round btn-sm btn-outline printBtn" 
+                      data-id ="<?php echo htmlspecialchars($submitted['id']); ?>"
+                      data-brgy ="<?php echo htmlspecialchars($submitted['barangay_name']); ?>"
+                      data-formtype ="<?php echo ($submitted['form_type'] == 1) ? 'Report' : 'Plan'; ?>"
+                      data-title="<?php echo htmlspecialchars($submitted['file_name']); ?>"
+                      data-period_covered="<?php echo htmlspecialchars($submitted['period_covered']); ?>"
+                      data-change_by="<?php echo htmlspecialchars($submitted['first_name']. " " .$submitted['last_name'] ); ?>"
+                      data-created_at="<?php echo htmlspecialchars($submitted['date_uploaded']); ?>"
+                      data-changed_at="<?php echo htmlspecialchars($submitted['changed_at']); ?>">
+                      <i class="fa fa-download"></i>
                     </button>
-                    <button type="button" class="btn btn-round btn-sm btn-outline printBtn" 
-                    data-id ="<?php echo htmlspecialchars($submitted['id']); ?>"
-                    data-brgy ="<?php echo htmlspecialchars($submitted['barangay_name']); ?>"
-                    data-formtype="<?php echo $formTypeLabels[$submitted['form_type']]; ?>"
-                    data-title="<?php echo htmlspecialchars($submitted['file_name']); ?>"
-                    data-period_covered="<?php echo htmlspecialchars($submitted['period_covered']); ?>"
-                    data-change_by="<?php echo htmlspecialchars($submitted['first_name']. " " .$submitted['last_name'] ); ?>"
-                    data-created_at="<?php echo htmlspecialchars($submitted['date_uploaded']); ?>"
-                    data-changed_at="<?php echo htmlspecialchars($submitted['changed_at']); ?>">
-                    <i class="fa fa-print"></i>
-                  </button>
 
-                </td>
+                  </td>
+                <?php else: ?>
+                  <td>Waiting</td>
+                <?php endif; ?>
 
-
-
-              <?php else: ?>
-                <td>No Action</td>
               <?php endif; ?>
 
 
 
 
+              <?php if ($_SESSION["role"]['name'] == "ADMIN ASSISTANT"): ?>
 
 
 
 
-            <?php endif; ?>
+                <?php if ($submitted['status'] == "Submitted"): ?>
+                  <td>
+                    <button type="button" class="btn btn-round btn-sm btn-outline viewsubmitted" 
+                    data-id ="<?php echo htmlspecialchars($submitted['id']); ?>"
+                    data-brgy ="<?php echo htmlspecialchars($submitted['barangay_name']); ?>"
+                    data-formtype ="<?php echo ($submitted['form_type'] == 1) ? 'Report' : 'Plan'; ?>"
+                    data-title="<?php echo htmlspecialchars($submitted['file_name']); ?>" 
+                    data-period_covered="<?php echo htmlspecialchars($submitted['period_covered']); ?>" 
+                    data-change_by="<?php echo htmlspecialchars($submitted['first_name']. " " .$submitted['last_name'] ); ?>" 
+                    data-created_at="<?php echo htmlspecialchars($submitted['date_uploaded']); ?>" 
+                    data-changed_at="<?php echo htmlspecialchars($submitted['changed_at']); ?>" >
+                    <i class="fa fa-search"></i>
+                  </button>
+                </td>
+
+              <?php elseif ($submitted['status'] == "Verified"): ?>
+                <td>Waiting to Confirm</td>
+
+
+
+
+
+              <?php elseif ($submitted['status'] == "Confirm"): ?>
+                <td> 
+
+                  <button type="button" class="btn btn-round btn-sm btn-outline viewconfirm" 
+                  data-id="<?php echo htmlspecialchars($submitted['id']); ?>"
+                  data-brgy="<?php echo htmlspecialchars($submitted['barangay_name']); ?>"
+                  data-formtype="<?php echo $formTypeLabels[$submitted['form_type']]; ?>"
+                  data-title="<?php echo htmlspecialchars($submitted['file_name']); ?>" 
+                  data-period_covered="<?php echo htmlspecialchars($submitted['period_covered']); ?>" 
+                  data-change_by="<?php echo htmlspecialchars($submitted['first_name'] . " " . $submitted['last_name']); ?>" 
+                  data-created_at="<?php echo htmlspecialchars($submitted['date_uploaded']); ?>" 
+                  data-changed_at="<?php echo htmlspecialchars($submitted['changed_at']); ?>" 
+                  aria-label="View details for <?php echo htmlspecialchars($submitted['file_name']); ?>">
+                  <i class="fa fa-search"></i>
+                </button>
+
+
+
+                <button type="button" class="btn btn-round btn-sm btn-outline viewpdf"
+                data-id ="<?php echo htmlspecialchars($submitted['id']); ?>"
+                data-title="<?php echo htmlspecialchars($submitted['file_name']); ?>" 
+                >
+                <i class="fa fa-eye"></i>
+              </button>
+
+            </td>
 
 
 
@@ -164,14 +149,64 @@ $formTypeLabels = [
 
 
 
+          <?php elseif ($submitted['status'] == "Accepted"): ?>
+
+
+            <td style="vertical-align: middle; text-align: center;">
+              <button type="button" class="btn btn-round btn-sm btn-outline viewaccepted_btn"
+              data-title="<?php echo htmlspecialchars($submitted['file_name']); ?>" 
+              data-period_covered="<?php echo htmlspecialchars($submitted['period_covered']); ?>" 
+              data-change_by="<?php echo htmlspecialchars($submitted['first_name']. " " .$submitted['last_name'] ); ?>" 
+              data-created_at="<?php echo htmlspecialchars($submitted['date_uploaded']); ?>" 
+              data-changed_at="<?php echo htmlspecialchars($submitted['changed_at']); ?>" 
+              >
+              <i class="fa fa-search"></i>
+            </button>
+            <button type="button" class="btn btn-round btn-sm btn-outline printBtn" 
+            data-id ="<?php echo htmlspecialchars($submitted['id']); ?>"
+            data-brgy ="<?php echo htmlspecialchars($submitted['barangay_name']); ?>"
+            data-formtype="<?php echo $formTypeLabels[$submitted['form_type']]; ?>"
+            data-title="<?php echo htmlspecialchars($submitted['file_name']); ?>"
+            data-period_covered="<?php echo htmlspecialchars($submitted['period_covered']); ?>"
+            data-change_by="<?php echo htmlspecialchars($submitted['first_name']. " " .$submitted['last_name'] ); ?>"
+            data-created_at="<?php echo htmlspecialchars($submitted['date_uploaded']); ?>"
+            data-changed_at="<?php echo htmlspecialchars($submitted['changed_at']); ?>">
+            <i class="fa fa-print"></i>
+          </button>
+
+        </td>
 
 
 
-          </tr>
-        <?php endforeach; ?>
+      <?php else: ?>
+        <td>No Action</td>
       <?php endif; ?>
-    </tbody>
-  </table>
+
+
+
+
+
+
+
+
+
+
+    <?php endif; ?>
+
+
+
+
+
+
+
+
+
+
+  </tr>
+<?php endforeach; ?>
+<?php endif; ?>
+</tbody>
+</table>
 </div>
 </div>
 </div>
@@ -481,7 +516,7 @@ $formTypeLabels = [
       let report_id = $('#confirm_report_id').val(); // Get the hidden report ID
       if (confirm('Are you sure you want to Accept this form?')) {
         $.ajax({
-          url: 'controllers/UploadController.php?action=toAccepted',
+          url: 'controllers/UploadController.php?action=allstatus',
           type: 'POST',
           data: { id: report_id },
           success: function (response) {
@@ -501,58 +536,58 @@ $formTypeLabels = [
 
   <!-- accepted.php -->
 
- <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="viewaccepted">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-md-4 col-sm-4 form-group">
-            <h4 class="modal-title" id="myModalLabel">Form Information</h4>
-          </div>
-          <div class="col-md-4 col-sm-4 form-group" style="text-align: right; margin-top: .5rem;">
-            <label class="control-label">Submitted On</label>
-          </div>
-          <div class="col-md-4 col-sm-4 form-group">
-            <input type="text" id="accepted_submitted_on" class="form-control" readonly="readonly" style="font-size: .8rem;">
-          </div>
+  <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="viewaccepted">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
         </div>
-        <hr>
-        <div class="row">
-          <div class="col-md-12 col-sm-12 form-group">
-            <label>File Name</label>
-            <input type="text" id="accepted_file_name" class="form-control" disabled>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-4 col-sm-4 form-group">
+              <h4 class="modal-title" id="myModalLabel">Form Information</h4>
+            </div>
+            <div class="col-md-4 col-sm-4 form-group" style="text-align: right; margin-top: .5rem;">
+              <label class="control-label">Submitted On</label>
+            </div>
+            <div class="col-md-4 col-sm-4 form-group">
+              <input type="text" id="accepted_submitted_on" class="form-control" readonly="readonly" style="font-size: .8rem;">
+            </div>
           </div>
-          <div class="col-md-12 col-sm-12 form-group">
-            <label>Period Covered</label>
-            <input type="text" id="accepted_period_covered" class="form-control" disabled>
-          </div>
-          <div class="col-md-6 col-sm-6 form-group">
-            <label>Accepted By</label>
-            <input type="text" id="accepted_accepted_by" class="form-control" disabled>
-          </div>
-          <div class="col-md-6 col-sm-6 form-group">
-            <label>Accepted On</label>
-            <input type="text" id="accepted_accepted_on" class="form-control" disabled>
+          <hr>
+          <div class="row">
+            <div class="col-md-12 col-sm-12 form-group">
+              <label>File Name</label>
+              <input type="text" id="accepted_file_name" class="form-control" disabled>
+            </div>
+            <div class="col-md-12 col-sm-12 form-group">
+              <label>Period Covered</label>
+              <input type="text" id="accepted_period_covered" class="form-control" disabled>
+            </div>
+            <div class="col-md-6 col-sm-6 form-group">
+              <label>Accepted By</label>
+              <input type="text" id="accepted_accepted_by" class="form-control" disabled>
+            </div>
+            <div class="col-md-6 col-sm-6 form-group">
+              <label>Accepted On</label>
+              <input type="text" id="accepted_accepted_on" class="form-control" disabled>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<script type="text/javascript">
-  $('.viewaccepted_btn').on('click', function () {
-    $('#viewaccepted').modal('show'); 
+  <script type="text/javascript">
+    $('.viewaccepted_btn').on('click', function () {
+      $('#viewaccepted').modal('show'); 
 
-    let title = $(this).data('title');
-    let periodCovered = $(this).data('period_covered');
-    let createdAt = $(this).data('created_at');
-    let changeBy = $(this).data('change_by');
-    let changedAt = $(this).data('changed_at');
-    
+      let title = $(this).data('title');
+      let periodCovered = $(this).data('period_covered');
+      let createdAt = $(this).data('created_at');
+      let changeBy = $(this).data('change_by');
+      let changedAt = $(this).data('changed_at');
+
     // Format the date fields if needed
     let fperiodCovered = formatDateTimeMY(periodCovered);  // Assuming formatDateTimeMY is defined
     let fchangedAt = formatDateTime(changedAt);  // Assuming formatDateTime is defined
@@ -567,7 +602,7 @@ $formTypeLabels = [
 </script>
 <script type="text/javascript">
   // Attach event listener to all buttons with the 'printBtn' class
-$('.printBtn').on('click', function () {
+  $('.printBtn').on('click', function () {
     let id = $(this).data('id');
     let title = $(this).data('title');
     let periodCovered = $(this).data('period_covered');
@@ -581,49 +616,49 @@ $('.printBtn').on('click', function () {
     
     let printContent = `
     <style>
-        @media print {
-            @page {
-                size: A4;
-                margin: 20mm;
-            }
-            body {
-                font-family: Arial, sans-serif;
-                height: auto;
-                display: flex;
-                flex-direction: column;
-            }
-            .footer {
-                margin-top: 83%;
-                text-align: center;
-                font-size: 0.8rem;
-                color: gray;
-            }
-            @page {
-                margin: 0;
-            }
-            body {
-                margin: 0;
-            }
-        }
+    @media print {
+      @page {
+        size: A4;
+        margin: 20mm;
+      }
+      body {
+        font-family: Arial, sans-serif;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+      }
+      .footer {
+        margin-top: 83%;
+        text-align: center;
+        font-size: 0.8rem;
+        color: gray;
+      }
+      @page {
+        margin: 0;
+      }
+      body {
+        margin: 0;
+      }
+    }
     </style>
     <div style="padding: 20px; flex: 1;">
-        <img src="../assets/images/favicon.ico" alt="Company Logo" style="width: 150px; margin-bottom: 20px;">
-        <h3>The following document has been received:</h3>
-        <br>
-        <p><strong>Receiving:</strong> ${changeBy}</p>
-        <p><strong>Receipt Date and Time:</strong> ${fchangedAt}</p>
-        <br><br>
-        <h2>Document Details:</h2>
-        <hr>
-        <div style="text-align: left; font-size: 0.9rem;">
-            <p><strong>Barangay:</strong> ${brgy}</p>
-            <p><strong>Record No.:</strong> ${id}</p>
-            <p><strong>Document Type:</strong> ${formtype}</p>
-            <p><strong>Period Covered:</strong> ${fperiodCovered}</p>
-        </div>
-        <div class="footer">
-            <p>Acceptance of this document is subject to review of forms and contents</p>
-        </div>
+    <img src="../assets/images/favicon.ico" alt="Company Logo" style="width: 150px; margin-bottom: 20px;">
+    <h3>The following document has been received:</h3>
+    <br>
+    <p><strong>Receiving:</strong> ${changeBy}</p>
+    <p><strong>Receipt Date and Time:</strong> ${fchangedAt}</p>
+    <br><br>
+    <h2>Document Details:</h2>
+    <hr>
+    <div style="text-align: left; font-size: 0.9rem;">
+    <p><strong>Barangay:</strong> ${brgy}</p>
+    <p><strong>Record No.:</strong> ${id}</p>
+    <p><strong>Document Type:</strong> ${formtype}</p>
+    <p><strong>Period Covered:</strong> ${fperiodCovered}</p>
+    </div>
+    <div class="footer">
+    <p>Acceptance of this document is subject to review of forms and contents</p>
+    </div>
     </div>
     `;
     
@@ -636,27 +671,54 @@ $('.printBtn').on('click', function () {
     printWindow.focus();
     printWindow.print();
     printWindow.close();
-});
+  });
 
 </script>
 
 
 <!-- Uploaded.php -->
-      <script type="text/javascript">
+<script type="text/javascript">
         // Handle delete action
-        $(document).on('click', '.submited-btn', function () {
-          let id = $(this).data('id');
-          if (confirm('Are you sure you want to Submit this form?')) {
-            $.ajax({
-              url: 'controllers/UploadController.php?action=submited',
-              type: 'POST',
-              data: { id: id },
-              success: function (response) {
-     
+  $(document).on('click', '.submited-btn', function () {
+    let id = $(this).data('id');
+    if (confirm('Are you sure you want to Submit this form?')) {
+      $.ajax({
+        url: 'controllers/UploadController.php?action=submited',
+        type: 'POST',
+        data: { id: id },
+        success: function (response) {
+
           window.location.href = 'index.php?page=report&&section=allstatus';
-              }
-     
-            });
-          }
-        });
-      </script>
+        }
+
+      });
+    }
+  });
+</script>
+
+
+<script type="text/javascript">
+  $('.viewpdf').on('click', function () {
+    let title = $(this).data('title'); // Get the title set above
+    let filePath = `assets/uploaded_files/${title}`;
+    // Check if the file exists
+    $.ajax({
+      url: filePath,
+      type: 'HEAD',
+      success: function() {
+            // Set the PDF source to the iframe
+        $('#pdfViewer').attr('src', filePath);
+
+            // Show the modal with the embedded PDF
+        $('#pdfViewerModal').modal('show');
+      },
+      error: function() {
+        alert('File not found or unavailable for viewing.');
+      }
+    });
+  });
+
+
+
+
+</script>
