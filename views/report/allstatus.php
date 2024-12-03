@@ -29,8 +29,9 @@ $formTypeLabels = [
                   <th>Status</th>
                   <?php if ($_SESSION["role"]['name'] == "ADMIN ASSISTANT"): ?>
                    <th>Barangay</th>
-                   <th>Action</th>
+                  
                  <?php endif; ?>
+                  <th>Action</th>
                </tr>
              </thead>
              <tbody>
@@ -44,6 +45,26 @@ $formTypeLabels = [
                     <?php if ($_SESSION["role"]['name'] == "ADMIN ASSISTANT"): ?>
                       <td style="vertical-align: middle;"><?php echo htmlspecialchars($submitted['barangay_name']); ?></td>
                     <?php endif; ?>
+
+
+
+<?php if ($_SESSION["role"]['name'] == "BRGY USER"): ?>
+
+   <?php if ($submitted['status'] == "Uploaded"): ?>
+    <td>
+          <button type="button" class="btn btn-round btn-sm btn-outline submited-btn" data-id="<?php echo $submitted['id']; ?>">
+                      <i class="fa fa-send-o"></i>
+                    </button>
+                    </td>
+
+                  <?php else: ?>
+                      <td>Waiting</td>
+       <?php endif; ?>
+
+   <?php endif; ?>
+
+
+
 
                     <?php if ($_SESSION["role"]['name'] == "ADMIN ASSISTANT"): ?>
 
@@ -618,3 +639,24 @@ $('.printBtn').on('click', function () {
 });
 
 </script>
+
+
+<!-- Uploaded.php -->
+      <script type="text/javascript">
+        // Handle delete action
+        $(document).on('click', '.submited-btn', function () {
+          let id = $(this).data('id');
+          if (confirm('Are you sure you want to Submit this form?')) {
+            $.ajax({
+              url: 'controllers/UploadController.php?action=submited',
+              type: 'POST',
+              data: { id: id },
+              success: function (response) {
+     
+          window.location.href = 'index.php?page=report&&section=allstatus';
+              }
+     
+            });
+          }
+        });
+      </script>

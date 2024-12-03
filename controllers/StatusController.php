@@ -29,15 +29,18 @@ if (isset($_SESSION['log_in']) && $_SESSION['log_in']) {
                 AND rsl.changed_at = latest_status.latest_change
                 LEFT JOIN profiles p ON rsl.changed_by = p.user_id
                 LEFT JOIN barangay b ON r.brgy_id = b.id
-        WHERE rsl.new_status = :status -- This ensures the latest status matches the input status (Submitted)
-          AND rsl.new_status = r.status -- Ensures the latest status in logs matches the status in reports
+        WHERE 
+         rsl.new_status = r.status -- Ensures the latest status in logs matches the status in reports
           AND r.user_id = :user_id 
           AND r.city_id = :city_id
           AND r.brgy_id = :brgy_id
+
+        order by
+        r.date_uploaded DESC
           
           ");
     // Bind parameters
-            $stmt->bindParam(':status', $status);
+           
             $stmt->bindParam(':user_id', $_SESSION["user_data"]['id']);
             $stmt->bindParam(':city_id', $_SESSION["user_data"]['city_id']);
             $stmt->bindParam(':brgy_id', $_SESSION["user_data"]['brgy_id']);

@@ -128,27 +128,56 @@ session_start();
             </ul>
           </div>
           <div class="menu_section">
-            <h3>Report Management</h3>
-            <ul class="nav side-menu">
+   
 <?php 
 if ($role === "BRGY USER") {
   echo '
+  <h3>Report Management</h3>
+            <ul class="nav side-menu">
   <li>
   <a href="#" id="uploadliquidation">
   <i class="fa fa-upload"></i> Upload Liquidation 
   <span class="label label-success pull-right"></span>
   </a>
-  </li>'
+  </li>
+
+
+    <li>
+  <a href="index.php?page=report&&section=allstatus" >
+  <i class="fa fa-files-o"></i> Files Routing
+  <span class="label label-success pull-right"></span>
+  </a>
+  </li>
+
+            </ul>'
+
   ;
 }
 if ($role === "ADMIN ASSISTANT"){
   echo '
+    <h3>Report Management</h3>
+            <ul class="nav side-menu">
   <li>
   <a href="index.php?page=report&&section=allstatus">
   <i class="fa fa-files-o"></i> Report Status 
   <span class="label label-success pull-right"></span>
   </a>
-  </li>'
+  </li>
+  </ul>'
+  ;
+}
+
+if ($role === "HDRRMO ADMIN"){
+  echo '
+    <h3>Report Management</h3>
+            <ul class="nav side-menu">
+  <li>
+  <a href="index.php?page=report&&section=head">
+  <i class="fa fa-files-o"></i> Report Status 
+  <span class="label label-success pull-right"></span>
+  </a>
+  </li>
+  </ul>'
   ;
 }
 
@@ -160,7 +189,6 @@ if ($role === "ADMIN ASSISTANT"){
 
              ?>
     
-            </ul>
           </div>
           <?php if ($_SESSION["role"]['name'] == "Zear Developer"): ?>
             <div class="menu_section">
