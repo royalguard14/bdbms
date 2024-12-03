@@ -37,8 +37,24 @@ endif
         <span class="count_top"><i class="fa fa-bolt"></i> Quick Response Funds (This year)</span>
         <div class="count green">
           <?php
-          $totalAllocatedBudget = $totalAlocatedBudget ?? 0;
+          $buotira = (int) str_replace(',', '', $lastyear['total_available_budget']);
+          $totalAllocatedBudget = $buotira ?? 0;
+
+
+
+
+
+
+
+
           $thirtyPercent = $totalAllocatedBudget * 0.3; 
+
+
+
+
+
+
+
           $formattedThirtyPercent = '₱ ' . number_format($thirtyPercent, 2); 
           echo htmlspecialchars($formattedThirtyPercent);
           ?>
@@ -48,7 +64,8 @@ endif
         <span class="count_top"><i class="fa fa-calendar"></i> Allocated For Barangay Plans (This year)</span>
         <div class="count green">
           <?php
-          $totalAllocatedBudget = $totalAlocatedBudget ?? 0;
+     
+          $totalAllocatedBudget = $buotira ?? 0;
           $thirtyPercent = $totalAllocatedBudget * 0.7; 
           $formattedThirtyPercent = '₱ ' . number_format($thirtyPercent, 2); 
           echo htmlspecialchars($formattedThirtyPercent);
@@ -62,7 +79,7 @@ endif
 
       <div class="col-md-4 col-sm-4 tile_stats_count">
         
-             <span class="count_top"><i class="fa fa-money"></i> Budget Allocated (This year)</span>
+             <span class="count_top"><i class="fa fa-money"></i> Budget Allocated (This year + Remaining Last Year)</span>
         <div class="count red">
 <?php
 $buotira = (int) str_replace(',', '', $lastyear['total_available_budget']);
@@ -104,8 +121,10 @@ echo htmlspecialchars($formattedAmount);
         <span class="count_top"><i class="fa fa-area-chart"></i> Total Remaining Balance (QRF)</span>
         <div class="count">
           <?php
+
+           $buotira = (int) str_replace(',', '', $lastyear['total_available_budget']);
           $totalAllocatedQRFBudget = $totalgetfromQRFBudget ?? 0;
-          $thirtyPercent = $totalAllocatedBudget * 0.3;
+          $thirtyPercent = $buotira * 0.3;
           $natirasaQRF = $thirtyPercent - $totalAllocatedQRFBudget;
           $formattedThirtyPercent = '₱ ' . number_format($natirasaQRF, 2); 
           echo htmlspecialchars($formattedThirtyPercent);
@@ -116,8 +135,9 @@ echo htmlspecialchars($formattedAmount);
         <span class="count_top"><i class="fa fa-pie-chart"></i> Total Remaining Balance (Plans)</span>
         <div class="count">
           <?php
+          $buotira = (int) str_replace(',', '', $lastyear['total_available_budget']);
           $totalAllocatedBudget = $totalAlocatedBudget ?? 0;
-          $seventypercent = $totalAllocatedBudget * 0.7;
+          $seventypercent = $buotira * 0.7;
           $tirangPera = $seventypercent - $totalgetfromAlocatedBudget;
           $pwdpa = $tirangPera ?? 0;
           $formatedPwdpa = '₱ ' . number_format($pwdpa, 2); 
