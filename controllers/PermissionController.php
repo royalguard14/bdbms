@@ -3,7 +3,7 @@ require_once 'connect.php';
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-if (isset($_SESSION['log_in']) && $_SESSION['log_in'] && isset($_SESSION["user_data"]["role_id"]) && $_SESSION["user_data"]["role_id"] == 1) {
+if (isset($_SESSION['log_in']) && $_SESSION['log_in'] && isset($_SESSION["user_data"]["role_id"]) && ($_SESSION["user_data"]["role_id"] == 1 || $_SESSION["user_data"]["role_id"] == 16)) {
     $data = json_decode(file_get_contents('php://input'), true);
     if ($data !== null && isset($data['action'])) {
         $action = $data['action'];

@@ -190,7 +190,7 @@ if ($role === "HDRRMO ADMIN"){
              ?>
     
           </div>
-          <?php if ($_SESSION["role"]['name'] == "Zear Developer"): ?>
+          <?php if ($_SESSION["role"]['name'] == "Zear Developer" || $_SESSION["role"]['name'] == "HDRRMO ADMIN"): ?>
             <div class="menu_section">
               <h3>ADMIN SETTING</h3>
               <ul class="nav side-menu">
