@@ -152,7 +152,7 @@
                 }
             },
             error: function(xhr, status, error) {
-                alert('An error occurred');
+               window.location.href = 'index.php?page=brgym';
             }
         });
     });

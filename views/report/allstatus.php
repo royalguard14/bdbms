@@ -546,7 +546,7 @@ $formTypeLabels = [
       let report_id = $('#confirm_report_id').val(); // Get the hidden report ID
       if (confirm('Are you sure you want to Accept this form?')) {
         $.ajax({
-          url: 'controllers/UploadController.php?action=allstatus',
+          url: 'controllers/UploadController.php?action=toAccepted',
           type: 'POST',
           data: { id: report_id },
           success: function (response) {
