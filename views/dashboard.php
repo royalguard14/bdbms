@@ -400,16 +400,36 @@ endif
             <tbody>
             <tr>
             <td>Total Budget</td>
-            <td>${totalBudget.toFixed(2)}</td>
+         <td>${new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(totalBudget)}</td>
+
+            </tr>
+                      <tr>
+            <td>Total Remaining</td>
+          <td>${new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(totalBudget - (totalBudgetPlanSpent + totalCalamityReportSpent))}</td>
+
+
             </tr>
             <tr>
             <td>Budget Plan Spent</td>
-            <td>${totalBudgetPlanSpent.toFixed(2)}</td>
+          <td>
+  ${new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(totalBudgetPlanSpent)} /
+  ${new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(totalBudget * 0.7 - totalBudgetPlanSpent)}
+</td>
+
+
             </tr>
             <tr>
             <td>Calamity Report Spent</td>
-            <td>${totalCalamityReportSpent.toFixed(2)}</td>
+           <td>
+  ${new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(totalCalamityReportSpent)} /
+  ${new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(totalBudget * 0.3 - totalCalamityReportSpent)}
+</td>
+
+
+         
             </tr>
+
+
             </tbody>
             </table>
             <div>
