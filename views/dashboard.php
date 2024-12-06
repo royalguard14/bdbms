@@ -413,7 +413,7 @@ endif
             <td>Budget Plan Spent</td>
           <td>
   ${new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(totalBudgetPlanSpent)} /
-  ${new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(totalBudget * 0.7 - totalBudgetPlanSpent)}
+  ${new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(totalBudget * 0.7 - totalBudgetPlanSpent)} (70%)
 </td>
 
 
@@ -422,7 +422,7 @@ endif
             <td>Calamity Report Spent</td>
            <td>
   ${new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(totalCalamityReportSpent)} /
-  ${new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(totalBudget * 0.3 - totalCalamityReportSpent)}
+  ${new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(totalBudget * 0.3 - totalCalamityReportSpent)} (30%)
 </td>
 
 
