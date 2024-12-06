@@ -431,8 +431,8 @@ console.log(response);
         </div>
         <div class="col-md-6 col-sm-6 form-group dynamic-fields">
         <label for="amount_budget">Amount Budget</label>
-        <input type="number" name="amount_budget" id="amount_budget" class="form-control" required placeholder="Enter the budget amount" step="0.01" min="0" max="${parsedResponse.availblebudgetoffer}">
-        <span>Remaining Balance: ${parsedResponse.availblebudgetoffer}</span>
+        <input type="number" name="amount_budget" id="amount_budget" class="form-control" required placeholder="Enter the budget amount" step="0.01" min="0" max="${parsedResponse.remainingbudget}">
+        <span>Remaining Balance: ${parsedResponse.remainingbudget}</span>
         </div>
         <div class="col-md-6 col-sm-6 form-group dynamic-fields">
         <label for="uploaded_file_budget">Upload File Here</label>
