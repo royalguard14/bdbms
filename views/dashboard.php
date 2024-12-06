@@ -66,6 +66,10 @@ endif
 
 
       <div class="col-md-4 col-sm-4 tile_stats_count">
+                <span class="count_top"><i class="fa fa-bolt"></i> Previous Year Remaining Budget</span>
+        <div class="count green">
+    <?= '₱ ' . number_format($lastYearUnusedBudget, 2); ?>
+        </div>
       </div>
       <div class="col-md-4 col-sm-4 tile_stats_count">
         <span class="count_top"><i class="fa fa-bolt"></i> Quick Response Funds (This year)</span>
@@ -81,9 +85,9 @@ endif
       </div>
       <!-- 1 -->
       <div class="col-md-4 col-sm-4 tile_stats_count">
-       <span class="count_top"><i class="fa fa-money"></i> Budget Allocated (This year + Remaining Last Year)</span>
+       <span class="count_top"><i class="fa fa-money"></i> This year Budget Allocated</span>
        <div class="count red">
-  <?= '₱ ' . number_format($totalBudget, 2); ?>
+  <?= '₱ ' . number_format($thisYearBudget, 2); ?>
       </div>
     </div>
     <div class="col-md-4 col-sm-4 tile_stats_count">
@@ -99,6 +103,10 @@ endif
       </div>
     </div>
     <div class="col-md-4 col-sm-4 tile_stats_count">
+             <span class="count_top"><i class="fa fa-money"></i> Budget Allocated (This year + Remaining Last Year)</span>
+       <div class="count red">
+  <?= '₱ ' . number_format($totalBudget, 2); ?>
+      </div>
     </div>
     <div class="col-md-4 col-sm-4 tile_stats_count">
       <span class="count_top"><i class="fa fa-area-chart"></i> Total Remaining Balance (QRF)</span>

@@ -169,7 +169,7 @@ $formTypeLabels = [
         <div class="col-md-12 col-sm-12 form-group">
           <input type="hidden" name="id">
           <label for="form_type">Form Type</label>
-          <select name="form_type" id="form_type_non_upload" class="form-control" required>
+          <select name="form_type" id="form_type_non_upload" class="form-control" readonly>
             <option value="" disabled selected>Select Form Type</option>
             <option value="2">Budget Plan</option>
             <option value="1">Other Report</option>
@@ -180,10 +180,7 @@ $formTypeLabels = [
       <label for="title">Form Title</label>
       <input type="text" name="title" id="title_non_upload" class="form-control" required placeholder="Enter form title">
   </div>
-  <div class="col-md-12 col-sm-12 form-group">
-      <label for="period_covered">Period Covered</label>
-      <input type="date" name="period_covered" id="period_covered_non_upload" class="form-control" required placeholder="Enter the period covered">
-  </div>
+
   <div class="col-md-6 col-sm-6 form-group"></div>
   <div class="col-md-6 col-sm-6 form-group">
       <button type="submit" class="btn btn-primary col-md-12 col-sm-12" id="submitNonUpload">Update</button>
